@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { SignalCard } from '@/components/ui/signal-card';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
-import { signals, kols } from '@/data/mockData';
+import { kols } from '@/data/mockData';
 import { 
   Select, 
   SelectContent, 
@@ -14,43 +14,58 @@ import {
   SelectTrigger, 
   SelectValue 
 } from '@/components/ui/select';
+import { getSignals } from '@/api/signalService';
+import { toast } from 'sonner';
+import { Signal } from '@/data/mockData';
 
 const HomePage = () => {
   const { t } = useLanguage();
   const { isPremium, isAuthenticated } = useAuth();
-  const [visibleSignals, setVisibleSignals] = useState(signals);
+  const [visibleSignals, setVisibleSignals] = useState<Signal[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [uniqueAssets, setUniqueAssets] = useState<string[]>([]);
   
   // Filters
   const [assetFilter, setAssetFilter] = useState('all');
   const [typeFilter, setTypeFilter] = useState('all');
   const [kolFilter, setKolFilter] = useState('all');
   
-  // Get unique assets
-  const uniqueAssets = [...new Set(signals.map(signal => signal.asset))];
-  
-  // Apply filters
+  // Загрузка сигналов при монтировании компонента и изменении фильтров
   useEffect(() => {
-    let filtered = signals;
+    const fetchSignals = async () => {
+      setLoading(true);
+      
+      try {
+        // Определяем фильтры для API запроса
+        const filters = {
+          ...(assetFilter !== 'all' ? { asset: assetFilter } : {}),
+          ...(typeFilter !== 'all' ? { type: typeFilter } : {}),
+          ...(kolFilter !== 'all' ? { kolId: parseInt(kolFilter) } : {})
+        };
+        
+        // Получаем данные через API
+        let signals = await getSignals(filters);
+        
+        // Для неавторизованных пользователей ограничиваем неприватные сигналы
+        if (!isPremium) {
+          signals = signals.filter(signal => !signal.premium).slice(0, 3);
+        }
+        
+        setVisibleSignals(signals);
+        
+        // Получаем уникальные активы для фильтра
+        const assets = [...new Set(signals.map(signal => signal.asset))];
+        setUniqueAssets(assets);
+      } catch (error) {
+        console.error("Error fetching signals:", error);
+        toast.error(t('language') === 'en' ? 'Failed to load signals' : 'Ошибка загрузки сигналов');
+      } finally {
+        setLoading(false);
+      }
+    };
     
-    if (assetFilter !== 'all') {
-      filtered = filtered.filter(signal => signal.asset === assetFilter);
-    }
-    
-    if (typeFilter !== 'all') {
-      filtered = filtered.filter(signal => signal.type === typeFilter);
-    }
-    
-    if (kolFilter !== 'all') {
-      filtered = filtered.filter(signal => signal.kolId === parseInt(kolFilter));
-    }
-    
-    // For non-premium users, limit to 3 non-premium signals
-    if (!isPremium) {
-      filtered = filtered.filter(signal => !signal.premium).slice(0, 3);
-    }
-    
-    setVisibleSignals(filtered);
-  }, [assetFilter, typeFilter, kolFilter, isPremium]);
+    fetchSignals();
+  }, [assetFilter, typeFilter, kolFilter, isPremium, t]);
   
   return (
     <Layout>
@@ -140,14 +155,31 @@ const HomePage = () => {
         
         {/* Signals Grid */}
         <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {visibleSignals.map(signal => {
-            const signalKol = kols.find(k => k.id === signal.kolId);
-            if (!signalKol) return null;
-            
-            return (
-              <SignalCard key={signal.id} signal={signal} kol={signalKol} />
-            );
-          })}
+          {loading ? (
+            // Показываем скелетон загрузки
+            Array(3).fill(0).map((_, index) => (
+              <div key={index} className="animate-pulse bg-black/30 h-64 rounded-lg"></div>
+            ))
+          ) : visibleSignals.length > 0 ? (
+            // Показываем сигналы
+            visibleSignals.map(signal => {
+              const signalKol = kols.find(k => k.id === signal.kolId);
+              if (!signalKol) return null;
+              
+              return (
+                <SignalCard key={signal.id} signal={signal} kol={signalKol} />
+              );
+            })
+          ) : (
+            // Показываем сообщение, если сигналы не найдены
+            <div className="col-span-3 text-center py-10">
+              <p className="text-gray-400">
+                {t('language') === 'en' 
+                  ? 'No signals found matching your filters' 
+                  : 'Сигналы, соответствующие вашим фильтрам, не найдены'}
+              </p>
+            </div>
+          )}
         </div>
         
         {!isPremium && (

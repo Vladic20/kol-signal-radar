@@ -35,13 +35,27 @@ export function SignalCard({ signal, kol }: SignalCardProps) {
   // Check if premium content is accessible
   const isPremiumAccessible = !signal.premium || isPremium;
 
+  // Транслируем термины с правильными ключами
+  const translateType = (type: string) => {
+    if (type.toLowerCase() === "long") return t("long");
+    if (type.toLowerCase() === "short") return t("short");
+    return type;
+  };
+  
+  const translateStatus = (status: string) => {
+    if (status.toLowerCase() === "open") return t("open");
+    if (status.toLowerCase() === "closed") return t("closed");
+    if (status.toLowerCase() === "canceled") return t("canceled");
+    return status;
+  };
+
   return (
     <Card className={`overflow-hidden transition-all duration-300 hover:border-neon-purple/50 ${isPremiumAccessible ? '' : 'opacity-80'}`}>
       <CardHeader className="p-4 bg-gradient-to-r from-secondary to-secondary/60 flex flex-row justify-between items-center space-y-0">
         <div className="flex items-center space-x-2">
           <span className="font-bold text-lg">{signal.asset}</span>
           <Badge variant={signal.type === 'Long' ? 'default' : 'destructive'} className="bg-gradient-to-r from-neon-green to-neon-blue text-white">
-            {t(signal.type.toLowerCase())}
+            {translateType(signal.type)}
           </Badge>
         </div>
         <div className="text-sm text-muted-foreground">
@@ -71,7 +85,7 @@ export function SignalCard({ signal, kol }: SignalCardProps) {
               signal.status === 'Open' ? 'outline' : 
               signal.status === 'Closed' ? 'default' : 'secondary'
             }>
-              {t(signal.status.toLowerCase())}
+              {translateStatus(signal.status)}
             </Badge>
             {signal.result && (
               <span className={`ml-2 ${signal.result > 0 ? 'text-green-500' : 'text-red-500'}`}>

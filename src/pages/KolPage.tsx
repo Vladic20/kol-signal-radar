@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
@@ -23,9 +24,6 @@ const KolPage = () => {
   
   // Find signals by KOL ID
   const kolSignals = signals.filter(s => s.kolId === parseInt(id || '0'));
-  
-  // Get engagement data for this KOL
-  const engagement = engagementData[parseInt(id || '0') as keyof typeof engagementData] || [];
   
   // Check if KOL is accessible (premium check)
   const isAccessible = !kol?.premium || isPremium;
@@ -114,7 +112,7 @@ const KolPage = () => {
                   <h2 className="text-xl font-semibold mb-4">{t('profileDetails')}</h2>
                   
                   <div className="space-y-4">
-                    <p className="text-gray-300">{kol.bio}</p>
+                    <p className="text-gray-300">{kol.bio || kol.description}</p>
                     
                     <div className="mt-6">
                       <h3 className="text-md font-medium mb-2">Platforms</h3>
@@ -163,7 +161,7 @@ const KolPage = () => {
                       </div>
                       <div className="p-4 bg-black/40 rounded-lg">
                         <div className="text-sm text-gray-400">{t('engagement')}</div>
-                        <div className="text-xl font-medium">{kol.engagement}</div>
+                        <div className="text-xl font-medium">{kol.engagement}%</div>
                       </div>
                       <div className="p-4 bg-black/40 rounded-lg">
                         <div className="text-sm text-gray-400">{t('reputation')}</div>
@@ -189,7 +187,7 @@ const KolPage = () => {
                 <h2 className="text-xl font-semibold mb-4">{t('engagementStats')}</h2>
                 <div className="h-[300px] w-full">
                   <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={engagement}>
+                    <AreaChart data={engagementData}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#444" />
                       <XAxis dataKey="month" stroke="#888" />
                       <YAxis stroke="#888" />

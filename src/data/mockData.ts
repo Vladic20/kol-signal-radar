@@ -13,11 +13,25 @@ export type Signal = {
   description?: string;
 };
 
+export type Platform = {
+  name: string;
+  url: string;
+  followers: number;
+};
+
 export type KOL = {
   id: number;
   name: string;
   avatar: string;
   description: string;
+  bio?: string;
+  language: 'EN' | 'RU' | 'Both';
+  platforms: Platform[];
+  signalFrequency: string;
+  engagement: number;
+  reputation: 'Clean' | 'Mixed' | 'Risky';
+  accuracy: number;
+  premium: boolean;
   performance: {
     winRate: number;
     averageReturn: number;
@@ -27,8 +41,57 @@ export type KOL = {
     telegram?: string;
     youtube?: string;
   };
-  followers: number;
+  followers: number; // Keeping this for backward compatibility
 };
+
+export type PriceHistoryPoint = {
+  time: string;
+  price: number;
+};
+
+export type SignalPriceHistory = {
+  signalId: number;
+  history: PriceHistoryPoint[];
+};
+
+// Sample price history data
+export const priceHistoryData: SignalPriceHistory[] = [
+  {
+    signalId: 1,
+    history: [
+      { time: "2024-01-25T12:00:00Z", price: 25800 },
+      { time: "2024-01-25T18:00:00Z", price: 25900 },
+      { time: "2024-01-26T00:00:00Z", price: 25850 },
+      { time: "2024-01-26T06:00:00Z", price: 25950 },
+      { time: "2024-01-26T12:00:00Z", price: 26000 },
+      { time: "2024-01-26T18:00:00Z", price: 26200 },
+      { time: "2024-01-27T00:00:00Z", price: 26350 },
+      { time: "2024-01-27T06:00:00Z", price: 26500 },
+      { time: "2024-01-27T12:00:00Z", price: 26800 },
+      { time: "2024-01-27T18:00:00Z", price: 27100 },
+      { time: "2024-01-28T00:00:00Z", price: 27300 },
+      { time: "2024-01-28T06:00:00Z", price: 27550 },
+      { time: "2024-01-28T12:00:00Z", price: 27800 },
+    ]
+  },
+  {
+    signalId: 2,
+    history: [
+      { time: "2024-01-24T18:00:00Z", price: 1650 },
+      { time: "2024-01-25T00:00:00Z", price: 1640 },
+      { time: "2024-01-25T06:00:00Z", price: 1630 },
+      { time: "2024-01-25T12:00:00Z", price: 1610 },
+      { time: "2024-01-25T18:00:00Z", price: 1600 },
+      { time: "2024-01-26T00:00:00Z", price: 1590 },
+      { time: "2024-01-26T06:00:00Z", price: 1580 },
+      { time: "2024-01-26T12:00:00Z", price: 1570 },
+      { time: "2024-01-26T18:00:00Z", price: 1560 },
+      { time: "2024-01-27T00:00:00Z", price: 1550 },
+      { time: "2024-01-27T06:00:00Z", price: 1530 },
+      { time: "2024-01-27T12:00:00Z", price: 1510 },
+    ]
+  }
+];
 
 export const signals: Signal[] = [
   {
@@ -306,6 +369,17 @@ export const kols: KOL[] = [
     name: 'CryptoExpert123',
     avatar: 'https://randomuser.me/api/portraits/men/1.jpg',
     description: 'Experienced trader specializing in Bitcoin and Ethereum.',
+    bio: 'Trading crypto since 2015. Focus on technical analysis and market trends. Providing accurate signals for BTC, ETH and major altcoins.',
+    language: 'EN',
+    platforms: [
+      { name: 'Twitter', url: 'https://twitter.com/CryptoExpert123', followers: 120000 },
+      { name: 'Telegram', url: 'https://t.me/CryptoExpert123', followers: 30000 }
+    ],
+    signalFrequency: 'Daily',
+    engagement: 78,
+    reputation: 'Clean',
+    accuracy: 75,
+    premium: false,
     performance: {
       winRate: 75,
       averageReturn: 12.5,
@@ -321,6 +395,17 @@ export const kols: KOL[] = [
     name: 'AltcoinGuru',
     avatar: 'https://randomuser.me/api/portraits/women/2.jpg',
     description: 'Passionate about altcoins with high growth potential.',
+    bio: 'Altcoin specialist with focus on emerging projects. Always looking for the next gem in the crypto space.',
+    language: 'Both',
+    platforms: [
+      { name: 'Twitter', url: 'https://twitter.com/AltcoinGuru', followers: 85000 },
+      { name: 'YouTube', url: 'https://youtube.com/AltcoinGuru', followers: 35000 }
+    ],
+    signalFrequency: 'Weekly',
+    engagement: 82,
+    reputation: 'Clean',
+    accuracy: 68,
+    premium: true,
     performance: {
       winRate: 68,
       averageReturn: 18.2,
@@ -336,6 +421,17 @@ export const kols: KOL[] = [
     name: 'DeFiAnalyst',
     avatar: 'https://randomuser.me/api/portraits/men/3.jpg',
     description: 'In-depth analysis of DeFi projects and trends.',
+    bio: 'DeFi expert focused on protocol analysis and yield farming strategies. Former smart contract auditor.',
+    language: 'RU',
+    platforms: [
+      { name: 'Twitter', url: 'https://twitter.com/DeFiAnalyst', followers: 65000 },
+      { name: 'Telegram', url: 'https://t.me/DeFiAnalyst', followers: 25000 }
+    ],
+    signalFrequency: 'Bi-Weekly',
+    engagement: 74,
+    reputation: 'Mixed',
+    accuracy: 70,
+    premium: true,
     performance: {
       winRate: 70,
       averageReturn: 15.8,
@@ -345,6 +441,45 @@ export const kols: KOL[] = [
       telegram: 'https://t.me/DeFiAnalyst',
     },
     followers: 90000,
+  },
+];
+
+// Data for engagement charts
+export const engagementData = [
+  {
+    month: 'Jan',
+    likes: 1200,
+    comments: 400,
+  },
+  {
+    month: 'Feb',
+    likes: 1900,
+    comments: 600,
+  },
+  {
+    month: 'Mar',
+    likes: 2600,
+    comments: 800,
+  },
+  {
+    month: 'Apr',
+    likes: 2800,
+    comments: 1000,
+  },
+  {
+    month: 'May',
+    likes: 3500,
+    comments: 1400,
+  },
+  {
+    month: 'Jun',
+    likes: 4200,
+    comments: 1700,
+  },
+  {
+    month: 'Jul',
+    likes: 4800,
+    comments: 2000,
   },
 ];
 
@@ -543,17 +678,139 @@ export const translations: { [key: string]: Translation } = {
     en: "Notifications",
     ru: "Уведомления"
   },
-  "entryPrice": {
-    en: "Entry Price",
-    ru: "Цена входа"
+  
+  // Signal detail dialog
+  "priceChart": {
+    en: "Price Chart",
+    ru: "График цены"
   },
-  "targetPrice": {
-    en: "Target Price",
-    ru: "Целевая цена"
+  "closeChart": {
+    en: "Close",
+    ru: "Закрыть"
   },
-  "stopLoss": {
-    en: "Stop Loss",
-    ru: "Стоп-лосс"
+  "signalDetails": {
+    en: "Signal Details",
+    ru: "Детали сигнала"
+  },
+  "potentialProfit": {
+    en: "Potential Profit",
+    ru: "Потенциальная прибыль"
+  },
+  "maxLoss": {
+    en: "Max Loss",
+    ru: "Макс. убыток"
+  },
+  "clean": {
+    en: "Clean",
+    ru: "Чистая"
+  },
+  "mixed": {
+    en: "Mixed",
+    ru: "Смешанная"
+  },
+  "risky": {
+    en: "Risky",
+    ru: "Рискованная"
+  },
+  "rank": {
+    en: "Rank",
+    ru: "Ранг"
+  },
+  "name": {
+    en: "Name",
+    ru: "Имя"
+  },
+  "platform": {
+    en: "Platform",
+    ru: "Платформа"
+  },
+  "followers": {
+    en: "Followers",
+    ru: "Подписчики"
+  },
+  "signalFreq": {
+    en: "Signal Frequency",
+    ru: "Частота сигналов"
+  },
+  "daily": {
+    en: "Daily",
+    ru: "Ежедневно"
+  },
+  "weekly": {
+    en: "Weekly",
+    ru: "Еженедельно"
+  },
+  "bi_weekly": {
+    en: "Bi-Weekly",
+    ru: "Раз в две недели"
+  },
+  "monthly": {
+    en: "Monthly",
+    ru: "Ежемесячно"
+  },
+  "engagement": {
+    en: "Engagement",
+    ru: "Вовлеченность"
+  },
+  "reputation": {
+    en: "Reputation",
+    ru: "Репутация"
+  },
+  "accuracy": {
+    en: "Accuracy",
+    ru: "Точность"
+  },
+  "filterBy": {
+    en: "Filter By",
+    ru: "Фильтровать по"
+  },
+  "resetFilters": {
+    en: "Reset Filters",
+    ru: "Сбросить фильтры"
+  },
+  "minFollowers": {
+    en: "Min Followers",
+    ru: "Мин. подписчиков"
+  },
+  "minAccuracy": {
+    en: "Min Accuracy",
+    ru: "Мин. точность"
+  },
+  "kolsLeaderboard": {
+    en: "KOLs Leaderboard",
+    ru: "Рейтинг KOL'ов"
+  },
+  "follow": {
+    en: "Follow",
+    ru: "Подписаться"
+  },
+  "following": {
+    en: "Following",
+    ru: "Подписан"
+  },
+  "profileDetails": {
+    en: "Profile Details",
+    ru: "Детали профиля"
+  },
+  "tradingSignals": {
+    en: "Trading Signals",
+    ru: "Торговые сигналы"
+  },
+  "comments": {
+    en: "Comments",
+    ru: "Комментарии"
+  },
+  "leaveComment": {
+    en: "Leave a Comment",
+    ru: "Оставить комментарий"
+  },
+  "submitComment": {
+    en: "Submit Comment",
+    ru: "Отправить комментарий"
+  },
+  "engagementStats": {
+    en: "Engagement Statistics",
+    ru: "Статистика вовлечённости"
   }
 };
 
@@ -608,14 +865,4 @@ export const faqQuestions = [
       ru: "Точность сигналов зависит от KOL и рыночных условий. Мы предоставляем статистику производительности для каждого KOL, чтобы помочь вам оценить их послужной список."
     }
   }
-];
-
-export const engagementData = [
-  { name: 'Jan', followers: 400 },
-  { name: 'Feb', followers: 600 },
-  { name: 'Mar', followers: 800 },
-  { name: 'Apr', followers: 1000 },
-  { name: 'May', followers: 1400 },
-  { name: 'Jun', followers: 1700 },
-  { name: 'Jul', followers: 2000 },
 ];

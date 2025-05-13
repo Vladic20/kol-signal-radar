@@ -18,10 +18,10 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
   // Translation function
   const t = (key: keyof typeof translations) => {
     if (!translations[key]) {
-      console.warn(`Translation key not found: ${key}`);
-      return key;
+      console.warn(`Translation key not found: ${String(key)}`);
+      return String(key);
     }
-    return translations[key][language] || key;
+    return translations[key][language] || String(key);
   };
 
   return (

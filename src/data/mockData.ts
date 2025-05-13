@@ -30,6 +30,310 @@ export interface KOL {
   };
 }
 
+// Add translations
+export const translations = {
+  'projectTitle': {
+    'en': 'KOL Leaderboard — Top Crypto Traders and Their Signals',
+    'ru': 'KOL Лидерборд — Лучшие крипто-трейдеры и их сигналы'
+  },
+  'latestSignals': {
+    'en': 'Latest Trading Signals',
+    'ru': 'Последние торговые сигналы'
+  },
+  'asset': {
+    'en': 'Asset',
+    'ru': 'Актив'
+  },
+  'type': {
+    'en': 'Type',
+    'ru': 'Тип'
+  },
+  'long': {
+    'en': 'Long',
+    'ru': 'Лонг'
+  },
+  'short': {
+    'en': 'Short',
+    'ru': 'Шорт'
+  },
+  'entryPrice': {
+    'en': 'Entry Price',
+    'ru': 'Цена входа'
+  },
+  'targetPrice': {
+    'en': 'Target Price',
+    'ru': 'Целевая цена'
+  },
+  'stopLoss': {
+    'en': 'Stop Loss',
+    'ru': 'Стоп-лосс'
+  },
+  'date': {
+    'en': 'Date',
+    'ru': 'Дата'
+  },
+  'status': {
+    'en': 'Status',
+    'ru': 'Статус'
+  },
+  'open': {
+    'en': 'Open',
+    'ru': 'Открыт'
+  },
+  'closed': {
+    'en': 'Closed',
+    'ru': 'Закрыт'
+  },
+  'canceled': {
+    'en': 'Canceled',
+    'ru': 'Отменен'
+  },
+  'result': {
+    'en': 'Result',
+    'ru': 'Результат'
+  },
+  'kol': {
+    'en': 'KOL',
+    'ru': 'КОЛ'
+  },
+  'followers': {
+    'en': 'Followers',
+    'ru': 'Подписчики'
+  },
+  'accuracy': {
+    'en': 'Accuracy',
+    'ru': 'Точность'
+  },
+  'engagement': {
+    'en': 'Engagement',
+    'ru': 'Вовлеченность'
+  },
+  'reputation': {
+    'en': 'Reputation',
+    'ru': 'Репутация'
+  },
+  'clean': {
+    'en': 'Clean',
+    'ru': 'Чистая'
+  },
+  'mixed': {
+    'en': 'Mixed',
+    'ru': 'Смешанная'
+  },
+  'suspicious': {
+    'en': 'Suspicious',
+    'ru': 'Подозрительная'
+  },
+  'signalFreq': {
+    'en': 'Signal Frequency',
+    'ru': 'Частота сигналов'
+  },
+  'engagementStats': {
+    'en': 'Engagement Stats',
+    'ru': 'Статистика вовлеченности'
+  },
+  'profileDetails': {
+    'en': 'Profile Details',
+    'ru': 'Детали профиля'
+  },
+  'tradingSignals': {
+    'en': 'Trading Signals',
+    'ru': 'Торговые сигналы'
+  },
+  'comments': {
+    'en': 'Comments',
+    'ru': 'Комментарии'
+  },
+  'leaveComment': {
+    'en': 'Leave a Comment',
+    'ru': 'Оставить комментарий'
+  },
+  'submitComment': {
+    'en': 'Submit Comment',
+    'ru': 'Отправить комментарий'
+  },
+  'follow': {
+    'en': 'Follow',
+    'ru': 'Подписаться'
+  },
+  'following': {
+    'en': 'Following',
+    'ru': 'Подписан'
+  },
+  'subscribeToPremium': {
+    'en': 'Subscribe to Premium',
+    'ru': 'Подписаться на Premium'
+  },
+  'Login': {
+    'en': 'Login',
+    'ru': 'Войти'
+  },
+  'Register': {
+    'en': 'Register',
+    'ru': 'Регистрация'
+  },
+  'Email': {
+    'en': 'Email',
+    'ru': 'Email'
+  },
+  'Password': {
+    'en': 'Password',
+    'ru': 'Пароль'
+  },
+  'ForgotPassword': {
+    'en': 'Forgot Password?',
+    'ru': 'Забыли пароль?'
+  },
+  'Dashboard': {
+    'en': 'Dashboard',
+    'ru': 'Панель управления'
+  },
+  'Leaderboard': {
+    'en': 'Leaderboard',
+    'ru': 'Лидерборд'
+  },
+  'About': {
+    'en': 'About',
+    'ru': 'О проекте'
+  },
+  'FAQ': {
+    'en': 'FAQ',
+    'ru': 'FAQ'
+  },
+  'language': {
+    'en': 'en',
+    'ru': 'ru'
+  }
+};
+
+// Add FAQ questions
+export const faqQuestions = [
+  {
+    question: {
+      en: 'What are KOLs?',
+      ru: 'Кто такие КОЛы?'
+    },
+    answer: {
+      en: 'KOLs (Key Opinion Leaders) are influential figures in the cryptocurrency space who share trading insights, market analysis, and investment recommendations. They are trusted experts whose opinions can impact market sentiment and trading decisions.',
+      ru: 'KOL (Key Opinion Leaders, Ключевые лидеры мнений) — это влиятельные фигуры в криптовалютном пространстве, которые делятся торговыми идеями, анализом рынка и инвестиционными рекомендациями. Это доверенные эксперты, чьи мнения могут влиять на рыночные настроения и торговые решения.'
+    }
+  },
+  {
+    question: {
+      en: 'How does the leaderboard work?',
+      ru: 'Как работает лидерборд?'
+    },
+    answer: {
+      en: 'Our leaderboard ranks KOLs based on several factors including the accuracy of their trading signals, engagement rates, follower count, and overall reputation. This comprehensive ranking helps users identify the most reliable and influential crypto experts.',
+      ru: 'Наш лидерборд ранжирует КОЛов на основе нескольких факторов, включая точность их торговых сигналов, уровень вовлеченности, количество подписчиков и общую репутацию. Этот комплексный рейтинг помогает пользователям определить самых надежных и влиятельных крипто-экспертов.'
+    }
+  },
+  {
+    question: {
+      en: 'What do Premium users get?',
+      ru: 'Что получают Premium-пользователи?'
+    },
+    answer: {
+      en: 'Premium subscribers gain access to the complete leaderboard with all KOLs, detailed profiles of each KOL, all historical trading signals, real-time notifications for new signals, and the ability to comment and interact with KOL content. Free users only have access to a limited subset of this information.',
+      ru: 'Премиум-подписчики получают доступ к полному лидерборду со всеми КОЛами, детальным профилям каждого КОЛа, всем историческим торговым сигналам, уведомлениям о новых сигналах в реальном времени и возможности комментировать и взаимодействовать с контентом КОЛов. Бесплатные пользователи имеют доступ только к ограниченному набору этой информации.'
+    }
+  },
+  {
+    question: {
+      en: 'How are signal accuracy rates calculated?',
+      ru: 'Как рассчитывается точность сигналов?'
+    },
+    answer: {
+      en: 'Signal accuracy is calculated by comparing the predicted price targets or movements with actual market outcomes. A signal is considered successful if the asset reaches the target price before hitting the stop-loss level. Our platform tracks all historical signals and calculates success rates transparently.',
+      ru: 'Точность сигнала рассчитывается путем сравнения прогнозируемых ценовых целей или движений с фактическими рыночными результатами. Сигнал считается успешным, если актив достигает целевой цены до достижения уровня стоп-лосс. Наша платформа отслеживает все исторические сигналы и прозрачно рассчитывает показатели успешности.'
+    }
+  },
+  {
+    question: {
+      en: 'Can I follow specific KOLs to get notifications?',
+      ru: 'Могу ли я подписаться на конкретных КОЛов для получения уведомлений?'
+    },
+    answer: {
+      en: 'Yes, Premium users can follow specific KOLs to receive notifications whenever they publish new trading signals. You can manage your followed KOLs and notification preferences in your account dashboard.',
+      ru: 'Да, Premium-пользователи могут подписываться на конкретных КОЛов, чтобы получать уведомления всякий раз, когда они публикуют новые торговые сигналы. Вы можете управлять подписками на КОЛов и настройками уведомлений в панели управления своей учетной записи.'
+    }
+  }
+];
+
+// Add engagement data for KOLs
+export const engagementData = {
+  1: [
+    { month: 'Jan', likes: 2200, comments: 450 },
+    { month: 'Feb', likes: 2500, comments: 520 },
+    { month: 'Mar', likes: 2800, comments: 600 },
+    { month: 'Apr', likes: 3100, comments: 680 },
+    { month: 'May', likes: 3500, comments: 750 }
+  ],
+  2: [
+    { month: 'Jan', likes: 1800, comments: 380 },
+    { month: 'Feb', likes: 1900, comments: 400 },
+    { month: 'Mar', likes: 2100, comments: 430 },
+    { month: 'Apr', likes: 2300, comments: 470 },
+    { month: 'May', likes: 2400, comments: 500 }
+  ],
+  3: [
+    { month: 'Jan', likes: 3200, comments: 750 },
+    { month: 'Feb', likes: 3600, comments: 820 },
+    { month: 'Mar', likes: 4000, comments: 900 },
+    { month: 'Apr', likes: 4500, comments: 1050 },
+    { month: 'May', likes: 5000, comments: 1200 }
+  ],
+  4: [
+    { month: 'Jan', likes: 1500, comments: 320 },
+    { month: 'Feb', likes: 1600, comments: 340 },
+    { month: 'Mar', likes: 1700, comments: 350 },
+    { month: 'Apr', likes: 1800, comments: 370 },
+    { month: 'May', likes: 1900, comments: 400 }
+  ],
+  5: [
+    { month: 'Jan', likes: 2700, comments: 580 },
+    { month: 'Feb', likes: 2900, comments: 620 },
+    { month: 'Mar', likes: 3100, comments: 660 },
+    { month: 'Apr', likes: 3300, comments: 700 },
+    { month: 'May', likes: 3600, comments: 750 }
+  ],
+  6: [
+    { month: 'Jan', likes: 1900, comments: 400 },
+    { month: 'Feb', likes: 2000, comments: 430 },
+    { month: 'Mar', likes: 2200, comments: 470 },
+    { month: 'Apr', likes: 2400, comments: 510 },
+    { month: 'May', likes: 2500, comments: 540 }
+  ],
+  7: [
+    { month: 'Jan', likes: 3000, comments: 650 },
+    { month: 'Feb', likes: 3300, comments: 700 },
+    { month: 'Mar', likes: 3600, comments: 750 },
+    { month: 'Apr', likes: 3900, comments: 830 },
+    { month: 'May', likes: 4200, comments: 900 }
+  ],
+  8: [
+    { month: 'Jan', likes: 2100, comments: 450 },
+    { month: 'Feb', likes: 2200, comments: 470 },
+    { month: 'Mar', likes: 2300, comments: 490 },
+    { month: 'Apr', likes: 2500, comments: 530 },
+    { month: 'May', likes: 2700, comments: 570 }
+  ],
+  9: [
+    { month: 'Jan', likes: 3800, comments: 800 },
+    { month: 'Feb', likes: 4200, comments: 880 },
+    { month: 'Mar', likes: 4600, comments: 950 },
+    { month: 'Apr', likes: 5000, comments: 1100 },
+    { month: 'May', likes: 5500, comments: 1250 }
+  ],
+  10: [
+    { month: 'Jan', likes: 2400, comments: 500 },
+    { month: 'Feb', likes: 2500, comments: 530 },
+    { month: 'Mar', likes: 2700, comments: 570 },
+    { month: 'Apr', likes: 2900, comments: 610 },
+    { month: 'May', likes: 3100, comments: 650 }
+  ]
+};
+
 export const signals: Signal[] = [
   {
     id: 1,
@@ -293,7 +597,7 @@ export const signals: Signal[] = [
   }
 ];
 
-// Исправление для удаления дублирования свойства signalCount
+// Add KOL data
 export const kols: KOL[] = [
   {
     id: 1,

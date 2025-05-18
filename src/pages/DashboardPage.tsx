@@ -10,11 +10,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Switch } from '@/components/ui/switch';
 import { kols, signals } from '@/data/mockData';
 import { SignalCard } from '@/components/ui/signal-card';
+import { UsdtPaymentDialog } from '@/components/ui/usdt-payment-dialog';
+import { Wallet } from 'lucide-react';
 
 const DashboardPage: React.FC = () => {
   const { t, language, setLanguage } = useLanguage();
   const { user, upgradeToPremiun, isPremium, logout } = useAuth();
   const navigate = useNavigate();
+  const [isPaymentDialogOpen, setIsPaymentDialogOpen] = useState(false);
   
   const [favoriteKols, setFavoriteKols] = useState<number[]>([1, 3]); // Example default favorites
   const [viewedSignals, setViewedSignals] = useState<number[]>([1, 2, 4]); // Example viewed signals
@@ -37,7 +40,7 @@ const DashboardPage: React.FC = () => {
   };
   
   const handleUpgradeToPremium = () => {
-    upgradeToPremiun();
+    setIsPaymentDialogOpen(true);
   };
   
   const handleLanguageChange = () => {
@@ -75,13 +78,20 @@ const DashboardPage: React.FC = () => {
               </div>
               <Button 
                 onClick={handleUpgradeToPremium}
-                className="bg-gradient-to-r from-neon-purple to-neon-blue hover:opacity-90"
+                className="bg-gradient-to-r from-neon-purple to-neon-blue hover:opacity-90 flex items-center gap-2"
               >
+                <Wallet size={18} />
                 {t('subscribeToPremium')}
               </Button>
             </div>
           </div>
         )}
+
+        {/* USDT Payment Dialog */}
+        <UsdtPaymentDialog 
+          isOpen={isPaymentDialogOpen} 
+          setIsOpen={setIsPaymentDialogOpen} 
+        />
         
         <Tabs defaultValue="profile" className="space-y-6">
           <TabsList className="grid grid-cols-3 max-w-md bg-black/20 border border-white/10">

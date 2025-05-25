@@ -1,9 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
 import { SignalCard } from '@/components/ui/signal-card';
+import { AdZone } from '@/components/ads/AdZone';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { kols } from '@/data/mockData';
@@ -69,6 +69,11 @@ const HomePage = () => {
   
   return (
     <Layout>
+      {/* Top Ad Banner */}
+      <div className="mb-6">
+        <AdZone type="banner" position="top" />
+      </div>
+
       {/* Hero Section */}
       <section className="py-12 md:py-20 text-center animate-fade-in">
         <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-neon-purple to-neon-blue">
@@ -106,6 +111,11 @@ const HomePage = () => {
           </div>
         )}
       </section>
+
+      {/* Sponsored Post */}
+      <div className="mb-10">
+        <AdZone type="sponsored-post" position="middle" />
+      </div>
       
       {/* Signals Section */}
       <section className="py-10">
@@ -153,34 +163,47 @@ const HomePage = () => {
           </div>
         </div>
         
-        {/* Signals Grid */}
-        <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {loading ? (
-            // Показываем скелетон загрузки
-            Array(3).fill(0).map((_, index) => (
-              <div key={index} className="animate-pulse bg-black/30 h-64 rounded-lg"></div>
-            ))
-          ) : visibleSignals.length > 0 ? (
-            // Показываем сигналы
-            visibleSignals.map(signal => {
-              const signalKol = kols.find(k => k.id === signal.kolId);
-              if (!signalKol) return null;
-              
-              return (
-                <SignalCard key={signal.id} signal={signal} kol={signalKol} />
-              );
-            })
-          ) : (
-            // Показываем сообщение, если сигналы не найдены
-            <div className="col-span-3 text-center py-10">
-              <p className="text-gray-400">
-                {t('language') === 'en' 
-                  ? 'No signals found matching your filters' 
-                  : 'Сигналы, соответствующие вашим фильтрам, не найдены'}
-              </p>
+        {/* Signals Grid with Ad */}
+        <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+          <div className="lg:col-span-3">
+            <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+              {loading ? (
+                Array(3).fill(0).map((_, index) => (
+                  <div key={index} className="animate-pulse bg-black/30 h-64 rounded-lg"></div>
+                ))
+              ) : visibleSignals.length > 0 ? (
+                visibleSignals.map(signal => {
+                  const signalKol = kols.find(k => k.id === signal.kolId);
+                  if (!signalKol) return null;
+                  
+                  return (
+                    <SignalCard key={signal.id} signal={signal} kol={signalKol} />
+                  );
+                })
+              ) : (
+                <div className="col-span-3 text-center py-10">
+                  <p className="text-gray-400">
+                    {t('language') === 'en' 
+                      ? 'No signals found matching your filters' 
+                      : 'Сигналы, соответствующие вашим фильтрам, не найдены'}
+                  </p>
+                </div>
+              )}
             </div>
-          )}
+          </div>
+          
+          {/* Sidebar Ads */}
+          <div className="lg:col-span-1">
+            <AdZone type="sidebar" position="side" />
+          </div>
         </div>
+        
+        {/* Middle Ad Banner */}
+        {visibleSignals.length > 0 && (
+          <div className="my-10">
+            <AdZone type="banner" position="middle" />
+          </div>
+        )}
         
         {!isPremium && (
           <div className="mt-10 text-center">

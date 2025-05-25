@@ -1,7 +1,7 @@
-
 import React, { useState, useEffect } from 'react';
 import Layout from '@/components/layout/Layout';
 import { KOLTableRow } from '@/components/ui/kol-table-row';
+import { AdZone } from '@/components/ads/AdZone';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { kols, KOL } from '@/data/mockData';
@@ -79,6 +79,11 @@ const LeaderboardPage = () => {
   return (
     <Layout>
       <div className="py-8 animate-fade-in">
+        {/* Top Ad Banner */}
+        <div className="mb-6">
+          <AdZone type="banner" position="top" />
+        </div>
+
         <h1 className="text-3xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-neon-purple to-neon-blue">
           {t('kolsLeaderboard')}
         </h1>
@@ -161,6 +166,11 @@ const LeaderboardPage = () => {
           </div>
         </div>
         
+        {/* Sponsored Post */}
+        <div className="mb-8">
+          <AdZone type="sponsored-post" position="middle" />
+        </div>
+        
         {/* Results count */}
         <div className="flex justify-between items-center mb-4">
           <p className="text-gray-400">
@@ -192,6 +202,11 @@ const LeaderboardPage = () => {
               ))}
             </tbody>
           </table>
+        </div>
+        
+        {/* Bottom Ad Banner */}
+        <div className="mt-8 mb-6">
+          <AdZone type="banner" position="bottom" />
         </div>
         
         {/* Premium CTA */}

@@ -69,4 +69,37 @@
                 radial-gradient(circle at 70% 20%, rgba(30, 174, 219, 0.1), transparent 30%),
                 radial-gradient(circle at 30% 80%, rgba(2, 195, 154, 0.1), transparent 50%);
   }
+
+  /* Ad Zone Styles */
+  .ad-zone {
+    @apply transition-all duration-300;
+  }
+  
+  .ad-zone--banner {
+    @apply w-full;
+  }
+  
+  .ad-zone--sponsored-post {
+    @apply max-w-4xl mx-auto;
+  }
+  
+  .ad-zone--sidebar {
+    @apply sticky top-24;
+  }
+  
+  .ad-zone--top {
+    @apply mb-4;
+  }
+  
+  .ad-zone--middle {
+    @apply my-6;
+  }
+  
+  .ad-zone--bottom {
+    @apply mt-4;
+  }
+  
+  .ad-zone--side {
+    @apply ml-4;
+  }
 }

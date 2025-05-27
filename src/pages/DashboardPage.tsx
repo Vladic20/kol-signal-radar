@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
@@ -11,6 +10,7 @@ import { Switch } from '@/components/ui/switch';
 import { kols, signals } from '@/data/mockData';
 import { SignalCard } from '@/components/ui/signal-card';
 import { UsdtPaymentDialog } from '@/components/ui/usdt-payment-dialog';
+import { ReferralDashboard } from '@/components/dashboard/ReferralDashboard';
 import { Wallet } from 'lucide-react';
 
 const DashboardPage: React.FC = () => {
@@ -94,7 +94,7 @@ const DashboardPage: React.FC = () => {
         />
         
         <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList className="grid grid-cols-3 max-w-md bg-black/20 border border-white/10">
+          <TabsList className="grid grid-cols-4 max-w-lg bg-black/20 border border-white/10">
             <TabsTrigger value="profile" className="data-[state=active]:bg-neon-purple/20">
               {t('userProfile')}
             </TabsTrigger>
@@ -103,6 +103,9 @@ const DashboardPage: React.FC = () => {
             </TabsTrigger>
             <TabsTrigger value="history" className="data-[state=active]:bg-neon-purple/20">
               {t('viewedSignals')}
+            </TabsTrigger>
+            <TabsTrigger value="referral" className="data-[state=active]:bg-neon-purple/20">
+              {language === 'en' ? 'Referral' : 'Реферальная'}
             </TabsTrigger>
           </TabsList>
           
@@ -285,6 +288,11 @@ const DashboardPage: React.FC = () => {
                 </div>
               )}
             </div>
+          </TabsContent>
+          
+          {/* Referral Tab */}
+          <TabsContent value="referral">
+            <ReferralDashboard />
           </TabsContent>
         </Tabs>
       </div>

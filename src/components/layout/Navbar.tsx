@@ -1,192 +1,165 @@
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
+import { Menu, X, User, LogOut, BarChart3, TrendingUp, PieChart, Copy, Newspaper } from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
-const Navbar: React.FC = () => {
-  const { t, language, setLanguage } = useLanguage();
-  const { isAuthenticated, user, logout } = useAuth();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+const Navbar = () => {
+  const { language, setLanguage, t } = useLanguage();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
 
-  const toggleLanguage = () => {
+  const handleLanguageToggle = () => {
     setLanguage(language === 'en' ? 'ru' : 'en');
   };
 
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
+  const handleLogout = () => {
+    logout();
+    navigate('/');
   };
 
+  const navItems = [
+    { href: '/home', label: 'Главная', icon: BarChart3 },
+    { href: '/leaderboard', label: 'Таблица лидеров', icon: TrendingUp },
+    { href: '/crypto-news', label: 'Crypto News', icon: Newspaper },
+    { href: '/copy-trading', label: 'Копитрейдинг', icon: Copy },
+    { href: '/token-positions', label: 'Long/Short', icon: PieChart },
+    { href: '/about', label: 'О нас', icon: User },
+  ];
+
   return (
-    <nav className="fixed w-full z-20 top-0 bg-black/80 backdrop-blur-lg border-b border-white/10">
+    <nav className="glass-effect border-b border-white/10 sticky top-0 z-50">
       <div className="container mx-auto px-4">
-        <div className="flex flex-wrap items-center justify-between py-4">
+        <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center">
-            <span className="self-center text-2xl font-semibold whitespace-nowrap text-gradient bg-gradient-to-r from-neon-purple to-neon-blue">
-              KOL Leaderboard
-            </span>
+          <Link to="/" className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-gradient-to-r from-neon-purple to-neon-blue rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-sm">KL</span>
+            </div>
+            <span className="text-xl font-bold text-gradient">KOL Leaderboard</span>
           </Link>
 
-          {/* Mobile menu button */}
-          <div className="flex md:hidden">
-            <button
-              onClick={toggleMobileMenu}
-              type="button"
-              className="inline-flex items-center p-2 text-gray-400 hover:bg-gray-700 hover:text-white rounded-lg"
-              aria-controls="mobile-menu"
-              aria-expanded={mobileMenuOpen}
-            >
-              <span className="sr-only">Open main menu</span>
-              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.href}
+                  to={item.href}
+                  className="flex items-center space-x-1 text-foreground/80 hover:text-foreground transition-colors"
+                >
+                  <Icon className="w-4 h-4" />
+                  <span>{item.label}</span>
+                </Link>
+              );
+            })}
           </div>
 
-          {/* Desktop menu */}
-          <div className="hidden w-full md:block md:w-auto" id="navbar-default">
-            <ul className="flex flex-col md:flex-row md:space-x-8 space-y-2 md:space-y-0 items-center">
-              <li>
-                <Link to="/" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                  {t('Home')}
+          {/* Right side buttons */}
+          <div className="hidden md:flex items-center space-x-4">
+            <Button variant="ghost" onClick={handleLanguageToggle} className="text-foreground/80">
+              {language === 'en' ? 'РУС' : 'ENG'}
+            </Button>
+            
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="flex items-center space-x-2">
+                    <User className="w-4 h-4" />
+                    <span>{user.name}</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem onClick={() => navigate('/dashboard')}>
+                    <User className="w-4 h-4 mr-2" />
+                    Дашборд
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleLogout}>
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Выйти
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <div className="flex space-x-2">
+                <Link to="/login">
+                  <Button variant="ghost">Войти</Button>
                 </Link>
-              </li>
-              <li>
-                <Link to="/leaderboard" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                  {t('Leaderboard')}
+                <Link to="/register">
+                  <Button>Регистрация</Button>
                 </Link>
-              </li>
-              <li>
-                <Link to="/crypto-news" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                  {language === 'en' ? 'Crypto News Hub' : 'Новости Крипто'}
-                </Link>
-              </li>
-              <li>
-                <Link to="/copy-trading" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                  {language === 'en' ? 'Copy Trading' : 'Копитрейдинг'}
-                </Link>
-              </li>
-              <li>
-                <Link to="/about" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                  {t('About')}
-                </Link>
-              </li>
-              <li>
-                <Link to="/faq" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                  {t('FAQ')}
-                </Link>
-              </li>
-              
-              {isAuthenticated ? (
-                <>
-                  <li>
-                    <Link to="/dashboard" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                      {t('Dashboard')}
-                    </Link>
-                  </li>
-                  <li>
-                    <Button 
-                      variant="ghost"
-                      onClick={logout}
-                      className="text-gray-300 hover:text-white"
-                    >
-                      {t('Logout')}
-                    </Button>
-                  </li>
-                </>
-              ) : (
-                <>
-                  <li>
-                    <Link to="/login">
-                      <Button variant="ghost" className="text-gray-300 hover:text-white">
-                        {t('Login')}
-                      </Button>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/register">
-                      <Button variant="default" className="bg-gradient-to-r from-neon-purple to-neon-blue hover:opacity-90">
-                        {t('Register')}
-                      </Button>
-                    </Link>
-                  </li>
-                </>
-              )}
-              
-              {/* Language switcher */}
-              <li>
-                <Button 
-                  variant="outline" 
-                  size="icon" 
-                  className="w-9 h-9 border border-white/20 bg-transparent hover:bg-white/10"
-                  onClick={toggleLanguage}
-                >
-                  <span className="font-medium">{language === 'en' ? 'RU' : 'EN'}</span>
-                </Button>
-              </li>
-            </ul>
+              </div>
+            )}
+          </div>
+
+          {/* Mobile menu button */}
+          <div className="md:hidden">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </Button>
           </div>
         </div>
 
-        {/* Mobile menu */}
-        {mobileMenuOpen && (
-          <div className="md:hidden" id="mobile-menu">
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-black/95 rounded-lg">
-              <Link to="/" className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium" onClick={toggleMobileMenu}>
-                {t('Home')}
-              </Link>
-              <Link to="/leaderboard" className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium" onClick={toggleMobileMenu}>
-                {t('Leaderboard')}
-              </Link>
-              <Link to="/crypto-news" className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium" onClick={toggleMobileMenu}>
-                {language === 'en' ? 'Crypto News Hub' : 'Новости Крипто'}
-              </Link>
-              <Link to="/copy-trading" className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium" onClick={toggleMobileMenu}>
-                {language === 'en' ? 'Copy Trading' : 'Копитрейдинг'}
-              </Link>
-              <Link to="/about" className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium" onClick={toggleMobileMenu}>
-                {t('About')}
-              </Link>
-              <Link to="/faq" className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium" onClick={toggleMobileMenu}>
-                {t('FAQ')}
-              </Link>
-              
-              {isAuthenticated ? (
-                <>
-                  <Link to="/dashboard" className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium" onClick={toggleMobileMenu}>
-                    {t('Dashboard')}
-                  </Link>
-                  <button 
-                    onClick={() => {
-                      logout();
-                      toggleMobileMenu();
-                    }}
-                    className="text-gray-300 hover:bg-gray-700 hover:text-white block w-full text-left px-3 py-2 rounded-md text-base font-medium"
+        {/* Mobile Navigation */}
+        {isOpen && (
+          <div className="md:hidden py-4 border-t border-white/10">
+            <div className="flex flex-col space-y-4">
+              {navItems.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <Link
+                    key={item.href}
+                    to={item.href}
+                    className="flex items-center space-x-2 text-foreground/80 hover:text-foreground transition-colors"
+                    onClick={() => setIsOpen(false)}
                   >
-                    {t('Logout')}
-                  </button>
-                </>
-              ) : (
-                <>
-                  <Link to="/login" className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium" onClick={toggleMobileMenu}>
-                    {t('Login')}
+                    <Icon className="w-4 h-4" />
+                    <span>{item.label}</span>
                   </Link>
-                  <Link to="/register" className="text-white bg-gradient-to-r from-neon-purple to-neon-blue block px-3 py-2 rounded-md text-base font-medium" onClick={toggleMobileMenu}>
-                    {t('Register')}
-                  </Link>
-                </>
-              )}
+                );
+              })}
               
-              <button
-                onClick={() => {
-                  toggleLanguage();
-                  toggleMobileMenu();
-                }}
-                className="text-gray-300 hover:bg-gray-700 hover:text-white block w-full text-left px-3 py-2 rounded-md text-base font-medium"
-              >
-                {language === 'en' ? 'Switch to Russian' : 'Переключить на английский'}
-              </button>
+              <div className="flex flex-col space-y-2 pt-4 border-t border-white/10">
+                <Button variant="ghost" onClick={handleLanguageToggle} className="justify-start">
+                  {language === 'en' ? 'РУС' : 'ENG'}
+                </Button>
+                
+                {user ? (
+                  <>
+                    <Button variant="ghost" onClick={() => navigate('/dashboard')} className="justify-start">
+                      <User className="w-4 h-4 mr-2" />
+                      Дашборд
+                    </Button>
+                    <Button variant="ghost" onClick={handleLogout} className="justify-start">
+                      <LogOut className="w-4 h-4 mr-2" />
+                      Выйти
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Link to="/login" onClick={() => setIsOpen(false)}>
+                      <Button variant="ghost" className="w-full justify-start">Войти</Button>
+                    </Link>
+                    <Link to="/register" onClick={() => setIsOpen(false)}>
+                      <Button className="w-full">Регистрация</Button>
+                    </Link>
+                  </>
+                )}
+              </div>
             </div>
           </div>
         )}

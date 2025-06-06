@@ -19,6 +19,7 @@ import AboutPage from "./pages/AboutPage";
 import FaqPage from "./pages/FaqPage";
 import CryptoNewsPage from "./pages/CryptoNewsPage";
 import CopyTradingPage from "./pages/CopyTradingPage";
+import TokenPositionsPage from "./pages/TokenPositionsPage";
 import NotFound from "./pages/NotFound";
 import Index from "./pages/Index";
 
@@ -47,6 +48,7 @@ const App = () => (
                 <Route path="/leaderboard" element={<LeaderboardPage />} />
                 <Route path="/crypto-news" element={<CryptoNewsPage />} />
                 <Route path="/copy-trading" element={<CopyTradingPage />} />
+                <Route path="/token-positions" element={<TokenPositionsPage />} />
                 <Route path="/kol/:id" element={<KolPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />

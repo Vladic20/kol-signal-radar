@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Lock, TrendingUp, Users, Heart, FileText } from 'lucide-react';
+import { Lock, TrendingUp, FileText, Heart } from 'lucide-react';
 
 interface TradingViewCallerRowProps {
   caller: TradingViewCaller;
@@ -68,38 +68,40 @@ export const TradingViewCallerRow = ({ caller, rank }: TradingViewCallerRowProps
         </div>
       </td>
       
-      <td className="px-3 py-4 text-right">
-        <div className="flex items-center justify-end space-x-1 text-gray-300">
-          <Users className="w-4 h-4" />
-          <span>{formatNumber(caller.followers)}</span>
+      <td className="px-3 py-4">
+        <div className="flex items-center space-x-1">
+          <div className="w-6 h-6 bg-gradient-to-r from-blue-600 to-purple-600 rounded flex items-center justify-center">
+            <span className="text-white text-xs font-bold">TV</span>
+          </div>
+          <span className="text-gray-300 text-sm">TradingView</span>
         </div>
       </td>
       
       <td className="px-3 py-4 text-right">
-        <div className="flex items-center justify-end space-x-1 text-gray-300">
+        <span className="text-gray-300">{formatNumber(caller.followers)}</span>
+      </td>
+      
+      <td className="px-3 py-4">
+        <div className="flex items-center space-x-1 text-gray-300">
           <FileText className="w-4 h-4" />
-          <span>{caller.ideas}</span>
+          <span>{caller.ideas} идей</span>
         </div>
       </td>
       
-      <td className="px-3 py-4 text-right">
-        <div className="flex items-center justify-end space-x-1 text-gray-300">
+      <td className="px-3 py-4">
+        <div className="flex items-center space-x-1 text-gray-300">
           <Heart className="w-4 h-4" />
           <span>{formatNumber(caller.likes)}</span>
         </div>
       </td>
       
       <td className="px-3 py-4">
-        <span className="text-gray-300">{caller.tradingStyle}</span>
-      </td>
-      
-      <td className="px-3 py-4">
         <span className={`px-2 py-1 rounded text-xs font-medium ${
-          caller.riskLevel === 'Low' ? 'bg-green-500/20 text-green-400' :
-          caller.riskLevel === 'Medium' ? 'bg-yellow-500/20 text-yellow-400' :
-          'bg-red-500/20 text-red-400'
+          caller.reputation === 'Excellent' ? 'bg-green-500/20 text-green-400' :
+          caller.reputation === 'Good' ? 'bg-yellow-500/20 text-yellow-400' :
+          'bg-gray-500/20 text-gray-400'
         }`}>
-          {caller.riskLevel}
+          {caller.reputation}
         </span>
       </td>
       

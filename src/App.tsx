@@ -12,6 +12,7 @@ import { ApiProvider } from "@/contexts/ApiContext";
 import HomePage from "./pages/HomePage";
 import LeaderboardPage from "./pages/LeaderboardPage";
 import KolPage from "./pages/KolPage";
+import TradingViewCallerPage from "./pages/TradingViewCallerPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import DashboardPage from "./pages/DashboardPage";
@@ -50,6 +51,7 @@ const App = () => (
                 <Route path="/copy-trading" element={<CopyTradingPage />} />
                 <Route path="/token-positions" element={<TokenPositionsPage />} />
                 <Route path="/kol/:id" element={<KolPage />} />
+                <Route path="/tradingview-caller/:id" element={<TradingViewCallerPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/dashboard" element={<DashboardPage />} />

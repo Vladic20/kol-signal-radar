@@ -1,10 +1,7 @@
-
 import React from 'react';
 import { Copy, TrendingUp, Users, Shield } from 'lucide-react';
-
 export const CopyTradingSlide: React.FC = () => {
-  return (
-    <div className="w-full max-w-6xl mx-auto space-y-8">
+  return <div className="w-full max-w-6xl mx-auto space-y-8">
       <div className="text-center mb-12">
         <div className="text-6xl mb-6 animate-pulse-light">📈</div>
         <h1 className="text-5xl font-bold text-gradient mb-6">Копитрейдинг</h1>
@@ -43,7 +40,7 @@ export const CopyTradingSlide: React.FC = () => {
         <h3 className="text-2xl font-bold text-white mb-4 text-center">Преимущества платформы</h3>
         <div className="grid md:grid-cols-3 gap-6">
           <div className="text-center">
-            <div className="text-3xl font-bold text-neon-green mb-2">0.1%</div>
+            <div className="text-3xl font-bold text-neon-green mb-2">5%</div>
             <p className="text-gray-300">Минимальная комиссия</p>
           </div>
           <div className="text-center">
@@ -56,6 +53,5 @@ export const CopyTradingSlide: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };

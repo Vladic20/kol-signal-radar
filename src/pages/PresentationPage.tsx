@@ -5,37 +5,46 @@ import { PresentationSlide } from '@/components/presentation/PresentationSlide';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
+interface SlideData {
+  type: 'image' | 'text';
+  src?: string;
+  title: string;
+  icon?: string;
+  content?: string[];
+  footer?: string;
+}
+
 const PresentationPage = () => {
   const [currentSlide, setCurrentSlide] = React.useState(0);
 
-  const slides = [
+  const slides: SlideData[] = [
     {
-      type: 'image',
+      type: 'image' as const,
       src: '/lovable-uploads/b2df216b-2b9d-4247-99e9-77b4bc081bc8.png',
       title: 'Копитрейдинг'
     },
     {
-      type: 'image',
+      type: 'image' as const,
       src: '/lovable-uploads/e518731e-1a7f-4288-8ad2-8ca401417d89.png',
       title: 'Проблема'
     },
     {
-      type: 'image',
+      type: 'image' as const,
       src: '/lovable-uploads/5145d53b-ec6d-4c1f-86d8-06c554c60e09.png',
       title: 'Целевая аудитория'
     },
     {
-      type: 'image',
+      type: 'image' as const,
       src: '/lovable-uploads/353079b5-d0b4-415d-a271-bc1f7d7de5dd.png',
       title: 'Что уже сделано'
     },
     {
-      type: 'image',
+      type: 'image' as const,
       src: '/lovable-uploads/3a647144-882c-403a-b954-aaeb7e293c1c.png',
       title: 'Интеграции'
     },
     {
-      type: 'text',
+      type: 'text' as const,
       title: 'Social Layer = 100x',
       icon: '🧬',
       content: [
@@ -47,7 +56,7 @@ const PresentationPage = () => {
       ]
     },
     {
-      type: 'text',
+      type: 'text' as const,
       title: 'Данные и аналитика',
       icon: '📊',
       content: [
@@ -58,22 +67,22 @@ const PresentationPage = () => {
       ]
     },
     {
-      type: 'image',
+      type: 'image' as const,
       src: '/lovable-uploads/72278c30-fe14-4831-8cbe-39d775b32ead.png',
       title: 'Монетизация'
     },
     {
-      type: 'image',
+      type: 'image' as const,
       src: '/lovable-uploads/a98b2e54-acfa-44f5-80f2-f18b42022c87.png',
       title: 'Преимущества проекта'
     },
     {
-      type: 'image',
+      type: 'image' as const,
       src: '/lovable-uploads/5d82d667-da03-47aa-a82a-16f1a002cc05.png',
       title: 'Roadmap'
     },
     {
-      type: 'text',
+      type: 'text' as const,
       title: 'Стратегия роста',
       icon: '🚀',
       content: [
@@ -85,7 +94,7 @@ const PresentationPage = () => {
       ]
     },
     {
-      type: 'text',
+      type: 'text' as const,
       title: 'Traction',
       icon: '📈',
       content: [
@@ -96,7 +105,7 @@ const PresentationPage = () => {
       ]
     },
     {
-      type: 'text',
+      type: 'text' as const,
       title: 'Pitch: зачем инвестировать',
       icon: '💸',
       content: [
@@ -123,76 +132,70 @@ const PresentationPage = () => {
 
   return (
     <Layout>
-      <div className="py-8 animate-fade-in">
-        <div className="max-w-6xl mx-auto">
-          <h1 className="text-3xl font-bold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-neon-purple to-neon-blue">
+      <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-background animate-fade-in">
+        <div className="container mx-auto px-4 py-8">
+          <h1 className="text-4xl font-bold mb-12 text-center text-gradient">
             Презентация продукта
           </h1>
           
-          {/* Slide Display */}
-          <div className="relative mb-8">
+          {/* Slide Display - fully integrated into the page */}
+          <div className="mb-8">
             <PresentationSlide slide={slides[currentSlide]} />
-            
-            {/* Navigation Arrows */}
-            <Button
-              variant="outline"
-              size="icon"
-              className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/50 border-white/20 hover:bg-black/70"
-              onClick={prevSlide}
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </Button>
-            
-            <Button
-              variant="outline"
-              size="icon"
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/50 border-white/20 hover:bg-black/70"
-              onClick={nextSlide}
-            >
-              <ChevronRight className="w-4 h-4" />
-            </Button>
           </div>
           
           {/* Slide Counter */}
-          <div className="text-center mb-6">
-            <span className="text-gray-400">
-              {currentSlide + 1} из {slides.length}
-            </span>
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center px-4 py-2 glass-effect rounded-full">
+              <span className="text-sm text-gray-300 font-medium">
+                Слайд {currentSlide + 1} из {slides.length}
+              </span>
+            </div>
           </div>
           
-          {/* Slide Dots */}
-          <div className="flex justify-center space-x-2 mb-8">
+          {/* Slide Dots Navigation */}
+          <div className="flex justify-center space-x-3 mb-8">
             {slides.map((_, index) => (
               <button
                 key={index}
                 onClick={() => goToSlide(index)}
-                className={`w-3 h-3 rounded-full transition-colors ${
+                className={`w-4 h-4 rounded-full transition-all duration-300 ${
                   index === currentSlide
-                    ? 'bg-neon-purple'
-                    : 'bg-white/20 hover:bg-white/40'
+                    ? 'bg-gradient-to-r from-neon-purple to-neon-blue scale-110'
+                    : 'bg-white/20 hover:bg-white/40 hover:scale-105'
                 }`}
+                aria-label={`Перейти к слайду ${index + 1}`}
               />
             ))}
           </div>
           
           {/* Navigation Buttons */}
-          <div className="flex justify-between">
+          <div className="flex justify-between items-center max-w-md mx-auto">
             <Button
               variant="outline"
               onClick={prevSlide}
               disabled={currentSlide === 0}
-              className="border-white/20"
+              className="glass-effect border-white/20 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <ChevronLeft className="w-4 h-4 mr-2" />
-              Предыдущий
+              Назад
             </Button>
+            
+            <div className="flex space-x-2">
+              <Button
+                variant="outline"
+                onClick={() => goToSlide(0)}
+                className="glass-effect border-white/20 hover:bg-white/10"
+              >
+                В начало
+              </Button>
+            </div>
             
             <Button
               onClick={nextSlide}
               disabled={currentSlide === slides.length - 1}
-              className="bg-gradient-to-r from-neon-purple to-neon-blue hover:opacity-90"
+              className="bg-gradient-to-r from-neon-purple to-neon-blue hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Следующий
+              Далее
               <ChevronRight className="w-4 h-4 ml-2" />
             </Button>
           </div>

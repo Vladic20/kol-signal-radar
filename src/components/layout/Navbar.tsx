@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
-import { Menu, X, User, LogOut, BarChart3, TrendingUp, PieChart, Copy, Newspaper } from 'lucide-react';
+import { Menu, X, User, LogOut, BarChart3, TrendingUp, PieChart, Copy, Newspaper, Presentation } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -33,6 +33,7 @@ const Navbar = () => {
     { href: '/crypto-news', label: 'Crypto News', icon: Newspaper },
     { href: '/copy-trading', label: 'Копитрейдинг', icon: Copy },
     { href: '/token-positions', label: 'Long/Short', icon: PieChart },
+    { href: '/presentation', label: 'Презентация', icon: Presentation },
     { href: '/about', label: 'О нас', icon: User },
   ];
 

@@ -74,7 +74,7 @@ export const CompletedWorkSlide: React.FC = () => {
 
       <div className="grid md:grid-cols-4 gap-4">
         <div className="glass-effect p-4 rounded-xl border border-white/10 text-center">
-          <div className="text-2xl font-bold text-neon-green mb-2">15+</div>
+          <div className="text-2xl font-bold text-neon-green mb-2">30+</div>
           <p className="text-gray-300 text-sm">Активных пользователей</p>
         </div>
         <div className="glass-effect p-4 rounded-xl border border-white/10 text-center">
@@ -82,7 +82,7 @@ export const CompletedWorkSlide: React.FC = () => {
           <p className="text-gray-300 text-sm">Интегрированных биржи</p>
         </div>
         <div className="glass-effect p-4 rounded-xl border border-white/10 text-center">
-          <div className="text-2xl font-bold text-neon-purple mb-2">95%</div>
+          <div className="text-2xl font-bold text-neon-purple mb-2">99%</div>
           <p className="text-gray-300 text-sm">Время работы</p>
         </div>
         <div className="glass-effect p-4 rounded-xl border border-white/10 text-center">

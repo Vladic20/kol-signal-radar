@@ -55,7 +55,7 @@ export const MonetizationSlide: React.FC = () => {
 
       <div className="grid md:grid-cols-4 gap-4">
         <div className="glass-effect p-4 rounded-xl border border-white/10 text-center">
-          <Dollar className="w-10 h-10 text-neon-green mb-3 mx-auto" />
+          <DollarSign className="w-10 h-10 text-neon-green mb-3 mx-auto" />
           <h4 className="text-md font-semibold text-white mb-2">Freemium модель</h4>
           <h5 className="text-sm font-medium text-neon-green mb-1">Бесплатный доступ с ограничениями</h5>
           <p className="text-gray-300 text-xs">Бесплатный доступ к базовым сигналам, премиум-функции по подписке</p>

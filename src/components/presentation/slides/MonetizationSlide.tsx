@@ -1,10 +1,7 @@
-
 import React from 'react';
 import { DollarSign, Percent, Users, TrendingUp } from 'lucide-react';
-
 export const MonetizationSlide: React.FC = () => {
-  return (
-    <div className="w-full max-w-6xl mx-auto space-y-6 max-h-screen overflow-hidden">
+  return <div className="w-full max-w-6xl mx-auto space-y-6 max-h-screen overflow-hidden">
       <div className="text-center mb-8">
         <div className="text-5xl mb-4 animate-pulse-light">💰</div>
         <h1 className="text-4xl font-bold text-gradient mb-4">Монетизация</h1>
@@ -57,7 +54,7 @@ export const MonetizationSlide: React.FC = () => {
         <div className="glass-effect p-4 rounded-xl border border-white/10 text-center">
           <DollarSign className="w-10 h-10 text-neon-green mb-3 mx-auto" />
           <h4 className="text-base font-semibold text-white mb-2">Freemium модель</h4>
-          <p className="text-xs text-gray-400 mb-2">Бесплатный доступ с ограничениями</p>
+          
           <p className="text-gray-300 text-xs">Бесплатный доступ к базовым сигналам, премиум-функции по подписке</p>
         </div>
 
@@ -79,6 +76,5 @@ export const MonetizationSlide: React.FC = () => {
           <p className="text-gray-300 text-xs">Интеграции с биржами и финансовыми сервисами</p>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };

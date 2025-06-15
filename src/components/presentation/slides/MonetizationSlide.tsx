@@ -7,7 +7,7 @@ export const MonetizationSlide: React.FC = () => {
     <div className="w-full max-w-6xl mx-auto space-y-6">
       <div className="text-center mb-8">
         <div className="text-4xl mb-4 animate-pulse-light">💰</div>
-        <h1 className="text-4xl font-bold text-gradient mb-4">Финансовая модель</h1>
+        <h1 className="text-4xl font-bold text-gradient mb-4">Монетизация</h1>
         <p className="text-lg text-gray-300 max-w-3xl mx-auto">
           Многоуровневая модель монетизации обеспечивает стабильный доход для всех участников экосистемы
         </p>

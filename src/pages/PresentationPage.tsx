@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Layout from '@/components/layout/Layout';
 import { PresentationSlide } from '@/components/presentation/PresentationSlide';
@@ -6,12 +5,13 @@ import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface SlideData {
-  type: 'image' | 'text';
+  type: 'image' | 'text' | 'custom';
   src?: string;
   title: string;
   icon?: string;
   content?: string[];
   footer?: string;
+  customComponent?: string;
 }
 
 const PresentationPage = () => {
@@ -19,29 +19,29 @@ const PresentationPage = () => {
 
   const slides: SlideData[] = [
     {
-      type: 'image' as const,
-      src: '/lovable-uploads/b2df216b-2b9d-4247-99e9-77b4bc081bc8.png',
-      title: 'Копитрейдинг'
+      type: 'custom' as const,
+      title: 'Копитрейдинг',
+      customComponent: 'CopyTradingSlide'
     },
     {
-      type: 'image' as const,
-      src: '/lovable-uploads/e518731e-1a7f-4288-8ad2-8ca401417d89.png',
-      title: 'Проблема'
+      type: 'custom' as const,
+      title: 'Проблема',
+      customComponent: 'ProblemSlide'
     },
     {
-      type: 'image' as const,
-      src: '/lovable-uploads/5145d53b-ec6d-4c1f-86d8-06c554c60e09.png',
-      title: 'Целевая аудитория'
+      type: 'custom' as const,
+      title: 'Целевая аудитория',
+      customComponent: 'TargetAudienceSlide'
     },
     {
-      type: 'image' as const,
-      src: '/lovable-uploads/353079b5-d0b4-415d-a271-bc1f7d7de5dd.png',
-      title: 'Что уже сделано'
+      type: 'custom' as const,
+      title: 'Что уже сделано',
+      customComponent: 'CompletedWorkSlide'
     },
     {
-      type: 'image' as const,
-      src: '/lovable-uploads/3a647144-882c-403a-b954-aaeb7e293c1c.png',
-      title: 'Интеграции'
+      type: 'custom' as const,
+      title: 'Интеграции',
+      customComponent: 'IntegrationsSlide'
     },
     {
       type: 'text' as const,
@@ -67,19 +67,19 @@ const PresentationPage = () => {
       ]
     },
     {
-      type: 'image' as const,
-      src: '/lovable-uploads/72278c30-fe14-4831-8cbe-39d775b32ead.png',
-      title: 'Монетизация'
+      type: 'custom' as const,
+      title: 'Монетизация',
+      customComponent: 'MonetizationSlide'
     },
     {
-      type: 'image' as const,
-      src: '/lovable-uploads/a98b2e54-acfa-44f5-80f2-f18b42022c87.png',
-      title: 'Преимущества проекта'
+      type: 'custom' as const,
+      title: 'Преимущества проекта',
+      customComponent: 'AdvantagesSlide'
     },
     {
-      type: 'image' as const,
-      src: '/lovable-uploads/5d82d667-da03-47aa-a82a-16f1a002cc05.png',
-      title: 'Roadmap'
+      type: 'custom' as const,
+      title: 'Roadmap',
+      customComponent: 'RoadmapSlide'
     },
     {
       type: 'text' as const,
@@ -138,12 +138,10 @@ const PresentationPage = () => {
             Презентация продукта
           </h1>
           
-          {/* Slide Display - fully integrated into the page */}
           <div className="mb-8">
             <PresentationSlide slide={slides[currentSlide]} />
           </div>
           
-          {/* Slide Counter */}
           <div className="text-center mb-8">
             <div className="inline-flex items-center px-4 py-2 glass-effect rounded-full">
               <span className="text-sm text-gray-300 font-medium">
@@ -152,7 +150,6 @@ const PresentationPage = () => {
             </div>
           </div>
           
-          {/* Slide Dots Navigation */}
           <div className="flex justify-center space-x-3 mb-8">
             {slides.map((_, index) => (
               <button
@@ -168,7 +165,6 @@ const PresentationPage = () => {
             ))}
           </div>
           
-          {/* Navigation Buttons */}
           <div className="flex justify-between items-center max-w-md mx-auto">
             <Button
               variant="outline"

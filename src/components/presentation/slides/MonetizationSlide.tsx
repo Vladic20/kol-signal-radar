@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { DollarSign, Percent, Users, TrendingUp, Megaphone } from 'lucide-react';
+import { DollarSign, Percent, Users, TrendingUp } from 'lucide-react';
 
 export const MonetizationSlide: React.FC = () => {
   return (
@@ -89,17 +89,17 @@ export const MonetizationSlide: React.FC = () => {
           <div className="text-center">
             <div className="text-3xl font-bold text-neon-green mb-2">$50K</div>
             <div className="text-sm text-gray-300 mb-1">Год 1</div>
-            <div className="text-xs text-gray-400">1,200 пользователей<br />250 ARPU</div>
+            <div className="text-xs text-gray-400">1,200 пользователей<br />$50 ARPU</div>
           </div>
           <div className="text-center">
             <div className="text-3xl font-bold text-neon-blue mb-2">$500K</div>
             <div className="text-sm text-gray-300 mb-1">Год 2</div>
-            <div className="text-xs text-gray-400">10,000 пользователей<br />500 ARPU</div>
+            <div className="text-xs text-gray-400">10,000 пользователей<br />$50 ARPU</div>
           </div>
           <div className="text-center">
             <div className="text-3xl font-bold text-neon-purple mb-2">$2M</div>
             <div className="text-sm text-gray-300 mb-1">Год 3</div>
-            <div className="text-xs text-gray-400">25,000 пользователей<br />800 ARPU</div>
+            <div className="text-xs text-gray-400">25,000 пользователей<br />$80 ARPU</div>
           </div>
         </div>
         <div className="text-center mt-4">

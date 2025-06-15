@@ -1,10 +1,7 @@
-
 import React from 'react';
 import { CheckCircle, Code, Database, Smartphone, Globe } from 'lucide-react';
-
 export const CompletedWorkSlide: React.FC = () => {
-  return (
-    <div className="w-full max-w-6xl mx-auto space-y-8">
+  return <div className="w-full max-w-6xl mx-auto space-y-8">
       <div className="text-center mb-12">
         <div className="text-6xl mb-6 animate-pulse-light">✅</div>
         <h1 className="text-5xl font-bold text-gradient mb-6">Что уже сделано</h1>
@@ -81,8 +78,8 @@ export const CompletedWorkSlide: React.FC = () => {
           <p className="text-gray-300 text-sm">Активных пользователей</p>
         </div>
         <div className="glass-effect p-4 rounded-xl border border-white/10 text-center">
-          <div className="text-2xl font-bold text-neon-blue mb-2">5</div>
-          <p className="text-gray-300 text-sm">Интегрированных бирж</p>
+          <div className="text-2xl font-bold text-neon-blue mb-2">2</div>
+          <p className="text-gray-300 text-sm">Интегрированных биржи</p>
         </div>
         <div className="glass-effect p-4 rounded-xl border border-white/10 text-center">
           <div className="text-2xl font-bold text-neon-purple mb-2">95%</div>
@@ -114,6 +111,5 @@ export const CompletedWorkSlide: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };

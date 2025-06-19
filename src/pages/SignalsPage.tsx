@@ -5,7 +5,7 @@ import { SignalCard } from '@/components/ui/signal-card';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { signals } from '@/data/mockData';
+import { signals, kols } from '@/data/mockData';
 import { TrendingUp, Clock, Filter } from 'lucide-react';
 
 const SignalsPage = () => {
@@ -14,10 +14,15 @@ const SignalsPage = () => {
 
   const filteredSignals = signals.filter(signal => {
     if (activeTab === 'all') return true;
-    if (activeTab === 'buy') return signal.action === 'BUY';
-    if (activeTab === 'sell') return signal.action === 'SELL';
+    if (activeTab === 'buy') return signal.type === 'Long';
+    if (activeTab === 'sell') return signal.type === 'Short';
     return true;
   });
+
+  // Function to get KOL by ID
+  const getKolById = (kolId: number) => {
+    return kols.find(kol => kol.id === kolId) || kols[0]; // fallback to first KOL if not found
+  };
 
   return (
     <Layout>
@@ -61,7 +66,7 @@ const SignalsPage = () => {
         {/* Signals Grid */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filteredSignals.map(signal => (
-            <SignalCard key={signal.id} signal={signal} kol={null} />
+            <SignalCard key={signal.id} signal={signal} kol={getKolById(signal.kolId)} />
           ))}
         </div>
 

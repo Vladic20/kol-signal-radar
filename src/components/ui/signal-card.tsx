@@ -12,7 +12,7 @@ import { priceHistories } from '@/data/signal-history';
 
 interface SignalCardProps {
   signal: Signal;
-  kol: KOL;
+  kol: KOL | null;
 }
 
 export function SignalCard({ signal, kol }: SignalCardProps) {
@@ -33,7 +33,9 @@ export function SignalCard({ signal, kol }: SignalCardProps) {
   
   const handleKolClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent signal card click
-    navigate(`/kol/${kol.id}`);
+    if (kol) {
+      navigate(`/kol/${kol.id}`);
+    }
   };
   
   const handleCardClick = () => {
@@ -112,14 +114,16 @@ export function SignalCard({ signal, kol }: SignalCardProps) {
               )}
             </div>
             
-            <div className="flex items-center" onClick={handleKolClick}>
-              <div className="w-8 h-8 rounded-full overflow-hidden mr-2 cursor-pointer">
-                <img src={kol.avatar} alt={kol.name} className="w-full h-full object-cover" />
+            {kol && (
+              <div className="flex items-center" onClick={handleKolClick}>
+                <div className="w-8 h-8 rounded-full overflow-hidden mr-2 cursor-pointer">
+                  <img src={kol.avatar} alt={kol.name} className="w-full h-full object-cover" />
+                </div>
+                <div className="text-sm cursor-pointer hover:text-neon-purple">
+                  {kol.name}
+                </div>
               </div>
-              <div className="text-sm cursor-pointer hover:text-neon-purple">
-                {kol.name}
-              </div>
-            </div>
+            )}
           </div>
         </CardContent>
         
@@ -131,14 +135,16 @@ export function SignalCard({ signal, kol }: SignalCardProps) {
         )}
       </Card>
       
-      {/* Signal Detail Dialog */}
-      <SignalDetailDialog 
-        signal={signal} 
-        kol={kol} 
-        priceHistory={priceHistory}
-        open={dialogOpen} 
-        onClose={() => setDialogOpen(false)}
-      />
+      {/* Signal Detail Dialog - only show if kol exists */}
+      {kol && (
+        <SignalDetailDialog 
+          signal={signal} 
+          kol={kol} 
+          priceHistory={priceHistory}
+          open={dialogOpen} 
+          onClose={() => setDialogOpen(false)}
+        />
+      )}
     </>
   );
 }

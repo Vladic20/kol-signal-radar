@@ -3,7 +3,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { signals } from '@/data/mockData';
+import { signals, kols } from '@/data/mockData';
 import { SignalCard } from '@/components/ui/signal-card';
 import { Signal, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -11,6 +11,11 @@ import { Link } from 'react-router-dom';
 export const LatestSignalsSection: React.FC = () => {
   const { language } = useLanguage();
   const latestSignals = signals.slice(0, 3);
+
+  // Function to get KOL by ID
+  const getKolById = (kolId: number) => {
+    return kols.find(kol => kol.id === kolId) || kols[0]; // fallback to first KOL if not found
+  };
 
   return (
     <Card className="glass-effect border-white/10">
@@ -23,7 +28,7 @@ export const LatestSignalsSection: React.FC = () => {
       <CardContent>
         <div className="grid gap-6 md:grid-cols-3">
           {latestSignals.map((signal) => (
-            <SignalCard key={signal.id} signal={signal} kol={null} />
+            <SignalCard key={signal.id} signal={signal} kol={getKolById(signal.kolId)} />
           ))}
         </div>
         

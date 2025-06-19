@@ -30,6 +30,7 @@ const Navbar = () => {
   const navItems = [
     { href: '/home', label: 'Главная', icon: BarChart3 },
     { href: '/leaderboard', label: 'Таблица лидеров', icon: TrendingUp },
+    { href: '/feed', label: language === 'en' ? 'Feed' : 'Лента', icon: Newspaper },
     { href: '/crypto-news', label: 'Crypto News', icon: Newspaper },
     { href: '/copy-trading', label: 'Копитрейдинг', icon: Copy },
     { href: '/token-positions', label: 'Long/Short', icon: PieChart },

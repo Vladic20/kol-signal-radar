@@ -26,16 +26,16 @@ const HomePage = () => {
         {/* Stats Section */}
         <StatsSection />
 
-        {/* Feed Preview Section */}
+        {/* Latest Signals Section - at the top */}
+        <LatestSignalsSection />
+
+        {/* Feed Preview Section - what traders are discussing */}
         <section>
           <FeedPreview />
         </section>
 
-        {/* Top KOLs Section */}
+        {/* Top KOLs Section - leaderboard preview */}
         <TopKOLsSection />
-
-        {/* Latest Signals Section */}
-        <LatestSignalsSection />
       </div>
     </Layout>
   );

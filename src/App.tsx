@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -12,6 +11,7 @@ import { ApiProvider } from "@/contexts/ApiContext";
 import HomePage from "./pages/HomePage";
 import LeaderboardPage from "./pages/LeaderboardPage";
 import FeedPage from "./pages/FeedPage";
+import SignalsPage from "./pages/SignalsPage";
 import KolPage from "./pages/KolPage";
 import TradingViewCallerPage from "./pages/TradingViewCallerPage";
 import LoginPage from "./pages/LoginPage";
@@ -49,6 +49,7 @@ const App = () => (
                 <Route path="/" element={<Index />} />
                 <Route path="/home" element={<HomePage />} />
                 <Route path="/leaderboard" element={<LeaderboardPage />} />
+                <Route path="/signals" element={<SignalsPage />} />
                 <Route path="/feed" element={<FeedPage />} />
                 <Route path="/crypto-news" element={<CryptoNewsPage />} />
                 <Route path="/copy-trading" element={<CopyTradingPage />} />

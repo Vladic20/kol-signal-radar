@@ -22,16 +22,13 @@ export const LatestSignalsSection: React.FC = () => {
       </CardHeader>
       <CardContent>
         <div className="grid gap-6 md:grid-cols-3">
-          {latestSignals.map((signal) => {
-            const signalKol = signal.kolId ? { id: signal.kolId, name: 'KOL', avatar: '/placeholder.svg' } : null;
-            return (
-              <SignalCard key={signal.id} signal={signal} kol={signalKol} />
-            );
-          })}
+          {latestSignals.map((signal) => (
+            <SignalCard key={signal.id} signal={signal} kol={null} />
+          ))}
         </div>
         
         <div className="text-center mt-6">
-          <Link to="/leaderboard">
+          <Link to="/signals">
             <Button className="bg-gradient-to-r from-neon-purple to-neon-blue hover:opacity-90 flex items-center gap-2">
               {language === 'en' ? 'View All Signals' : 'Все сигналы'}
               <ArrowRight className="w-4 h-4" />

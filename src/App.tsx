@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -12,6 +13,7 @@ import HomePage from "./pages/HomePage";
 import LeaderboardPage from "./pages/LeaderboardPage";
 import FeedPage from "./pages/FeedPage";
 import SignalsPage from "./pages/SignalsPage";
+import PostDetailPage from "./pages/PostDetailPage";
 import KolPage from "./pages/KolPage";
 import TradingViewCallerPage from "./pages/TradingViewCallerPage";
 import LoginPage from "./pages/LoginPage";

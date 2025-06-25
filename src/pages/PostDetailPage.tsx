@@ -1,20 +1,19 @@
 
 import React, { useState } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Textarea } from '@/components/ui/textarea';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { feedPosts, postComments } from '@/data/feedData';
-import { 
-  Heart, MessageCircle, Share, ArrowLeft, CheckCircle, Lock, Repeat2, Quote, Send, 
-  TrendingUp, Users, Target, Clock, ThumbsUp, ThumbsDown, Search, BarChart3,
-  AlertTriangle, CheckCircle2, Play
-} from 'lucide-react';
+import { ArrowLeft, Share } from 'lucide-react';
+import AuthorProfileCard from '@/components/post-detail/AuthorProfileCard';
+import SignalExecutionCard from '@/components/post-detail/SignalExecutionCard';
+import CommentsSection from '@/components/post-detail/CommentsSection';
+import RelatedPostsCard from '@/components/post-detail/RelatedPostsCard';
+import ActionsSidebar from '@/components/post-detail/ActionsSidebar';
 
 const PostDetailPage = () => {
   const { id } = useParams();
@@ -95,7 +94,7 @@ const PostDetailPage = () => {
   };
 
   const signalExecution = {
-    status: 'active', // 'active' | 'completed' | 'closed'
+    status: 'active' as const,
     daysActive: 3,
     targetReached: 68,
     avgTimeToTarget: 2.5
@@ -118,57 +117,13 @@ const PostDetailPage = () => {
           {/* Main Content */}
           <div className="xl:col-span-2 space-y-6">
             {/* Author Profile Block */}
-            <Card className="glass-effect border-white/10">
-              <CardContent className="p-6">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex items-center space-x-4">
-                    <Avatar className="w-16 h-16">
-                      <AvatarImage src={post.authorAvatar} alt={post.authorName} />
-                      <AvatarFallback>{post.authorName[0]}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <div className="flex items-center space-x-2 mb-2">
-                        <h3 className="text-xl font-bold text-white">@{post.authorName}</h3>
-                        {post.authorVerified && <CheckCircle className="w-5 h-5 text-blue-500" />}
-                        {post.isPremium && (
-                          <Badge className="bg-neon-purple/20 text-neon-purple border-neon-purple/30">
-                            <Lock className="w-3 h-3 mr-1" />
-                            Premium
-                          </Badge>
-                        )}
-                      </div>
-                      <div className="flex items-center space-x-4 text-sm text-gray-300">
-                        <span className="text-green-400 font-semibold">ROI30d: +{traderStats.roi30d}%</span>
-                        <span>•</span>
-                        <span className="text-blue-400">WR: {traderStats.winRate}%</span>
-                        <span>•</span>
-                        <span>{traderStats.followers} подписчиков</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex gap-3">
-                  <Link to={`/kol/${post.authorId}`}>
-                    <Button className="bg-gradient-to-r from-green-500 to-green-600 hover:opacity-90 flex items-center gap-2">
-                      <TrendingUp className="w-4 h-4" />
-                      📈 Перейти в профиль трейдера
-                    </Button>
-                  </Link>
-                  
-                  {user && !isFollowing && (
-                    <Button 
-                      variant="outline" 
-                      onClick={handleFollow}
-                      className="border-neon-purple text-neon-purple hover:bg-neon-purple/10 flex items-center gap-2"
-                    >
-                      <Users className="w-4 h-4" />
-                      Подписаться на трейдера
-                    </Button>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
+            <AuthorProfileCard
+              post={post}
+              traderStats={traderStats}
+              isFollowing={isFollowing}
+              onFollow={handleFollow}
+              user={user}
+            />
 
             {/* Main Post Content */}
             <Card className="glass-effect border-white/10">
@@ -206,78 +161,12 @@ const PostDetailPage = () => {
 
                 {/* Trading Signal Card */}
                 {post.signal && canViewFullPost && (
-                  <div className="mb-6 p-6 bg-black/40 border border-white/10 rounded-lg">
-                    <div className="flex items-center justify-between mb-4">
-                      <h4 className="text-lg font-semibold text-white flex items-center gap-2">
-                        📊 Trading Signal
-                        <Badge className={
-                          signalExecution.status === 'active' ? 'bg-blue-500/20 text-blue-400' :
-                          signalExecution.status === 'completed' ? 'bg-green-500/20 text-green-400' :
-                          'bg-gray-500/20 text-gray-400'
-                        }>
-                          {signalExecution.status === 'active' ? 'В работе' :
-                           signalExecution.status === 'completed' ? 'Исполнен' : 'Закрыт'}
-                        </Badge>
-                      </h4>
-                      <div className="text-sm text-gray-400">
-                        {formatTime(post.timestamp)}
-                      </div>
-                    </div>
-                    
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-4">
-                      <div>
-                        <p className="text-gray-400 text-sm">Symbol</p>
-                        <p className="text-white font-semibold text-lg">{post.signal.symbol}</p>
-                      </div>
-                      <div>
-                        <p className="text-gray-400 text-sm">Action</p>
-                        <Badge 
-                          className={post.signal.action === 'BUY' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}
-                        >
-                          {post.signal.action}
-                        </Badge>
-                      </div>
-                      <div>
-                        <p className="text-gray-400 text-sm">Target</p>
-                        <p className="text-white font-semibold text-lg">${post.signal.target.toLocaleString()}</p>
-                      </div>
-                      <div>
-                        <p className="text-gray-400 text-sm">Confidence</p>
-                        <p className="text-white font-semibold text-lg">{post.signal.confidence}%</p>
-                      </div>
-                    </div>
-
-                    {post.signal.stopLoss && (
-                      <div className="border-t border-white/10 pt-4">
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-400">Stop Loss: <span className="text-white">${post.signal.stopLoss.toLocaleString()}</span></span>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* Execution History */}
-                {post.signal && canViewFullPost && (
-                  <div className="mb-6 p-4 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-lg">
-                    <h5 className="font-semibold text-white mb-3 flex items-center gap-2">
-                      <BarChart3 className="w-4 h-4" />
-                      История исполнения
-                    </h5>
-                    <div className="space-y-2 text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">📊 Сделка открыта {signalExecution.daysActive} дня назад</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">🎯 Цена достигнута</span>
-                        <span className="text-green-400 font-semibold">{signalExecution.targetReached}%</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">⏳ Среднее время до цели</span>
-                        <span className="text-blue-400">{signalExecution.avgTimeToTarget} дня</span>
-                      </div>
-                    </div>
-                  </div>
+                  <SignalExecutionCard
+                    signal={post.signal}
+                    signalExecution={signalExecution}
+                    formatTime={formatTime}
+                    timestamp={post.timestamp}
+                  />
                 )}
 
                 {/* Actions */}
@@ -326,173 +215,25 @@ const PostDetailPage = () => {
             </Card>
 
             {/* Comments Section */}
-            <Card className="glass-effect border-white/10">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                    <MessageCircle className="w-5 h-5" />
-                    Комментарии ({comments.length})
-                  </h3>
-                  
-                  <div className="flex gap-2">
-                    <Button 
-                      variant={commentSort === 'top' ? 'default' : 'ghost'}
-                      size="sm"
-                      onClick={() => setCommentSort('top')}
-                      className="text-xs"
-                    >
-                      Топ
-                    </Button>
-                    <Button 
-                      variant={commentSort === 'recent' ? 'default' : 'ghost'}
-                      size="sm"
-                      onClick={() => setCommentSort('recent')}
-                      className="text-xs"
-                    >
-                      Свежие
-                    </Button>
-                  </div>
-                </div>
-
-                {/* Add comment form */}
-                {user ? (
-                  <div className="flex space-x-4 mb-8 p-4 bg-black/20 rounded-lg border border-white/10">
-                    <Avatar className="w-10 h-10">
-                      <AvatarFallback className="bg-gradient-to-r from-neon-purple to-neon-blue text-white text-sm font-bold">
-                        {user.name?.[0] || 'U'}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1 space-y-4">
-                      <Textarea
-                        value={newComment}
-                        onChange={(e) => setNewComment(e.target.value)}
-                        placeholder="Написать комментарий..."
-                        className="bg-black/30 border-white/20 text-white resize-none"
-                        rows={3}
-                      />
-                      <Button 
-                        onClick={handleSubmitComment}
-                        disabled={!newComment.trim()}
-                        className="bg-gradient-to-r from-neon-purple to-neon-blue hover:opacity-90 flex items-center gap-2"
-                      >
-                        <Send className="w-4 h-4" />
-                        Отправить
-                      </Button>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="text-center mb-8 p-6 bg-black/20 rounded-lg border border-white/10">
-                    <p className="text-gray-400 mb-4">Войдите, чтобы комментировать</p>
-                    <Link to="/login">
-                      <Button variant="outline" className="border-white/20">
-                        Войти
-                      </Button>
-                    </Link>
-                  </div>
-                )}
-
-                {/* Comments list */}
-                <div className="space-y-6">
-                  {comments.map((comment) => (
-                    <div key={comment.id} className="flex space-x-4 p-4 bg-black/10 rounded-lg">
-                      <Avatar className="w-10 h-10 flex-shrink-0">
-                        <AvatarImage src={comment.authorAvatar} alt={comment.authorName} />
-                        <AvatarFallback>{comment.authorName[0]}</AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1">
-                        <div className="flex items-center space-x-2 mb-2">
-                          <span className="font-medium text-white">{comment.authorName}</span>
-                          <span className="text-xs text-gray-400">{formatTime(comment.timestamp)}</span>
-                        </div>
-                        <p className="text-gray-300 mb-3">{comment.content}</p>
-                        <div className="flex items-center space-x-4">
-                          <button className="flex items-center space-x-1 text-xs text-gray-400 hover:text-green-400 transition-colors">
-                            <ThumbsUp className="w-3 h-3" />
-                            <span>{comment.likes}</span>
-                          </button>
-                          <button className="flex items-center space-x-1 text-xs text-gray-400 hover:text-red-400 transition-colors">
-                            <ThumbsDown className="w-3 h-3" />
-                          </button>
-                          <button className="text-xs text-gray-400 hover:text-white transition-colors">
-                            Ответить
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+            <CommentsSection
+              comments={comments}
+              commentSort={commentSort}
+              setCommentSort={setCommentSort}
+              user={user}
+              newComment={newComment}
+              setNewComment={setNewComment}
+              handleSubmitComment={handleSubmitComment}
+              formatTime={formatTime}
+            />
           </div>
 
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Call to Action */}
-            <Card className="glass-effect border-white/10">
-              <CardContent className="p-6">
-                <h4 className="font-bold text-white mb-4">Действия</h4>
-                {!user ? (
-                  <div className="space-y-3">
-                    <Link to="/login">
-                      <Button className="w-full bg-gradient-to-r from-neon-purple to-neon-blue hover:opacity-90">
-                        Войти, чтобы копировать
-                      </Button>
-                    </Link>
-                    <Link to="/register">
-                      <Button variant="outline" className="w-full border-white/20">
-                        Зарегистрироваться
-                      </Button>
-                    </Link>
-                  </div>
-                ) : !isPremium ? (
-                  <div className="space-y-3">
-                    <Button className="w-full bg-gradient-to-r from-neon-purple to-neon-blue hover:opacity-90">
-                      Подписаться на трейдера за $5
-                    </Button>
-                    <Link to="/dashboard">
-                      <Button variant="outline" className="w-full border-white/20">
-                        Перейти на Premium
-                      </Button>
-                    </Link>
-                  </div>
-                ) : (
-                  <div className="space-y-3">
-                    <Button className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:opacity-90 flex items-center gap-2">
-                      <Target className="w-4 h-4" />
-                      Добавить в портфель
-                    </Button>
-                    <Button variant="outline" className="w-full border-white/20 flex items-center gap-2">
-                      <AlertTriangle className="w-4 h-4" />
-                      Следить за сигналами
-                    </Button>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+            <ActionsSidebar user={user} isPremium={isPremium} />
 
             {/* Related Posts */}
-            {relatedPosts.length > 0 && (
-              <Card className="glass-effect border-white/10">
-                <CardContent className="p-6">
-                  <h4 className="font-bold text-white mb-4">Похожие посты трейдера</h4>
-                  <div className="space-y-4">
-                    {relatedPosts.map((relatedPost) => (
-                      <Link key={relatedPost.id} to={`/post/${relatedPost.id}`}>
-                        <div className="p-3 bg-black/20 rounded-lg hover:bg-black/30 transition-colors border border-white/10">
-                          <p className="text-sm text-gray-300 mb-2 line-clamp-2">
-                            {relatedPost.content.slice(0, 100)}...
-                          </p>
-                          <div className="flex items-center justify-between text-xs">
-                            <span className="text-gray-400">{formatTime(relatedPost.timestamp)}</span>
-                            <span className="text-green-400">+13.5%</span>
-                          </div>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
+            <RelatedPostsCard relatedPosts={relatedPosts} formatTime={formatTime} />
           </div>
         </div>
       </div>

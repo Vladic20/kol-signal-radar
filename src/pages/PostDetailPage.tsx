@@ -14,12 +14,14 @@ import SignalExecutionCard from '@/components/post-detail/SignalExecutionCard';
 import CommentsSection from '@/components/post-detail/CommentsSection';
 import RelatedPostsCard from '@/components/post-detail/RelatedPostsCard';
 import ActionsSidebar from '@/components/post-detail/ActionsSidebar';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const PostDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { language } = useLanguage();
   const { user, isPremium } = useAuth();
+  const isMobile = useIsMobile();
   const [isLiked, setIsLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(0);
   const [newComment, setNewComment] = useState('');
@@ -126,20 +128,21 @@ const PostDetailPage = () => {
 
   return (
     <Layout>
-      <div className="max-w-6xl mx-auto py-8 animate-fade-in">
+      <div className={`max-w-7xl mx-auto py-4 md:py-8 animate-fade-in ${isMobile ? 'px-4' : 'px-6'}`}>
         {/* Back Button */}
         <Button 
           variant="ghost" 
           onClick={() => navigate('/feed')}
-          className="mb-6 text-gray-400 hover:text-white flex items-center gap-2"
+          className="mb-4 md:mb-6 text-gray-400 hover:text-white flex items-center gap-2"
+          size={isMobile ? "sm" : "default"}
         >
           <ArrowLeft className="w-4 h-4" />
           {language === 'en' ? 'Back to Feed' : 'Назад в ленту'}
         </Button>
 
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+        <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'xl:grid-cols-3 gap-6 lg:gap-8'}`}>
           {/* Main Content */}
-          <div className="xl:col-span-2 space-y-6">
+          <div className={`${isMobile ? '' : 'xl:col-span-2'} space-y-4 md:space-y-6`}>
             {/* Author Profile Block */}
             <AuthorProfileCard
               post={post}
@@ -151,15 +154,15 @@ const PostDetailPage = () => {
 
             {/* Main Post Content */}
             <Card className="glass-effect border-white/10">
-              <CardContent className="p-8">
+              <CardContent className={`${isMobile ? 'p-4' : 'p-6 md:p-8'}`}>
                 {/* Post metadata */}
-                <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
-                  <div className="flex items-center space-x-4">
-                    <span className="text-sm text-gray-400">
+                <div className="flex items-center justify-between mb-4 md:mb-6 pb-3 md:pb-4 border-b border-white/10">
+                  <div className="flex items-center space-x-2 md:space-x-4">
+                    <span className="text-xs md:text-sm text-gray-400">
                       {formatTime(post.timestamp)}
                     </span>
                     {post.tags && (
-                      <div className="flex flex-wrap gap-2">
+                      <div className="flex flex-wrap gap-1 md:gap-2">
                         {post.tags.map((tag, index) => (
                           <Badge key={index} variant="outline" className="text-xs border-neon-purple/50 text-neon-purple">
                             #{tag}
@@ -179,7 +182,7 @@ const PostDetailPage = () => {
                     </Button>
                     
                     {showShareMenu && (
-                      <div className="absolute right-0 top-full mt-2 bg-black/90 border border-white/10 rounded-lg p-2 min-w-[180px] z-10">
+                      <div className={`absolute right-0 top-full mt-2 bg-black/90 border border-white/10 rounded-lg p-2 min-w-[180px] z-50 ${isMobile ? 'shadow-2xl' : ''}`}>
                         <button 
                           onClick={() => handleShare('copy')}
                           className="flex items-center gap-2 w-full p-2 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded"
@@ -205,15 +208,15 @@ const PostDetailPage = () => {
                 </div>
 
                 {/* Content */}
-                <div className="mb-6">
+                <div className="mb-4 md:mb-6">
                   <div className="prose prose-invert max-w-none">
-                    <p className="text-gray-100 leading-relaxed text-lg whitespace-pre-line">
+                    <p className={`text-gray-100 leading-relaxed whitespace-pre-line ${isMobile ? 'text-base' : 'text-lg'}`}>
                       {canViewFullPost ? post.content : post.content.slice(0, 150) + '...'}
                     </p>
                   </div>
                   
                   {!canViewFullPost && (
-                    <div className="mt-6 p-6 bg-gradient-to-r from-neon-purple/10 to-neon-blue/10 border border-neon-purple/30 rounded-lg">
+                    <div className={`mt-4 md:mt-6 p-4 md:p-6 bg-gradient-to-r from-neon-purple/10 to-neon-blue/10 border border-neon-purple/30 rounded-lg`}>
                       <div className="flex items-center gap-3 mb-4">
                         <div className="w-8 h-8 bg-gradient-to-r from-neon-purple to-neon-blue rounded-full flex items-center justify-center">
                           🔒
@@ -225,11 +228,11 @@ const PostDetailPage = () => {
                           </p>
                         </div>
                       </div>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <Button className="bg-gradient-to-r from-neon-purple to-neon-blue hover:opacity-90">
+                      <div className={`grid grid-cols-1 ${isMobile ? 'gap-2' : 'md:grid-cols-2 gap-3'}`}>
+                        <Button className="bg-gradient-to-r from-neon-purple to-neon-blue hover:opacity-90" size={isMobile ? "sm" : "default"}>
                           {language === 'en' ? 'Upgrade to Premium' : 'Перейти на Premium'}
                         </Button>
-                        <Button variant="outline" className="border-white/20">
+                        <Button variant="outline" className="border-white/20" size={isMobile ? "sm" : "default"}>
                           Купить доступ к сигналу ($5)
                         </Button>
                       </div>
@@ -239,10 +242,10 @@ const PostDetailPage = () => {
 
                 {/* Images */}
                 {post.images && post.images.length > 0 && canViewFullPost && (
-                  <div className="mb-6">
+                  <div className="mb-4 md:mb-6">
                     <div className="grid grid-cols-1 gap-3 rounded-lg overflow-hidden">
                       {post.images.map((image, index) => (
-                        <img key={index} src={image} alt="" className="w-full h-80 object-cover rounded-lg" />
+                        <img key={index} src={image} alt="" className={`w-full object-cover rounded-lg ${isMobile ? 'h-48' : 'h-80'}`} />
                       ))}
                     </div>
                   </div>
@@ -259,41 +262,41 @@ const PostDetailPage = () => {
                 )}
 
                 {/* Actions */}
-                <div className="flex items-center justify-between pt-6 border-t border-white/10">
-                  <div className="flex items-center space-x-6">
+                <div className={`flex items-center justify-between pt-4 md:pt-6 border-t border-white/10 ${isMobile ? 'space-x-4' : 'space-x-6'}`}>
+                  <div className={`flex items-center ${isMobile ? 'space-x-4' : 'space-x-6'}`}>
                     <Button
                       variant="ghost"
-                      size="lg"
+                      size={isMobile ? "sm" : "lg"}
                       onClick={handleLike}
                       className={`flex items-center space-x-2 ${
                         isLiked ? 'text-red-500 hover:text-red-400' : 'text-gray-400 hover:text-red-500'
                       }`}
                       disabled={!user}
                     >
-                      <Heart className={`w-5 h-5 ${isLiked ? 'fill-current' : ''}`} />
-                      <span className="font-medium">{likesCount}</span>
+                      <Heart className={`w-4 h-4 md:w-5 md:h-5 ${isLiked ? 'fill-current' : ''}`} />
+                      <span className="font-medium text-sm md:text-base">{likesCount}</span>
                     </Button>
                     
                     <Button
                       variant="ghost"
-                      size="lg"
+                      size={isMobile ? "sm" : "lg"}
                       className="flex items-center space-x-2 text-gray-400 hover:text-blue-400"
                     >
-                      <MessageCircle className="w-5 h-5" />
-                      <span className="font-medium">{post.comments}</span>
+                      <MessageCircle className="w-4 h-4 md:w-5 md:h-5" />
+                      <span className="font-medium text-sm md:text-base">{post.comments}</span>
                     </Button>
 
                     <Button
                       variant="ghost"
-                      size="lg"
+                      size={isMobile ? "sm" : "lg"}
                       className="flex items-center space-x-2 text-gray-400 hover:text-green-400"
                       disabled={!user}
                     >
-                      <Repeat className="w-5 h-5" />
-                      <span className="font-medium">{post.reposts}</span>
+                      <Repeat className="w-4 h-4 md:w-5 md:h-5" />
+                      <span className="font-medium text-sm md:text-base">{post.reposts}</span>
                     </Button>
 
-                    {user && (
+                    {user && !isMobile && (
                       <Button
                         variant="ghost"
                         size="lg"
@@ -311,20 +314,20 @@ const PostDetailPage = () => {
             {/* Author Stats */}
             {canViewFullPost && (
               <Card className="glass-effect border-white/10">
-                <CardContent className="p-6">
+                <CardContent className={`${isMobile ? 'p-4' : 'p-6'}`}>
                   <h4 className="font-semibold text-white mb-4">📈 Последние результаты автора</h4>
-                  <div className="grid grid-cols-3 gap-4 text-center">
-                    <div className="p-3 bg-black/20 rounded-lg">
-                      <div className="text-sm text-gray-400">Последние 5 сигналов</div>
-                      <div className="text-lg font-semibold text-green-400">+12.3%</div>
+                  <div className={`grid grid-cols-3 gap-2 md:gap-4 text-center`}>
+                    <div className={`${isMobile ? 'p-2' : 'p-3'} bg-black/20 rounded-lg`}>
+                      <div className={`${isMobile ? 'text-xs' : 'text-sm'} text-gray-400`}>Последние 5 сигналов</div>
+                      <div className={`${isMobile ? 'text-base' : 'text-lg'} font-semibold text-green-400`}>+12.3%</div>
                     </div>
-                    <div className="p-3 bg-black/20 rounded-lg">
-                      <div className="text-sm text-gray-400">Win Rate</div>
-                      <div className="text-lg font-semibold text-blue-400">73%</div>
+                    <div className={`${isMobile ? 'p-2' : 'p-3'} bg-black/20 rounded-lg`}>
+                      <div className={`${isMobile ? 'text-xs' : 'text-sm'} text-gray-400`}>Win Rate</div>
+                      <div className={`${isMobile ? 'text-base' : 'text-lg'} font-semibold text-blue-400`}>73%</div>
                     </div>
-                    <div className="p-3 bg-black/20 rounded-lg">
-                      <div className="text-sm text-gray-400">Активных сигналов</div>
-                      <div className="text-lg font-semibold text-white">8</div>
+                    <div className={`${isMobile ? 'p-2' : 'p-3'} bg-black/20 rounded-lg`}>
+                      <div className={`${isMobile ? 'text-xs' : 'text-sm'} text-gray-400`}>Активных сигналов</div>
+                      <div className={`${isMobile ? 'text-base' : 'text-lg'} font-semibold text-white`}>8</div>
                     </div>
                   </div>
                 </CardContent>
@@ -344,15 +347,47 @@ const PostDetailPage = () => {
             />
           </div>
 
-          {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Call to Action */}
-            <ActionsSidebar user={user} isPremium={isPremium || false} />
+          {/* Sidebar - только на десктопе */}
+          {!isMobile && (
+            <div className="space-y-6">
+              {/* Call to Action */}
+              <ActionsSidebar user={user} isPremium={isPremium || false} />
 
-            {/* Related Posts */}
+              {/* Related Posts */}
+              <RelatedPostsCard relatedPosts={relatedPosts} formatTime={formatTime} />
+            </div>
+          )}
+        </div>
+
+        {/* Mobile Bottom Actions */}
+        {isMobile && user && (
+          <div className="fixed bottom-0 left-0 right-0 bg-black/90 backdrop-blur-md border-t border-white/10 p-4 z-40">
+            <div className="flex items-center justify-between max-w-sm mx-auto">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="flex items-center space-x-2 text-gray-400 hover:text-yellow-400"
+              >
+                <Bell className="w-4 h-4" />
+                <span className="text-xs">Следить</span>
+              </Button>
+              <Button
+                size="sm"
+                className="bg-gradient-to-r from-neon-purple to-neon-blue hover:opacity-90"
+              >
+                Подписаться
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* Mobile Actions Sidebar как отдельная секция */}
+        {isMobile && (
+          <div className="mt-6 space-y-4">
+            <ActionsSidebar user={user} isPremium={isPremium || false} />
             <RelatedPostsCard relatedPosts={relatedPosts} formatTime={formatTime} />
           </div>
-        </div>
+        )}
       </div>
     </Layout>
   );

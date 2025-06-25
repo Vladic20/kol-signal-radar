@@ -87,7 +87,12 @@ const TradingViewCallerProfilePage = () => {
         <div className="relative mb-6">
           {/* TradingView themed cover */}
           <div className="h-32 md:h-48 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-lg mb-4 relative overflow-hidden">
-            <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\"20\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"0.1\"%3E%3Cpath d=\"M0 0h20v20H0z\"/%3E%3Cpath d=\"M10 5l5 5-5 5-5-5z\" fill=\"%23ffffff\" fill-opacity=\"0.2\"/%3E%3C/g%3E%3C/svg%3E')] opacity-20" />
+            <div className="absolute inset-0 opacity-20">
+              <div className="w-full h-full bg-gradient-to-br from-blue-500/10 to-purple-500/10" 
+                   style={{
+                     backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.05) 10px, rgba(255,255,255,0.05) 20px)'
+                   }} />
+            </div>
             <div className="absolute top-4 right-4">
               <div className="flex items-center space-x-2 bg-blue-600/80 px-3 py-1 rounded-full">
                 <div className="w-6 h-6 bg-gradient-to-r from-blue-600 to-purple-600 rounded flex items-center justify-center">
@@ -279,7 +284,7 @@ const TradingViewCallerProfilePage = () => {
                 <div>
                   <h4 className="text-sm font-medium text-gray-400 mb-2">Reputation</h4>
                   <Badge className={`${
-                    caller.reputation === 'Excellent' ? 'bg-green-500/20 text-green-400' :
+                    caller.reputation === 择'Excellent' ? 'bg-green-500/20 text-green-400' :
                     caller.reputation === 'Good' ? 'bg-yellow-500/20 text-yellow-400' :
                     'bg-gray-500/20 text-gray-400'
                   }`}>

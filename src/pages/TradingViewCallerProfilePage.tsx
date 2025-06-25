@@ -284,7 +284,7 @@ const TradingViewCallerProfilePage = () => {
                 <div>
                   <h4 className="text-sm font-medium text-gray-400 mb-2">Reputation</h4>
                   <Badge className={`${
-                    caller.reputation === 择'Excellent' ? 'bg-green-500/20 text-green-400' :
+                    caller.reputation === 'Excellent' ? 'bg-green-500/20 text-green-400' :
                     caller.reputation === 'Good' ? 'bg-yellow-500/20 text-yellow-400' :
                     'bg-gray-500/20 text-gray-400'
                   }`}>

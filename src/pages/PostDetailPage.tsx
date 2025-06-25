@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { feedPosts, postComments } from '@/data/feedData';
-import { ArrowLeft, Share } from 'lucide-react';
+import { ArrowLeft, Share, Heart, MessageCircle, Repeat, Bell, Link as LinkIcon } from 'lucide-react';
 import AuthorProfileCard from '@/components/post-detail/AuthorProfileCard';
 import SignalExecutionCard from '@/components/post-detail/SignalExecutionCard';
 import CommentsSection from '@/components/post-detail/CommentsSection';
@@ -25,6 +25,7 @@ const PostDetailPage = () => {
   const [newComment, setNewComment] = useState('');
   const [commentSort, setCommentSort] = useState<'top' | 'recent'>('top');
   const [isFollowing, setIsFollowing] = useState(false);
+  const [showShareMenu, setShowShareMenu] = useState(false);
 
   const post = feedPosts.find(p => p.id === Number(id));
   const comments = postComments[Number(id)] || [];
@@ -55,15 +56,20 @@ const PostDetailPage = () => {
     const now = new Date();
     const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
     const diffInHours = Math.floor(diffInMinutes / 60);
+    const diffInDays = Math.floor(diffInHours / 24);
 
     if (diffInMinutes < 60) {
       return `${diffInMinutes}м назад`;
     } else if (diffInHours < 24) {
       return `${diffInHours}ч назад`;
+    } else if (diffInDays === 1) {
+      return 'вчера';
     } else {
       return new Intl.DateTimeFormat('ru-RU', {
         day: 'numeric',
-        month: 'long'
+        month: 'long',
+        hour: '2-digit',
+        minute: '2-digit'
       }).format(date);
     }
   };
@@ -81,6 +87,24 @@ const PostDetailPage = () => {
 
   const handleFollow = () => {
     setIsFollowing(!isFollowing);
+  };
+
+  const handleShare = (platform: string) => {
+    const url = window.location.href;
+    const text = `Интересный сигнал от ${post.authorName}: ${post.content.slice(0, 100)}...`;
+    
+    switch (platform) {
+      case 'copy':
+        navigator.clipboard.writeText(url);
+        break;
+      case 'telegram':
+        window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`);
+        break;
+      case 'twitter':
+        window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`);
+        break;
+    }
+    setShowShareMenu(false);
   };
 
   const canViewFullPost = !post.isPremium || isPremium;
@@ -128,22 +152,87 @@ const PostDetailPage = () => {
             {/* Main Post Content */}
             <Card className="glass-effect border-white/10">
               <CardContent className="p-8">
+                {/* Post metadata */}
+                <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
+                  <div className="flex items-center space-x-4">
+                    <span className="text-sm text-gray-400">
+                      {formatTime(post.timestamp)}
+                    </span>
+                    {post.tags && (
+                      <div className="flex flex-wrap gap-2">
+                        {post.tags.map((tag, index) => (
+                          <Badge key={index} variant="outline" className="text-xs border-neon-purple/50 text-neon-purple">
+                            #{tag}
+                          </Badge>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  <div className="relative">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setShowShareMenu(!showShareMenu)}
+                      className="text-gray-400 hover:text-white"
+                    >
+                      <Share className="w-4 h-4" />
+                    </Button>
+                    
+                    {showShareMenu && (
+                      <div className="absolute right-0 top-full mt-2 bg-black/90 border border-white/10 rounded-lg p-2 min-w-[180px] z-10">
+                        <button 
+                          onClick={() => handleShare('copy')}
+                          className="flex items-center gap-2 w-full p-2 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded"
+                        >
+                          <LinkIcon className="w-4 h-4" />
+                          Скопировать ссылку
+                        </button>
+                        <button 
+                          onClick={() => handleShare('telegram')}
+                          className="flex items-center gap-2 w-full p-2 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded"
+                        >
+                          📱 Поделиться в Telegram
+                        </button>
+                        <button 
+                          onClick={() => handleShare('twitter')}
+                          className="flex items-center gap-2 w-full p-2 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded"
+                        >
+                          🐦 Поделиться в X
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
                 {/* Content */}
                 <div className="mb-6">
-                  <p className="text-gray-100 leading-relaxed text-lg">
-                    {canViewFullPost ? post.content : post.content.slice(0, 150) + '...'}
-                  </p>
+                  <div className="prose prose-invert max-w-none">
+                    <p className="text-gray-100 leading-relaxed text-lg whitespace-pre-line">
+                      {canViewFullPost ? post.content : post.content.slice(0, 150) + '...'}
+                    </p>
+                  </div>
                   
                   {!canViewFullPost && (
-                    <div className="mt-4 p-4 bg-gradient-to-r from-neon-purple/10 to-neon-blue/10 border border-neon-purple/30 rounded-lg">
-                      <p className="text-sm text-gray-300 mb-3">
-                        {language === 'en' 
-                          ? 'Premium content. Subscribe to view full post and signals.' 
-                          : 'Премиум контент. Подпишитесь чтобы увидеть полный пост и сигналы.'}
-                      </p>
-                      <Button className="bg-gradient-to-r from-neon-purple to-neon-blue hover:opacity-90">
-                        {language === 'en' ? 'Upgrade to Premium' : 'Перейти на Premium'}
-                      </Button>
+                    <div className="mt-6 p-6 bg-gradient-to-r from-neon-purple/10 to-neon-blue/10 border border-neon-purple/30 rounded-lg">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-8 h-8 bg-gradient-to-r from-neon-purple to-neon-blue rounded-full flex items-center justify-center">
+                          🔒
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-white">Только для Premium</h4>
+                          <p className="text-sm text-gray-300">
+                            Подпишитесь, чтобы увидеть полный анализ и сигналы
+                          </p>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <Button className="bg-gradient-to-r from-neon-purple to-neon-blue hover:opacity-90">
+                          {language === 'en' ? 'Upgrade to Premium' : 'Перейти на Premium'}
+                        </Button>
+                        <Button variant="outline" className="border-white/20">
+                          Купить доступ к сигналу ($5)
+                        </Button>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -171,48 +260,76 @@ const PostDetailPage = () => {
 
                 {/* Actions */}
                 <div className="flex items-center justify-between pt-6 border-t border-white/10">
-                  <div className="flex items-center space-x-8">
+                  <div className="flex items-center space-x-6">
                     <Button
                       variant="ghost"
                       size="lg"
                       onClick={handleLike}
-                      className={`flex items-center space-x-3 ${
+                      className={`flex items-center space-x-2 ${
                         isLiked ? 'text-red-500 hover:text-red-400' : 'text-gray-400 hover:text-red-500'
                       }`}
                       disabled={!user}
                     >
-                      ❤️ <span className="font-medium text-lg">{likesCount}</span>
+                      <Heart className={`w-5 h-5 ${isLiked ? 'fill-current' : ''}`} />
+                      <span className="font-medium">{likesCount}</span>
                     </Button>
                     
                     <Button
                       variant="ghost"
                       size="lg"
-                      className="flex items-center space-x-3 text-gray-400 hover:text-blue-400"
+                      className="flex items-center space-x-2 text-gray-400 hover:text-blue-400"
                     >
-                      💬 <span className="font-medium text-lg">{post.comments}</span>
+                      <MessageCircle className="w-5 h-5" />
+                      <span className="font-medium">{post.comments}</span>
                     </Button>
 
                     <Button
                       variant="ghost"
                       size="lg"
-                      className="flex items-center space-x-3 text-gray-400 hover:text-green-400"
+                      className="flex items-center space-x-2 text-gray-400 hover:text-green-400"
                       disabled={!user}
                     >
-                      🔁 <span className="font-medium text-lg">{post.reposts}</span>
+                      <Repeat className="w-5 h-5" />
+                      <span className="font-medium">{post.reposts}</span>
                     </Button>
 
-                    <Button
-                      variant="ghost"
-                      size="lg"
-                      className="flex items-center space-x-3 text-gray-400 hover:text-blue-400"
-                      disabled={!user}
-                    >
-                      <Share className="w-6 h-6" />
-                    </Button>
+                    {user && (
+                      <Button
+                        variant="ghost"
+                        size="lg"
+                        className="flex items-center space-x-2 text-gray-400 hover:text-yellow-400"
+                      >
+                        <Bell className="w-5 h-5" />
+                        <span className="text-sm">Следить</span>
+                      </Button>
+                    )}
                   </div>
                 </div>
               </CardContent>
             </Card>
+
+            {/* Author Stats */}
+            {canViewFullPost && (
+              <Card className="glass-effect border-white/10">
+                <CardContent className="p-6">
+                  <h4 className="font-semibold text-white mb-4">📈 Последние результаты автора</h4>
+                  <div className="grid grid-cols-3 gap-4 text-center">
+                    <div className="p-3 bg-black/20 rounded-lg">
+                      <div className="text-sm text-gray-400">Последние 5 сигналов</div>
+                      <div className="text-lg font-semibold text-green-400">+12.3%</div>
+                    </div>
+                    <div className="p-3 bg-black/20 rounded-lg">
+                      <div className="text-sm text-gray-400">Win Rate</div>
+                      <div className="text-lg font-semibold text-blue-400">73%</div>
+                    </div>
+                    <div className="p-3 bg-black/20 rounded-lg">
+                      <div className="text-sm text-gray-400">Активных сигналов</div>
+                      <div className="text-lg font-semibold text-white">8</div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
 
             {/* Comments Section */}
             <CommentsSection
@@ -230,7 +347,7 @@ const PostDetailPage = () => {
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Call to Action */}
-            <ActionsSidebar user={user} isPremium={isPremium} />
+            <ActionsSidebar user={user} isPremium={isPremium || false} />
 
             {/* Related Posts */}
             <RelatedPostsCard relatedPosts={relatedPosts} formatTime={formatTime} />

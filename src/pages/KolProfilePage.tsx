@@ -10,7 +10,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
-import { kols, feedPosts, signals } from '@/data/mockData';
+import { kols, signals } from '@/data/mockData';
+import { feedPosts } from '@/data/feedData';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { 
   CheckCircle, 
@@ -81,6 +82,18 @@ const KolProfilePage = () => {
     setIsFollowing(!isFollowing);
   };
 
+  // Helper function to format date for timeAgo
+  const getTimeAgo = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
+    
+    if (diffInHours < 1) return 'Just now';
+    if (diffInHours < 24) return `${diffInHours}h ago`;
+    const diffInDays = Math.floor(diffInHours / 24);
+    return `${diffInDays}d ago`;
+  };
+
   return (
     <Layout>
       <div className="max-w-4xl mx-auto py-4 md:py-8 animate-fade-in">
@@ -104,7 +117,7 @@ const KolProfilePage = () => {
                     <h1 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-white`}>
                       {kol.name}
                     </h1>
-                    {kol.verified && <CheckCircle className="w-5 h-5 text-blue-500" />}
+                    <CheckCircle className="w-5 h-5 text-blue-500" />
                     {kol.premium && (
                       <Badge className="bg-neon-purple/20 text-neon-purple border-neon-purple/30">
                         <Lock className="w-3 h-3 mr-1" />
@@ -271,24 +284,24 @@ const KolProfilePage = () => {
                     <CardContent className="p-4">
                       <div className="flex justify-between items-start mb-3">
                         <div>
-                          <h3 className="font-bold text-white text-lg">{signal.symbol}</h3>
+                          <h3 className="font-bold text-white text-lg">{signal.asset}</h3>
                           <Badge className={`mt-1 ${
                             signal.type === 'Long' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
                           }`}>
                             {signal.type === 'Long' ? 'BUY' : 'SELL'}
                           </Badge>
                         </div>
-                        <span className="text-xs text-gray-400">{signal.timeAgo}</span>
+                        <span className="text-xs text-gray-400">{getTimeAgo(signal.date)}</span>
                       </div>
                       
                       <div className="grid grid-cols-3 gap-4 text-sm">
                         <div>
                           <span className="text-gray-400">Entry:</span>
-                          <div className="text-white font-medium">${signal.entry}</div>
+                          <div className="text-white font-medium">${signal.entryPrice}</div>
                         </div>
                         <div>
                           <span className="text-gray-400">Target:</span>
-                          <div className="text-green-400 font-medium">${signal.target}</div>
+                          <div className="text-green-400 font-medium">${signal.targetPrice}</div>
                         </div>
                         <div>
                           <span className="text-gray-400">Stop:</span>

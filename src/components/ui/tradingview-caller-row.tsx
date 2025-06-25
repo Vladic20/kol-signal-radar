@@ -114,7 +114,7 @@ export const TradingViewCallerRow = ({ caller, rank }: TradingViewCallerRowProps
       
       <td className="px-3 py-4">
         {isAccessible ? (
-          <Link to={`/tradingview-caller/${caller.id}`}>
+          <Link to={`/tradingview-caller-profile/${caller.id}`}>
             <Button variant="outline" size="sm" className="border-neon-purple/50 text-neon-purple hover:bg-neon-purple/10">
               {t('language') === 'en' ? 'View Profile' : 'Смотреть'}
             </Button>

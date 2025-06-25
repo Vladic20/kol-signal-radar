@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { KOL } from '@/data/mockData';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -46,13 +45,13 @@ export function KOLTableRow({ kol, rank, isFavorite = false, onToggleFavorite }:
     if (kol.premium && !isPremium) {
       return;
     }
-    navigate(`/kol/${kol.id}`);
+    navigate(`/kol-profile/${kol.id}`);
   };
 
   // Обработка нажатия на кнопку "Подробнее"
   const handleDetailsClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Предотвращаем срабатывание обработчика клика по строке
-    navigate(`/kol/${kol.id}`);
+    navigate(`/kol-profile/${kol.id}`);
   };
 
   // Обработка добавления/удаления из избранного

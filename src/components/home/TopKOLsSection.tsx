@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -58,7 +57,7 @@ export const TopKOLsSection: React.FC = () => {
                 </div>
               </div>
               
-              <Link to={`/kol/${kol.id}`}>
+              <Link to={`/kol-profile/${kol.id}`}>
                 <Button variant="outline" size="sm" className="w-full border-white/20">
                   {language === 'en' ? 'View Profile' : 'Посмотреть профиль'}
                 </Button>

@@ -87,7 +87,7 @@ const TradingViewCallerProfilePage = () => {
         <div className="relative mb-6">
           {/* TradingView themed cover */}
           <div className="h-32 md:h-48 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-lg mb-4 relative overflow-hidden">
-            <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="20" height="20" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%23ffffff" fill-opacity="0.1"%3E%3Cpath d="M0 0h20v20H0z"/%3E%3Cpath d="M10 5l5 5-5 5-5-5z" fill="%23ffffff" fill-opacity="0.2"/%3E%3C/g%3E%3C/svg%3E')] opacity-20" />
+            <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\"20\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"0.1\"%3E%3Cpath d=\"M0 0h20v20H0z\"/%3E%3Cpath d=\"M10 5l5 5-5 5-5-5z\" fill=\"%23ffffff\" fill-opacity=\"0.2\"/%3E%3C/g%3E%3C/svg%3E')] opacity-20" />
             <div className="absolute top-4 right-4">
               <div className="flex items-center space-x-2 bg-blue-600/80 px-3 py-1 rounded-full">
                 <div className="w-6 h-6 bg-gradient-to-r from-blue-600 to-purple-600 rounded flex items-center justify-center">

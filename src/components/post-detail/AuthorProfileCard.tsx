@@ -13,7 +13,7 @@ interface AuthorProfileCardProps {
     authorName: string;
     authorAvatar: string;
     authorVerified: boolean;
-    isPremium: boolean;
+    isPremium?: boolean;
   };
   traderStats: {
     roi30d: number;

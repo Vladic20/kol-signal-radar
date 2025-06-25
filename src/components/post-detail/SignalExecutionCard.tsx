@@ -6,7 +6,7 @@ import { BarChart3 } from 'lucide-react';
 interface SignalExecutionCardProps {
   signal: {
     symbol: string;
-    action: 'BUY' | 'SELL';
+    action: 'BUY' | 'SELL' | 'HOLD';
     target: number;
     confidence: number;
     stopLoss?: number;
@@ -56,7 +56,11 @@ const SignalExecutionCard: React.FC<SignalExecutionCardProps> = ({
           <div>
             <p className="text-gray-400 text-sm">Action</p>
             <Badge 
-              className={signal.action === 'BUY' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}
+              className={
+                signal.action === 'BUY' ? 'bg-green-500/20 text-green-400' : 
+                signal.action === 'SELL' ? 'bg-red-500/20 text-red-400' :
+                'bg-yellow-500/20 text-yellow-400'
+              }
             >
               {signal.action}
             </Badge>

@@ -1,93 +1,62 @@
 
 import React, { useState } from 'react';
 import Layout from '@/components/layout/Layout';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ApiInstructions } from '@/components/copy-trading/ApiInstructions';
-import { ApiSettings } from '@/components/copy-trading/ApiSettings';
 import { TraderSelection } from '@/components/copy-trading/TraderSelection';
 import { TradingParameters } from '@/components/copy-trading/TradingParameters';
+import { ApiSettings } from '@/components/copy-trading/ApiSettings';
 import { ActiveCopying } from '@/components/copy-trading/ActiveCopying';
-import { useLanguage } from '@/contexts/LanguageContext';
-import { Copy, Settings, Users, TrendingUp, Activity } from 'lucide-react';
+import { ApiInstructions } from '@/components/copy-trading/ApiInstructions';
 
-const CopyTradingPage: React.FC = () => {
-  const { language } = useLanguage();
-  const [activeTab, setActiveTab] = useState('instructions');
-
-  const getTabContent = () => {
-    switch (activeTab) {
-      case 'instructions':
-        return <ApiInstructions />;
-      case 'settings':
-        return <ApiSettings />;
-      case 'traders':
-        return <TraderSelection />;
-      case 'parameters':
-        return <TradingParameters />;
-      case 'active':
-        return <ActiveCopying />;
-      default:
-        return <ApiInstructions />;
-    }
-  };
+const CopyTradingPage = () => {
+  const [activeTab, setActiveTab] = useState('traders');
 
   return (
-    <Layout>
-      <div className="min-h-screen py-8">
-        <div className="max-w-7xl mx-auto px-4">
-          {/* Header */}
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-neon-purple to-neon-blue bg-clip-text text-transparent mb-4">
-              {language === 'en' ? 'Copy Trading Platform' : 'Платформа Копитрейдинга'}
-            </h1>
-            <p className="text-gray-300 text-lg max-w-2xl mx-auto">
-              {language === 'en' 
-                ? 'Follow successful traders and automatically copy their trading strategies'
-                : 'Следуйте за успешными трейдерами и автоматически копируйте их торговые стратегии'
-              }
-            </p>
-          </div>
-
-          {/* Main Content */}
-          <Card className="glass-effect">
-            <CardHeader>
-              <CardTitle className="text-2xl text-center text-gradient bg-gradient-to-r from-neon-purple to-neon-blue">
-                {language === 'en' ? 'Setup Copy Trading' : 'Настройка Копитрейдинга'}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <TabsList className="grid w-full grid-cols-5 mb-8">
-                  <TabsTrigger value="instructions" className="flex items-center gap-2">
-                    <Copy size={16} />
-                    {language === 'en' ? 'API Guide' : 'API Инструкция'}
-                  </TabsTrigger>
-                  <TabsTrigger value="settings" className="flex items-center gap-2">
-                    <Settings size={16} />
-                    {language === 'en' ? 'API Settings' : 'API Настройки'}
-                  </TabsTrigger>
-                  <TabsTrigger value="traders" className="flex items-center gap-2">
-                    <Users size={16} />
-                    {language === 'en' ? 'Select Trader' : 'Выбор Трейдера'}
-                  </TabsTrigger>
-                  <TabsTrigger value="parameters" className="flex items-center gap-2">
-                    <TrendingUp size={16} />
-                    {language === 'en' ? 'Parameters' : 'Параметры'}
-                  </TabsTrigger>
-                  <TabsTrigger value="active" className="flex items-center gap-2">
-                    <Activity size={16} />
-                    {language === 'en' ? 'Active' : 'Активные'}
-                  </TabsTrigger>
-                </TabsList>
-
-                <div className="min-h-[600px]">
-                  {getTabContent()}
-                </div>
-              </Tabs>
-            </CardContent>
-          </Card>
-        </div>
+    <Layout showSidebar={true}>
+      <div className="py-8 animate-fade-in">
+        <h1 className="text-3xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-neon-purple to-neon-blue">
+          Копитрейдинг
+        </h1>
+        
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+          <TabsList className="grid w-full grid-cols-5 max-w-3xl bg-black/20 border border-white/10">
+            <TabsTrigger value="traders" className="data-[state=active]:bg-neon-purple/20">
+              Трейдеры
+            </TabsTrigger>
+            <TabsTrigger value="parameters" className="data-[state=active]:bg-neon-purple/20">
+              Параметры
+            </TabsTrigger>
+            <TabsTrigger value="api" className="data-[state=active]:bg-neon-purple/20">
+              API
+            </TabsTrigger>
+            <TabsTrigger value="active" className="data-[state=active]:bg-neon-purple/20">
+              Активные
+            </TabsTrigger>
+            <TabsTrigger value="instructions" className="data-[state=active]:bg-neon-purple/20">
+              Инструкция
+            </TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="traders">
+            <TraderSelection />
+          </TabsContent>
+          
+          <TabsContent value="parameters">
+            <TradingParameters />
+          </TabsContent>
+          
+          <TabsContent value="api">
+            <ApiSettings />
+          </TabsContent>
+          
+          <TabsContent value="active">
+            <ActiveCopying />
+          </TabsContent>
+          
+          <TabsContent value="instructions">
+            <ApiInstructions />
+          </TabsContent>
+        </Tabs>
       </div>
     </Layout>
   );

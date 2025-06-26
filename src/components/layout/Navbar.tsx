@@ -39,6 +39,10 @@ const Navbar = () => {
     { href: '/about', label: 'О нас', icon: User },
   ];
 
+  // Определяем тип пользователя для показа правильного дашборда
+  const isKOL = user?.email?.includes('kol') || user?.name?.toLowerCase().includes('trader');
+  const dashboardUrl = isKOL ? '/kol-dashboard' : '/user-dashboard';
+
   return (
     <nav className="glass-effect border-b border-white/10 sticky top-0 z-50">
       <div className="container mx-auto px-4">
@@ -83,9 +87,13 @@ const Navbar = () => {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
+                  <DropdownMenuItem onClick={() => navigate(dashboardUrl)}>
+                    <User className="w-4 h-4 mr-2" />
+                    {isKOL ? 'KOL Панель' : 'Личный кабинет'}
+                  </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => navigate('/dashboard')}>
                     <User className="w-4 h-4 mr-2" />
-                    Дашборд
+                    Старый дашборд
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={handleLogout}>
                     <LogOut className="w-4 h-4 mr-2" />
@@ -143,9 +151,9 @@ const Navbar = () => {
                 
                 {user ? (
                   <>
-                    <Button variant="ghost" onClick={() => navigate('/dashboard')} className="justify-start">
+                    <Button variant="ghost" onClick={() => navigate(dashboardUrl)} className="justify-start">
                       <User className="w-4 h-4 mr-2" />
-                      Дашборд
+                      {isKOL ? 'KOL Панель' : 'Личный кабинет'}
                     </Button>
                     <Button variant="ghost" onClick={handleLogout} className="justify-start">
                       <LogOut className="w-4 h-4 mr-2" />

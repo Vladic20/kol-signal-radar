@@ -12,6 +12,8 @@ import AboutPage from "./pages/AboutPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import DashboardPage from "./pages/DashboardPage";
+import UserDashboardPage from "./pages/UserDashboardPage";
+import KolDashboardPage from "./pages/KolDashboardPage";
 import LeaderboardPage from "./pages/LeaderboardPage";
 import KolPage from "./pages/KolPage";
 import KolProfilePage from "./pages/KolProfilePage";
@@ -44,6 +46,8 @@ function App() {
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/user-dashboard" element={<UserDashboardPage />} />
+                <Route path="/kol-dashboard" element={<KolDashboardPage />} />
                 <Route path="/leaderboard" element={<LeaderboardPage />} />
                 <Route path="/kol/:id" element={<KolPage />} />
                 <Route path="/kol-profile/:id" element={<KolProfilePage />} />

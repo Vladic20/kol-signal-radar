@@ -59,11 +59,12 @@ const KolDashboardPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-background bg-mesh">
+    <div className="flex min-h-screen bg-background bg-mesh w-full">
       <DashboardSidebar />
       
-      <div className="flex-1 ml-64">
-        <div className="p-6">
+      {/* Main Content */}
+      <div className="flex-1 ml-64 min-w-0">
+        <div className="p-6 max-w-6xl mx-auto">
           {/* Header */}
           <div className="mb-8 flex justify-between items-start">
             <div>

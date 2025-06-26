@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -54,11 +53,12 @@ const UserDashboardPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-background bg-mesh">
+    <div className="flex min-h-screen bg-background bg-mesh w-full">
       <DashboardSidebar />
       
-      <div className="flex-1 ml-64 mr-80">
-        <div className="p-6">
+      {/* Main Content */}
+      <div className="flex-1 ml-64 mr-80 min-w-0">
+        <div className="p-6 max-w-4xl mx-auto">
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-neon-purple to-neon-blue mb-2">
@@ -283,6 +283,7 @@ const UserDashboardPage = () => {
         </div>
       </div>
 
+      {/* Right Panel */}
       <div className="fixed right-0 top-0 h-screen w-80 p-6 overflow-y-auto">
         <DashboardRightPanel />
       </div>

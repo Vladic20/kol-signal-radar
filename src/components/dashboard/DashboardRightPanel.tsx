@@ -7,9 +7,11 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { useAuth } from '@/contexts/AuthContext';
 import { kols } from '@/data/mockData';
 import { TrendingUp, Users, Target, Award, ExternalLink } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const DashboardRightPanel = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   // Топ KOL'ы для рекомендаций
   const topKols = kols.slice(0, 3);
@@ -24,40 +26,40 @@ const DashboardRightPanel = () => {
   };
 
   return (
-    <div className="w-80 space-y-6">
+    <div className="w-72 space-y-4 h-fit">
       {/* Статистика пользователя */}
       <Card className="glass-effect border-white/10">
-        <CardHeader>
+        <CardHeader className="pb-3">
           <CardTitle className="text-lg text-white">Моя статистика</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex justify-between items-center">
-            <span className="text-gray-400">KOL Points</span>
-            <div className="flex items-center space-x-2">
-              <Award className="w-4 h-4 text-yellow-400" />
+        <CardContent className="space-y-3 pt-0">
+          <div className="grid grid-cols-2 gap-3 text-sm">
+            <div className="flex flex-col items-center p-2 bg-black/20 rounded-lg">
+              <Award className="w-4 h-4 text-yellow-400 mb-1" />
               <span className="font-bold text-white">{userStats.kolPoints}</span>
+              <span className="text-xs text-gray-400">KOL Points</span>
+            </div>
+            
+            <div className="flex flex-col items-center p-2 bg-black/20 rounded-lg">
+              <Badge className="bg-orange-500/20 text-orange-400 text-xs mb-1">
+                {userStats.rank}
+              </Badge>
+              <span className="text-xs text-gray-400">Ранг</span>
+            </div>
+            
+            <div className="flex flex-col items-center p-2 bg-black/20 rounded-lg">
+              <span className="font-bold text-white">{userStats.followingCount}</span>
+              <span className="text-xs text-gray-400">Подписок</span>
+            </div>
+            
+            <div className="flex flex-col items-center p-2 bg-black/20 rounded-lg">
+              <span className="font-bold text-green-400">{userStats.totalPnL}</span>
+              <span className="text-xs text-gray-400">PnL</span>
             </div>
           </div>
           
-          <div className="flex justify-between items-center">
-            <span className="text-gray-400">Ранг</span>
-            <Badge className="bg-orange-500/20 text-orange-400">
-              {userStats.rank}
-            </Badge>
-          </div>
-          
-          <div className="flex justify-between items-center">
-            <span className="text-gray-400">Подписок</span>
-            <span className="font-bold text-white">{userStats.followingCount}</span>
-          </div>
-          
-          <div className="flex justify-between items-center">
-            <span className="text-gray-400">Общий PnL</span>
-            <span className="font-bold text-green-400">{userStats.totalPnL}</span>
-          </div>
-          
-          <div className="flex justify-between items-center">
-            <span className="text-gray-400">Win Rate</span>
+          <div className="flex justify-between items-center pt-2 border-t border-white/10">
+            <span className="text-gray-400 text-sm">Win Rate</span>
             <span className="font-bold text-white">{userStats.winRate}%</span>
           </div>
         </CardContent>
@@ -65,67 +67,79 @@ const DashboardRightPanel = () => {
 
       {/* Рекомендуемые KOL'ы */}
       <Card className="glass-effect border-white/10">
-        <CardHeader>
+        <CardHeader className="pb-3">
           <CardTitle className="text-lg text-white flex items-center">
-            <TrendingUp className="w-5 h-5 mr-2" />
+            <TrendingUp className="w-4 h-4 mr-2" />
             Топ трейдеры
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-3 pt-0">
           {topKols.map((kol) => (
             <div key={kol.id} className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <Avatar className="w-8 h-8">
+              <div className="flex items-center space-x-2">
+                <Avatar className="w-7 h-7">
                   <AvatarImage src={kol.avatar} alt={kol.name} />
-                  <AvatarFallback>{kol.name[0]}</AvatarFallback>
+                  <AvatarFallback className="text-xs">{kol.name[0]}</AvatarFallback>
                 </Avatar>
-                <div>
-                  <p className="text-sm font-medium text-white">{kol.name}</p>
-                  <p className="text-xs text-gray-400">{kol.accuracy}% точность</p>
+                <div className="min-w-0">
+                  <p className="text-sm font-medium text-white truncate">{kol.name}</p>
+                  <p className="text-xs text-gray-400">{kol.accuracy}%</p>
                 </div>
               </div>
-              <Button size="sm" variant="outline" className="border-white/20 text-xs">
+              <Button 
+                size="sm" 
+                variant="outline" 
+                className="border-white/20 text-xs h-7 px-2"
+                onClick={() => navigate(`/kol-profile/${kol.id}`)}
+              >
                 Подписаться
               </Button>
             </div>
           ))}
-          <Button variant="ghost" className="w-full text-neon-purple hover:bg-neon-purple/10">
+          <Button 
+            variant="ghost" 
+            className="w-full text-neon-purple hover:bg-neon-purple/10 text-sm h-8"
+            onClick={() => navigate('/leaderboard')}
+          >
             Смотреть всех
-            <ExternalLink className="w-4 h-4 ml-2" />
+            <ExternalLink className="w-3 h-3 ml-2" />
           </Button>
         </CardContent>
       </Card>
 
       {/* Последние достижения */}
       <Card className="glass-effect border-white/10">
-        <CardHeader>
+        <CardHeader className="pb-3">
           <CardTitle className="text-lg text-white flex items-center">
-            <Award className="w-5 h-5 mr-2" />
+            <Award className="w-4 h-4 mr-2" />
             Достижения
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3">
+        <CardContent className="space-y-3 pt-0">
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-yellow-500/20 rounded-full flex items-center justify-center">
-              <Target className="w-4 h-4 text-yellow-400" />
+            <div className="w-7 h-7 bg-yellow-500/20 rounded-full flex items-center justify-center">
+              <Target className="w-3 h-3 text-yellow-400" />
             </div>
-            <div>
+            <div className="min-w-0">
               <p className="text-sm font-medium text-white">Первый профит</p>
               <p className="text-xs text-gray-400">2 дня назад</p>
             </div>
           </div>
           
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center">
-              <Users className="w-4 h-4 text-blue-400" />
+            <div className="w-7 h-7 bg-blue-500/20 rounded-full flex items-center justify-center">
+              <Users className="w-3 h-3 text-blue-400" />
             </div>
-            <div>
+            <div className="min-w-0">
               <p className="text-sm font-medium text-white">5 подписок</p>
               <p className="text-xs text-gray-400">1 неделю назад</p>
             </div>
           </div>
 
-          <Button variant="ghost" className="w-full text-neon-purple hover:bg-neon-purple/10">
+          <Button 
+            variant="ghost" 
+            className="w-full text-neon-purple hover:bg-neon-purple/10 text-sm h-8"
+          >
             Все достижения
           </Button>
         </CardContent>
@@ -140,7 +154,7 @@ const DashboardRightPanel = () => {
           <p className="text-xs text-gray-300 mb-3">
             Делитесь сигналами и зарабатывайте на подписчиках
           </p>
-          <Button size="sm" className="w-full bg-gradient-to-r from-neon-purple to-neon-blue">
+          <Button size="sm" className="w-full bg-gradient-to-r from-neon-purple to-neon-blue text-xs h-8">
             Подать заявку
           </Button>
         </CardContent>

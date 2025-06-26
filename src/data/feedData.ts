@@ -1,4 +1,3 @@
-
 export interface FeedPost {
   id: number;
   authorId: number;
@@ -21,6 +20,7 @@ export interface FeedPost {
   isLiked?: boolean;
   isPremium?: boolean;
   tags?: string[];
+  isFollowing?: boolean;
 }
 
 export interface Comment {
@@ -54,7 +54,8 @@ export const feedPosts: FeedPost[] = [
     comments: 45,
     reposts: 12,
     isPremium: false,
-    tags: ["BTC", "Technical Analysis", "Bull Market"]
+    tags: ["BTC", "Technical Analysis", "Bull Market"],
+    isFollowing: true
   },
   {
     id: 2,
@@ -76,7 +77,8 @@ export const feedPosts: FeedPost[] = [
     comments: 32,
     reposts: 8,
     isPremium: true,
-    tags: ["ETH", "Altcoins", "Price Prediction"]
+    tags: ["ETH", "Altcoins", "Price Prediction"],
+    isFollowing: true
   },
   {
     id: 3,
@@ -90,7 +92,8 @@ export const feedPosts: FeedPost[] = [
     comments: 67,
     reposts: 23,
     isPremium: false,
-    tags: ["Whale Alert", "Market Analysis", "Bitcoin"]
+    tags: ["Whale Alert", "Market Analysis", "Bitcoin"],
+    isFollowing: false
   },
   {
     id: 4,
@@ -110,7 +113,8 @@ export const feedPosts: FeedPost[] = [
     comments: 28,
     reposts: 5,
     isPremium: false,
-    tags: ["DeFi", "Yield Farming", "Risk Management"]
+    tags: ["DeFi", "Yield Farming", "Risk Management"],
+    isFollowing: false
   },
   {
     id: 5,
@@ -131,7 +135,8 @@ export const feedPosts: FeedPost[] = [
     comments: 89,
     reposts: 34,
     isPremium: true,
-    tags: ["SOL", "Technical Analysis", "Risk Warning"]
+    tags: ["SOL", "Technical Analysis", "Risk Warning"],
+    isFollowing: true
   }
 ];
 

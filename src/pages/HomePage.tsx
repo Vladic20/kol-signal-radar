@@ -2,9 +2,9 @@
 import React from 'react';
 import Layout from '@/components/layout/Layout';
 import { useLanguage } from '@/contexts/LanguageContext';
-import StatsSection from '@/components/home/StatsSection';
-import TopKOLsSection from '@/components/home/TopKOLsSection';
-import LatestSignalsSection from '@/components/home/LatestSignalsSection';
+import { StatsSection } from '@/components/home/StatsSection';
+import { TopKOLsSection } from '@/components/home/TopKOLsSection';
+import { LatestSignalsSection } from '@/components/home/LatestSignalsSection';
 
 const HomePage: React.FC = () => {
   const { t } = useLanguage();

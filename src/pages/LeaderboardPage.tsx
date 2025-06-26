@@ -4,7 +4,7 @@ import Layout from '@/components/layout/Layout';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { KolTableRow } from '@/components/ui/kol-table-row';
+import { KOLTableRow } from '@/components/ui/kol-table-row';
 import { kols } from '@/data/mockData';
 import { Search } from 'lucide-react';
 
@@ -29,7 +29,7 @@ const LeaderboardPage: React.FC = () => {
         case 'name':
           return a.name.localeCompare(b.name);
         default:
-          return a.rank - b.rank;
+          return a.id - b.id; // Use id instead of rank
       }
     });
 
@@ -82,8 +82,8 @@ const LeaderboardPage: React.FC = () => {
 
         {/* Leaderboard Table */}
         <div className="space-y-4">
-          {filteredAndSortedKols.map((kol) => (
-            <KolTableRow key={kol.id} kol={kol} />
+          {filteredAndSortedKols.map((kol, index) => (
+            <KOLTableRow key={kol.id} kol={kol} rank={index + 1} />
           ))}
         </div>
       </div>

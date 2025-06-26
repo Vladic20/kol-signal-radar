@@ -11,102 +11,102 @@ const mockNews = [
   {
     id: 1,
     title: "Bitcoin достиг нового максимума в $73,000",
-    summary: "Крупнейшая криптовалюта показывает невероятный рост на фоне институционального интереса",
+    excerpt: "Крупнейшая криптовалюта показывает невероятный рост на фоне институционального интереса",
     imageUrl: "/lovable-uploads/72278c30-fe14-4831-8cbe-39d775b32ead.png",
     category: "Bitcoin",
     publishedAt: "2024-01-15T10:30:00Z",
     source: "CoinDesk",
-    readTime: "3 мин"
+    url: "#"
   },
   {
     id: 2,
     title: "Ethereum 2.0 Staking Rewards Hit Record Numbers",
-    summary: "Сеть Ethereum демонстрирует беспрецедентное участие в стейкинге, поскольку пользователи блокируют ETH для привлекательных возможностей получения дохода.",
+    excerpt: "Сеть Ethereum демонстрирует беспрецедентное участие в стейкинге, поскольку пользователи блокируют ETH для привлекательных возможностей получения дохода.",
     imageUrl: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=500&h=300&fit=crop",
     category: "Ethereum",
     publishedAt: "2024-01-14T15:45:00Z",
     source: "ETH Daily",
-    readTime: "2 мин"
+    url: "#"
   },
   {
     id: 3,
     title: "DOGE Sees Massive Rally After Elon Musk Tweet",
-    summary: "Dogecoin испытал 40% рост после загадочного твита генерального директора Tesla, подчеркивая продолжающееся влияние социальных сетей на мем-монеты.",
+    excerpt: "Dogecoin испытал 40% рост после загадочного твита генерального директора Tesla, подчеркивая продолжающееся влияние социальных сетей на мем-монеты.",
     imageUrl: "https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=500&h=300&fit=crop",
     category: "DOGE",
     publishedAt: "2024-01-13T09:20:00Z",
     source: "Meme Crypto Weekly",
-    readTime: "1 мин"
+    url: "#"
   },
   {
     id: 4,
     title: "Shiba Inu Announces Major Ecosystem Update",
-    summary: "Команда SHIB раскрывает планы по улучшению функций полезности и совместимости между сетями в своей предстоящей дорожной карте.",
+    excerpt: "Команда SHIB раскрывает планы по улучшению функций полезности и совместимости между сетями в своей предстоящей дорожной карте.",
     imageUrl: "https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=500&h=300&fit=crop",
     category: "Shiba Inu",
     publishedAt: "2024-01-12T14:15:00Z",
     source: "Shib Central",
-    readTime: "1 мин"
+    url: "#"
   },
   {
     id: 5,
     title: "Uniswap V4 Launch Brings Revolutionary Features",
-    summary: "Последняя версия Uniswap представляет хуки и другие продвинутые функции, которые обещают изменить торговлю в DeFi.",
+    excerpt: "Последняя версия Uniswap представляет хуки и другие продвинутые функции, которые обещают изменить торговлю в DeFi.",
     imageUrl: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&h=300&fit=crop",
     category: "Uniswap V4",
     publishedAt: "2024-01-11T11:30:00Z",
     source: "DeFi Pulse",
-    readTime: "1 мин"
+    url: "#"
   },
   {
     id: 6,
     title: "PancakeSwap Reaches $100B in Total Volume",
-    summary: "DEX на основе BSC отмечает важную веху, поскольку объем торгов превышает отметку в $100 миллиардов.",
+    excerpt: "DEX на основе BSC отмечает важную веху, поскольку объем торгов превышает отметку в $100 миллиардов.",
     imageUrl: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=500&h=300&fit=crop",
     category: "PancakeSwap",
     publishedAt: "2024-01-10T16:45:00Z",
     source: "Pancake News",
-    readTime: "1 мин"
+    url: "#"
   },
   {
     id: 7,
     title: "Binance Launches New Futures Trading Features",
-    summary: "The worlds largest crypto exchange introduces advanced order types and risk management tools for professional traders.",
+    excerpt: "The worlds largest crypto exchange introduces advanced order types and risk management tools for professional traders.",
     imageUrl: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=500&h=300&fit=crop",
     category: "Binance",
     publishedAt: "2024-01-09T13:20:00Z",
     source: "Binance Blog",
-    readTime: "1 мин"
+    url: "#"
   },
   {
     id: 8,
     title: "Coinbase Expands to 10 New Countries",
-    summary: "The US-based exchange continues global expansion efforts, bringing crypto services to emerging markets.",
+    excerpt: "The US-based exchange continues global expansion efforts, bringing crypto services to emerging markets.",
     imageUrl: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=500&h=300&fit=crop",
     category: "Coinbase",
     publishedAt: "2024-01-08T10:15:00Z",
     source: "Coinbase News",
-    readTime: "1 мин"
+    url: "#"
   },
   {
     id: 9,
     title: "New DeFi Protocol Launches on Testnet",
-    summary: "A revolutionary lending protocol begins testing phase with innovative features that could change DeFi lending forever.",
+    excerpt: "A revolutionary lending protocol begins testing phase with innovative features that could change DeFi lending forever.",
     imageUrl: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500&h=300&fit=crop",
     category: "New DeFi Protocol",
     publishedAt: "2024-01-07T12:00:00Z",
     source: "DeFi Labs",
-    readTime: "1 мин"
+    url: "#"
   },
   {
     id: 10,
     title: "NFT Gaming Platform Enters Beta Testing",
-    summary: "Early access users get first look at the next generation of blockchain gaming with play-to-earn mechanics.",
+    excerpt: "Early access users get first look at the next generation of blockchain gaming with play-to-earn mechanics.",
     imageUrl: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500&h=300&fit=crop",
     category: "NFT Gaming Platform",
     publishedAt: "2024-01-06T14:30:00Z",
     source: "GameFi Today",
-    readTime: "1 мин"
+    url: "#"
   }
 ];
 
@@ -117,7 +117,7 @@ const CryptoNewsPage = () => {
 
   const filteredNews = mockNews.filter(news => {
     const matchesSearch = news.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         news.summary.toLowerCase().includes(searchTerm.toLowerCase());
+                         news.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = categoryFilter === 'all' || news.category.toLowerCase() === categoryFilter;
     return matchesSearch && matchesCategory;
   });
@@ -174,7 +174,16 @@ const CryptoNewsPage = () => {
         {/* News Grid */}
         <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {filteredNews.map(news => (
-            <NewsCard key={news.id} news={news} />
+            <NewsCard 
+              key={news.id} 
+              title={news.title}
+              excerpt={news.excerpt}
+              imageUrl={news.imageUrl}
+              category={news.category}
+              publishedAt={news.publishedAt}
+              source={news.source}
+              url={news.url}
+            />
           ))}
         </div>
 

@@ -3,7 +3,10 @@ import React from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import DashboardSidebar from '../dashboard/DashboardSidebar';
+import BottomNavigation from './BottomNavigation';
+import MobileHeader from './MobileHeader';
 import { useAuth } from '@/contexts/AuthContext';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -12,22 +15,37 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children, showSidebar = true }) => {
   const { user } = useAuth();
+  const isMobile = useIsMobile();
 
   return (
     <div className="flex flex-col min-h-screen bg-background bg-mesh w-full">
-      <Navbar />
+      {/* Desktop Navbar */}
+      {!isMobile && <Navbar />}
+      
+      {/* Mobile Header */}
+      {isMobile && <MobileHeader />}
+      
       <div className="flex flex-1">
-        {/* Sidebar - показываем только если пользователь авторизован и showSidebar = true */}
-        {user && showSidebar && <DashboardSidebar />}
+        {/* Desktop Sidebar */}
+        {user && showSidebar && !isMobile && <DashboardSidebar />}
         
         {/* Main Content */}
-        <main className={`flex-1 pt-20 px-4 ${user && showSidebar ? 'ml-64' : ''}`}>
+        <main className={`flex-1 ${
+          isMobile 
+            ? 'pt-16 pb-20 px-4' 
+            : `pt-20 px-4 ${user && showSidebar ? 'ml-64' : ''}`
+        }`}>
           <div className="container mx-auto max-w-6xl">
             {children}
           </div>
         </main>
       </div>
-      <Footer />
+      
+      {/* Desktop Footer */}
+      {!isMobile && <Footer />}
+      
+      {/* Mobile Bottom Navigation */}
+      {isMobile && user && <BottomNavigation />}
     </div>
   );
 };

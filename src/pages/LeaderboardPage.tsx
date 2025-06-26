@@ -7,12 +7,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { KOLTableRow } from '@/components/ui/kol-table-row';
 import { kols } from '@/data/mockData';
 import { Search } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const LeaderboardPage: React.FC = () => {
   const { t } = useLanguage();
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('rank');
   const [platformFilter, setPlatformFilter] = useState('all');
+  const isMobile = useIsMobile();
 
   const filteredAndSortedKols = useMemo(() => {
     let filtered = kols.filter(kol => 
@@ -29,7 +31,7 @@ const LeaderboardPage: React.FC = () => {
         case 'name':
           return a.name.localeCompare(b.name);
         default:
-          return a.id - b.id; // Use id instead of rank
+          return a.id - b.id;
       }
     });
 
@@ -38,13 +40,15 @@ const LeaderboardPage: React.FC = () => {
 
   return (
     <Layout showSidebar={true}>
-      <div className="py-8 animate-fade-in">
-        <h1 className="text-3xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-neon-purple to-neon-blue">
+      <div className="py-4 md:py-8 animate-fade-in">
+        <h1 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8 bg-clip-text text-transparent bg-gradient-to-r from-neon-purple to-neon-blue px-2 md:px-0">
           {t('leaderboard')}
         </h1>
         
         {/* Search and Filters */}
-        <div className="mb-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className={`mb-6 md:mb-8 px-2 md:px-0 grid gap-3 md:gap-4 ${
+          isMobile ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-3'
+        }`}>
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
             <Input
@@ -81,7 +85,7 @@ const LeaderboardPage: React.FC = () => {
         </div>
 
         {/* Leaderboard Table */}
-        <div className="space-y-4">
+        <div className="space-y-3 md:space-y-4 px-2 md:px-0">
           {filteredAndSortedKols.map((kol, index) => (
             <KOLTableRow key={kol.id} kol={kol} rank={index + 1} />
           ))}

@@ -8,12 +8,14 @@ import { Button } from '@/components/ui/button';
 import { SignalCard } from '@/components/ui/signal-card';
 import { signals, kols } from '@/data/mockData';
 import { Search, Filter } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const SignalsPage: React.FC = () => {
   const { t } = useLanguage();
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all');
   const [sortBy, setSortBy] = useState('newest');
+  const isMobile = useIsMobile();
 
   const filteredAndSortedSignals = useMemo(() => {
     let filtered = signals.filter(signal => {
@@ -29,7 +31,6 @@ const SignalsPage: React.FC = () => {
         case 'oldest':
           return new Date(a.date).getTime() - new Date(b.date).getTime();
         case 'profit':
-          // Use result if available, otherwise calculate potential based on target
           const aProfit = a.result || ((a.targetPrice / a.entryPrice - 1) * 100);
           const bProfit = b.result || ((b.targetPrice / b.entryPrice - 1) * 100);
           return bProfit - aProfit;
@@ -43,13 +44,15 @@ const SignalsPage: React.FC = () => {
 
   return (
     <Layout showSidebar={true}>
-      <div className="py-8 animate-fade-in">
-        <h1 className="text-3xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-neon-purple to-neon-blue">
+      <div className="py-4 md:py-8 animate-fade-in">
+        <h1 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8 bg-clip-text text-transparent bg-gradient-to-r from-neon-purple to-neon-blue px-2 md:px-0">
           {t('signals') || 'Торговые сигналы'}
         </h1>
         
         {/* Search and Filters */}
-        <div className="mb-8 grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className={`mb-6 md:mb-8 px-2 md:px-0 grid gap-3 md:gap-4 ${
+          isMobile ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-4'
+        }`}>
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
             <Input
@@ -82,14 +85,18 @@ const SignalsPage: React.FC = () => {
             </SelectContent>
           </Select>
           
-          <Button variant="outline" className="border-white/20">
-            <Filter className="w-4 h-4 mr-2" />
-            Фильтры
-          </Button>
+          {!isMobile && (
+            <Button variant="outline" className="border-white/20">
+              <Filter className="w-4 h-4 mr-2" />
+              Фильтры
+            </Button>
+          )}
         </div>
 
         {/* Signals Grid */}
-        <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        <div className={`grid gap-4 md:gap-6 px-2 md:px-0 ${
+          isMobile ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+        }`}>
           {filteredAndSortedSignals.map(signal => {
             const signalKol = kols.find(k => k.id === signal.kolId);
             if (!signalKol) return null;
@@ -101,7 +108,7 @@ const SignalsPage: React.FC = () => {
         </div>
 
         {/* Load More Button */}
-        <div className="text-center mt-12">
+        <div className="text-center mt-8 md:mt-12 px-2 md:px-0">
           <Button variant="outline" className="border-white/20">
             Загрузить ещё
           </Button>

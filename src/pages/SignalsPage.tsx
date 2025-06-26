@@ -19,7 +19,7 @@ const SignalsPage: React.FC = () => {
     let filtered = signals.filter(signal => {
       const kol = kols.find(k => k.id === signal.kolId);
       const matchesSearch = kol?.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           signal.symbol.toLowerCase().includes(searchTerm.toLowerCase());
+                           signal.asset.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesType = filterType === 'all' || signal.type === filterType;
       return matchesSearch && matchesType;
     });
@@ -29,7 +29,10 @@ const SignalsPage: React.FC = () => {
         case 'oldest':
           return new Date(a.date).getTime() - new Date(b.date).getTime();
         case 'profit':
-          return (b.exitPrice / b.entryPrice - 1) - (a.exitPrice / a.entryPrice - 1);
+          // Use result if available, otherwise calculate potential based on target
+          const aProfit = a.result || ((a.targetPrice / a.entryPrice - 1) * 100);
+          const bProfit = b.result || ((b.targetPrice / b.entryPrice - 1) * 100);
+          return bProfit - aProfit;
         default:
           return new Date(b.date).getTime() - new Date(a.date).getTime();
       }

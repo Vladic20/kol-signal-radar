@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomePage from './pages/HomePage';
@@ -7,14 +8,14 @@ import CopyTradingPage from './pages/CopyTradingPage';
 import DashboardPage from './pages/DashboardPage';
 import UserDashboardPage from './pages/UserDashboardPage';
 import LoginPage from './pages/LoginPage';
-import RegistrationPage from './pages/RegistrationPage';
+import RegisterPage from './pages/RegisterPage';
 import FeedPage from './pages/FeedPage';
 import SignalsPage from './pages/SignalsPage';
 import TokenPositionsPage from './pages/TokenPositionsPage';
 import CryptoNewsPage from './pages/CryptoNewsPage';
 import FaqPage from './pages/FaqPage';
-import AuthProvider from './contexts/AuthContext';
-import LanguageProvider from './contexts/LanguageContext';
+import { AuthProvider } from './contexts/AuthContext';
+import { LanguageProvider } from './contexts/LanguageContext';
 import MobileProfilePage from './pages/MobileProfilePage';
 
 function App() {
@@ -33,7 +34,7 @@ function App() {
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/user-dashboard" element={<UserDashboardPage />} />
               <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<RegistrationPage />} />
+              <Route path="/register" element={<RegisterPage />} />
               <Route path="/feed" element={<FeedPage />} />
               <Route path="/signals" element={<SignalsPage />} />
               <Route path="/token-positions" element={<TokenPositionsPage />} />

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -9,6 +8,7 @@ import { FeedPost } from '@/data/feedData';
 import { Heart, MessageCircle, Share, MoreHorizontal, CheckCircle, Lock, Repeat2, Quote } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { CommentsDialog } from './CommentsDialog';
+import { PointsNotification } from '@/components/ui/points-notification';
 
 interface PostCardProps {
   post: FeedPost;
@@ -22,12 +22,18 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
   const [likesCount, setLikesCount] = useState(post.likes);
   const [isCommentsOpen, setIsCommentsOpen] = useState(false);
   const [isReposting, setIsReposting] = useState(false);
+  const [showPointsNotification, setShowPointsNotification] = useState(false);
 
   const handleLike = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (!user) return;
     setIsLiked(!isLiked);
     setLikesCount(prev => isLiked ? prev - 1 : prev + 1);
+    
+    // Show points notification
+    if (!isLiked) {
+      setShowPointsNotification(true);
+    }
     
     // Add heart animation
     const target = e.currentTarget;
@@ -297,6 +303,14 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
         postId={post.id}
         isOpen={isCommentsOpen}
         setIsOpen={setIsCommentsOpen}
+      />
+
+      {/* Points Notification */}
+      <PointsNotification
+        points={2}
+        action="for liking post 💜"
+        show={showPointsNotification}
+        onHide={() => setShowPointsNotification(false)}
       />
     </>
   );

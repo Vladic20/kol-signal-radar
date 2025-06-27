@@ -8,12 +8,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { feedPosts } from '@/data/feedData';
 import { Plus, TrendingUp, Users, Clock } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { PointsNotification } from '@/components/ui/points-notification';
 
 const FeedPage = () => {
   const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('trending');
-  const [showPointsNotification, setShowPointsNotification] = useState(false);
   const isMobile = useIsMobile();
 
   // Фильтруем посты в зависимости от вкладки
@@ -26,10 +24,6 @@ const FeedPage = () => {
       default:
         return feedPosts.filter(post => post.likes >= 50);
     }
-  };
-
-  const handleLike = () => {
-    setShowPointsNotification(true);
   };
 
   return (
@@ -85,14 +79,14 @@ const FeedPage = () => {
 
             <TabsContent value="trending" className="space-y-4 md:space-y-6 mt-4 md:mt-6">
               {getFilteredPosts().map(post => (
-                <PostCard key={post.id} post={post} onLike={handleLike} />
+                <PostCard key={post.id} post={post} />
               ))}
             </TabsContent>
 
             <TabsContent value="following" className="space-y-4 md:space-y-6 mt-4 md:mt-6">
               {getFilteredPosts().length > 0 ? (
                 getFilteredPosts().map(post => (
-                  <PostCard key={post.id} post={post} onLike={handleLike} />
+                  <PostCard key={post.id} post={post} />
                 ))
               ) : (
                 <div className="text-center py-8 md:py-12">
@@ -107,7 +101,7 @@ const FeedPage = () => {
 
             <TabsContent value="recent" className="space-y-4 md:space-y-6 mt-4 md:mt-6">
               {getFilteredPosts().map(post => (
-                <PostCard key={post.id} post={post} onLike={handleLike} />
+                <PostCard key={post.id} post={post} />
               ))}
             </TabsContent>
           </Tabs>
@@ -127,14 +121,6 @@ const FeedPage = () => {
         <CreatePostDialog 
           isOpen={isCreatePostOpen} 
           setIsOpen={setIsCreatePostOpen} 
-        />
-
-        {/* Points Notification */}
-        <PointsNotification
-          points={2}
-          action="for liking post 💜"
-          show={showPointsNotification}
-          onHide={() => setShowPointsNotification(false)}
         />
       </div>
     </Layout>

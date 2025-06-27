@@ -22,7 +22,9 @@ import {
   Settings, 
   HelpCircle,
   X,
-  LogOut
+  LogOut,
+  Users,
+  Share2
 } from 'lucide-react';
 
 interface MobileSidebarProps {
@@ -55,10 +57,17 @@ const MobileSidebar = ({ isOpen, setIsOpen }: MobileSidebarProps) => {
       ]
     },
     {
-      title: 'Профиль',
+      title: 'Социальное',
       items: [
+        { href: '/subscriptions', icon: Users, label: 'Подписки' },
+        { href: '/referrals', icon: Share2, label: 'Рефералы' },
         { href: '/achievements', icon: Award, label: 'Достижения' },
-        { href: '/dashboard/settings', icon: Settings, label: 'Настройки' },
+      ]
+    },
+    {
+      title: 'Настройки',
+      items: [
+        { href: '/settings', icon: Settings, label: 'Настройки' },
         { href: '/faq', icon: HelpCircle, label: 'Поддержка' },
       ]
     }

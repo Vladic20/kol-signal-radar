@@ -5,6 +5,7 @@ import Footer from './Footer';
 import DashboardSidebar from '../dashboard/DashboardSidebar';
 import BottomNavigation from './BottomNavigation';
 import MobileHeader from './MobileHeader';
+import FloatingCreateButton from '../common/FloatingCreateButton';
 import { useAuth } from '@/contexts/AuthContext';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -50,6 +51,9 @@ const Layout: React.FC<LayoutProps> = ({ children, showSidebar = true }) => {
       
       {/* Mobile Bottom Navigation */}
       {isMobile && <BottomNavigation />}
+      
+      {/* Floating Create Button */}
+      {user && <FloatingCreateButton />}
     </div>
   );
 };

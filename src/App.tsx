@@ -17,6 +17,9 @@ import FaqPage from './pages/FaqPage';
 import CreatePostPage from './pages/CreatePostPage';
 import AchievementsPage from './pages/AchievementsPage';
 import MobileProfilePage from './pages/MobileProfilePage';
+import SubscriptionsPage from './pages/SubscriptionsPage';
+import SettingsPage from './pages/SettingsPage';
+import ReferralsPage from './pages/ReferralsPage';
 import { AuthProvider } from './contexts/AuthContext';
 import { LanguageProvider } from './contexts/LanguageContext';
 
@@ -45,6 +48,9 @@ function App() {
               <Route path="/create-post" element={<CreatePostPage />} />
               <Route path="/achievements" element={<AchievementsPage />} />
               <Route path="/mobile-profile" element={<MobileProfilePage />} />
+              <Route path="/subscriptions" element={<SubscriptionsPage />} />
+              <Route path="/settings" element={<SettingsPage />} />
+              <Route path="/referrals" element={<ReferralsPage />} />
             </Routes>
           </div>
         </LanguageProvider>  

@@ -32,10 +32,14 @@ const Layout: React.FC<LayoutProps> = ({ children, showSidebar = true }) => {
         {/* Main Content */}
         <main className={`flex-1 ${
           isMobile 
-            ? 'pt-16 pb-20' 
+            ? 'pt-16 pb-24 px-0' 
             : `pt-20 px-4 ${user && showSidebar ? 'ml-64' : ''}`
         }`}>
-          <div className={`mx-auto ${isMobile ? 'max-w-full px-0' : 'container max-w-6xl'}`}>
+          <div className={`mx-auto ${
+            isMobile 
+              ? 'max-w-full px-0' 
+              : 'container max-w-6xl'
+          }`}>
             {children}
           </div>
         </main>
@@ -45,7 +49,7 @@ const Layout: React.FC<LayoutProps> = ({ children, showSidebar = true }) => {
       {!isMobile && <Footer />}
       
       {/* Mobile Bottom Navigation */}
-      {isMobile && user && <BottomNavigation />}
+      {isMobile && <BottomNavigation />}
     </div>
   );
 };

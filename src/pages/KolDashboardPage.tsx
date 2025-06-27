@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -11,6 +10,7 @@ import { PostCard } from '@/components/social/PostCard';
 import { useAuth } from '@/contexts/AuthContext';
 import { signals } from '@/data/mockData';
 import { feedPosts } from '@/data/feedData';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { 
   TrendingUp, 
   Users, 
@@ -28,6 +28,7 @@ import {
 const KolDashboardPage = () => {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('overview');
+  const isMobile = useIsMobile();
 
   // Моковые данные KOL'а
   const kolStats = {
@@ -60,23 +61,23 @@ const KolDashboardPage = () => {
 
   return (
     <div className="flex min-h-screen bg-background bg-mesh w-full">
-      <DashboardSidebar />
+      {!isMobile && <DashboardSidebar />}
       
       {/* Main Content */}
-      <div className="flex-1 ml-64 min-w-0">
-        <div className="p-6 max-w-6xl mx-auto">
+      <div className={`flex-1 min-w-0 ${!isMobile ? 'ml-64' : ''}`}>
+        <div className={`p-4 md:p-6 max-w-6xl mx-auto ${isMobile ? 'pt-20 pb-24' : ''}`}>
           {/* Header */}
-          <div className="mb-8 flex justify-between items-start">
+          <div className="mb-6 md:mb-8 flex flex-col md:flex-row md:justify-between md:items-start space-y-4 md:space-y-0">
             <div>
-              <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-neon-purple to-neon-blue mb-2">
+              <h1 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-neon-purple to-neon-blue mb-2">
                 KOL Панель
               </h1>
-              <p className="text-gray-400">
+              <p className="text-sm md:text-base text-gray-400">
                 Управляйте контентом, подписчиками и доходами
               </p>
             </div>
             
-            <div className="flex space-x-3">
+            <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-3">
               <Button className="bg-neon-purple hover:bg-neon-purple/80">
                 <Plus className="w-4 h-4 mr-2" />
                 Создать пост
@@ -89,98 +90,159 @@ const KolDashboardPage = () => {
           </div>
 
           <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid grid-cols-6 max-w-3xl bg-black/20 border border-white/10 mb-8">
-              <TabsTrigger value="overview" className="data-[state=active]:bg-neon-purple/20">
+            <TabsList className={`w-full bg-black/20 border border-white/10 mb-6 md:mb-8 ${
+              isMobile ? 'grid grid-cols-3 h-auto' : 'flex flex-wrap max-w-4xl'
+            }`}>
+              <TabsTrigger 
+                value="overview" 
+                className={`data-[state=active]:bg-neon-purple/20 ${isMobile ? 'text-xs p-2' : ''}`}
+              >
                 Обзор
               </TabsTrigger>
-              <TabsTrigger value="posts" className="data-[state=active]:bg-neon-purple/20">
+              <TabsTrigger 
+                value="posts" 
+                className={`data-[state=active]:bg-neon-purple/20 ${isMobile ? 'text-xs p-2' : ''}`}
+              >
                 Посты
               </TabsTrigger>
-              <TabsTrigger value="signals" className="data-[state=active]:bg-neon-purple/20">
+              <TabsTrigger 
+                value="signals" 
+                className={`data-[state=active]:bg-neon-purple/20 ${isMobile ? 'text-xs p-2' : ''}`}
+              >
                 Сигналы
               </TabsTrigger>
-              <TabsTrigger value="subscribers" className="data-[state=active]:bg-neon-purple/20">
-                Подписчики
-              </TabsTrigger>
-              <TabsTrigger value="analytics" className="data-[state=active]:bg-neon-purple/20">
-                Аналитика
-              </TabsTrigger>
-              <TabsTrigger value="earnings" className="data-[state=active]:bg-neon-purple/20">
-                Доходы
-              </TabsTrigger>
+              {!isMobile && (
+                <>
+                  <TabsTrigger value="subscribers" className="data-[state=active]:bg-neon-purple/20">
+                    Подписчики
+                  </TabsTrigger>
+                  <TabsTrigger value="analytics" className="data-[state=active]:bg-neon-purple/20">
+                    Аналитика
+                  </TabsTrigger>
+                  <TabsTrigger value="earnings" className="data-[state=active]:bg-neon-purple/20">
+                    Доходы
+                  </TabsTrigger>
+                </>
+              )}
             </TabsList>
 
+            {/* Mobile additional tabs */}
+            {isMobile && (
+              <div className="grid grid-cols-3 gap-2 mb-6">
+                <Button 
+                  variant={activeTab === 'subscribers' ? 'default' : 'ghost'}
+                  size="sm"
+                  onClick={() => setActiveTab('subscribers')}
+                  className="text-xs"
+                >
+                  Подписчики
+                </Button>
+                <Button 
+                  variant={activeTab === 'analytics' ? 'default' : 'ghost'}
+                  size="sm"
+                  onClick={() => setActiveTab('analytics')}
+                  className="text-xs"
+                >
+                  Аналитика
+                </Button>
+                <Button 
+                  variant={activeTab === 'earnings' ? 'default' : 'ghost'}
+                  size="sm"
+                  onClick={() => setActiveTab('earnings')}
+                  className="text-xs"
+                >
+                  Доходы
+                </Button>
+              </div>
+            )}
+
             {/* Обзор */}
-            <TabsContent value="overview" className="space-y-6">
+            <TabsContent value="overview" className="space-y-4 md:space-y-6">
               {/* Основные статистики */}
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <div className={`grid gap-4 md:gap-6 ${
+                isMobile ? 'grid-cols-2' : 'grid-cols-1 md:grid-cols-4'
+              }`}>
                 <Card className="glass-effect border-white/10">
-                  <CardContent className="p-6 text-center">
-                    <Users className="w-8 h-8 text-blue-400 mx-auto mb-2" />
-                    <div className="text-2xl font-bold text-white">{kolStats.totalSubscribers.toLocaleString()}</div>
-                    <div className="text-sm text-gray-400">Подписчиков</div>
-                    <div className="text-xs text-green-400 mt-1">+{kolStats.activeSubscribers} активных</div>
+                  <CardContent className={`text-center ${isMobile ? 'p-4' : 'p-6'}`}>
+                    <Users className={`text-blue-400 mx-auto mb-2 ${isMobile ? 'w-6 h-6' : 'w-8 h-8'}`} />
+                    <div className={`font-bold text-white ${isMobile ? 'text-lg' : 'text-2xl'}`}>
+                      {kolStats.totalSubscribers.toLocaleString()}
+                    </div>
+                    <div className={`text-gray-400 ${isMobile ? 'text-xs' : 'text-sm'}`}>Подписчиков</div>
+                    <div className={`text-green-400 mt-1 ${isMobile ? 'text-xs' : 'text-xs'}`}>
+                      +{kolStats.activeSubscribers} активных
+                    </div>
                   </CardContent>
                 </Card>
                 
                 <Card className="glass-effect border-white/10">
-                  <CardContent className="p-6 text-center">
-                    <Wallet className="w-8 h-8 text-green-400 mx-auto mb-2" />
-                    <div className="text-2xl font-bold text-white">{formatCurrency(kolStats.monthlyRevenue)}</div>
-                    <div className="text-sm text-gray-400">Доход/месяц</div>
-                    <div className="text-xs text-green-400 mt-1">+15% к прошлому месяцу</div>
+                  <CardContent className={`text-center ${isMobile ? 'p-4' : 'p-6'}`}>
+                    <Wallet className={`text-green-400 mx-auto mb-2 ${isMobile ? 'w-6 h-6' : 'w-8 h-8'}`} />
+                    <div className={`font-bold text-white ${isMobile ? 'text-lg' : 'text-2xl'}`}>
+                      {formatCurrency(kolStats.monthlyRevenue)}
+                    </div>
+                    <div className={`text-gray-400 ${isMobile ? 'text-xs' : 'text-sm'}`}>Доход/месяц</div>
+                    <div className={`text-green-400 mt-1 ${isMobile ? 'text-xs' : 'text-xs'}`}>
+                      +15% к прошлому месяцу
+                    </div>
                   </CardContent>
                 </Card>
                 
                 <Card className="glass-effect border-white/10">
-                  <CardContent className="p-6 text-center">
-                    <TrendingUp className="w-8 h-8 text-purple-400 mx-auto mb-2" />
-                    <div className="text-2xl font-bold text-white">{kolStats.winRate}%</div>
-                    <div className="text-sm text-gray-400">Win Rate</div>
-                    <div className="text-xs text-green-400 mt-1">{kolStats.successfulSignals}/{kolStats.totalSignals} сигналов</div>
+                  <CardContent className={`text-center ${isMobile ? 'p-4' : 'p-6'}`}>
+                    <TrendingUp className={`text-purple-400 mx-auto mb-2 ${isMobile ? 'w-6 h-6' : 'w-8 h-8'}`} />
+                    <div className={`font-bold text-white ${isMobile ? 'text-lg' : 'text-2xl'}`}>
+                      {kolStats.winRate}%
+                    </div>
+                    <div className={`text-gray-400 ${isMobile ? 'text-xs' : 'text-sm'}`}>Win Rate</div>
+                    <div className={`text-green-400 mt-1 ${isMobile ? 'text-xs' : 'text-xs'}`}>
+                      {kolStats.successfulSignals}/{kolStats.totalSignals} сигналов
+                    </div>
                   </CardContent>
                 </Card>
                 
                 <Card className="glass-effect border-white/10">
-                  <CardContent className="p-6 text-center">
-                    <Award className="w-8 h-8 text-yellow-400 mx-auto mb-2" />
-                    <div className="text-2xl font-bold text-white">{kolStats.kolPoints.toLocaleString()}</div>
-                    <div className="text-sm text-gray-400">KOL Points</div>
-                    <Badge className="bg-yellow-500/20 text-yellow-400 mt-1">
+                  <CardContent className={`text-center ${isMobile ? 'p-4' : 'p-6'}`}>
+                    <Award className={`text-yellow-400 mx-auto mb-2 ${isMobile ? 'w-6 h-6' : 'w-8 h-8'}`} />
+                    <div className={`font-bold text-white ${isMobile ? 'text-lg' : 'text-2xl'}`}>
+                      {kolStats.kolPoints.toLocaleString()}
+                    </div>
+                    <div className={`text-gray-400 ${isMobile ? 'text-xs' : 'text-sm'}`}>KOL Points</div>
+                    <Badge className="bg-yellow-500/20 text-yellow-400 mt-1 text-xs">
                       {kolStats.rank}
                     </Badge>
                   </CardContent>
                 </Card>
               </div>
 
-              {/* Прогресс до следующего ранга */}
+              {/* Progress */}
               <Card className="glass-effect border-white/10">
-                <CardHeader>
-                  <CardTitle className="text-white flex items-center">
-                    <Target className="w-5 h-5 mr-2" />
+                <CardHeader className={isMobile ? 'p-4 pb-2' : ''}>
+                  <CardTitle className={`text-white flex items-center ${isMobile ? 'text-lg' : ''}`}>
+                    <Target className={`mr-2 ${isMobile ? 'w-4 h-4' : 'w-5 h-5'}`} />
                     Прогресс до Platinum ранга
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className={isMobile ? 'p-4 pt-2' : ''}>
                   <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
+                    <div className={`flex justify-between ${isMobile ? 'text-xs' : 'text-sm'}`}>
                       <span className="text-gray-400">8,750 / 15,000 KOL Points</span>
                       <span className="text-white">58%</span>
                     </div>
                     <Progress value={58} className="h-2" />
-                    <p className="text-xs text-gray-400">
+                    <p className={`text-gray-400 ${isMobile ? 'text-xs' : 'text-xs'}`}>
                       Осталось набрать 6,250 поинтов для следующего ранга
                     </p>
                   </div>
                 </CardContent>
               </Card>
 
-              {/* Последние посты */}
+              {/* Recent posts */}
               <Card className="glass-effect border-white/10">
-                <CardHeader>
-                  <CardTitle className="text-white flex items-center justify-between">
+                <CardHeader className={`${isMobile ? 'p-4 pb-2' : ''}`}>
+                  <CardTitle className={`text-white flex items-center justify-between ${isMobile ? 'text-lg' : ''}`}>
                     <div className="flex items-center">
-                      <Activity className="w-5 h-5 mr-2" />
+                      <Activity className={`mr-2 ${isMobile ? 'w-4 h-4' : 'w-5 h-5'}`} />
                       Последние посты
                     </div>
                     <Button variant="ghost" size="sm" className="text-neon-purple">
@@ -188,7 +250,7 @@ const KolDashboardPage = () => {
                     </Button>
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className={`space-y-4 ${isMobile ? 'p-4 pt-2' : ''}`}>
                   {myPosts.map(post => (
                     <PostCard key={post.id} post={post} />
                   ))}
@@ -196,14 +258,18 @@ const KolDashboardPage = () => {
               </Card>
             </TabsContent>
 
-            {/* Посты */}
-            <TabsContent value="posts" className="space-y-6">
-              <div className="flex justify-between items-center">
+            {/* Posts Tab */}
+            <TabsContent value="posts" className="space-y-4 md:space-y-6">
+              <div className="flex flex-col md:flex-row md:justify-between md:items-center space-y-4 md:space-y-0">
                 <div>
-                  <h2 className="text-xl font-bold text-white">Мои посты ({kolStats.postsCount})</h2>
-                  <p className="text-gray-400">Общие просмотры: {kolStats.totalViews.toLocaleString()}</p>
+                  <h2 className={`font-bold text-white ${isMobile ? 'text-lg' : 'text-xl'}`}>
+                    Мои посты ({kolStats.postsCount})
+                  </h2>
+                  <p className={`text-gray-400 ${isMobile ? 'text-sm' : ''}`}>
+                    Общие просмотры: {kolStats.totalViews.toLocaleString()}
+                  </p>
                 </div>
-                <Button className="bg-neon-purple hover:bg-neon-purple/80">
+                <Button className="bg-neon-purple hover:bg-neon-purple/80 w-full md:w-auto">
                   <Plus className="w-4 h-4 mr-2" />
                   Создать пост
                 </Button>
@@ -212,24 +278,28 @@ const KolDashboardPage = () => {
               <div className="grid gap-4">
                 {feedPosts.slice(0, 8).map(post => (
                   <Card key={post.id} className="glass-effect border-white/10">
-                    <CardContent className="p-4">
-                      <div className="flex justify-between items-start">
+                    <CardContent className={isMobile ? 'p-3' : 'p-4'}>
+                      <div className="flex flex-col md:flex-row md:justify-between md:items-start space-y-3 md:space-y-0">
                         <div className="flex-1">
-                          <p className="text-white mb-2">{post.content}</p>
-                          <div className="flex items-center space-x-4 text-sm text-gray-400">
+                          <p className={`text-white mb-2 ${isMobile ? 'text-sm' : ''}`}>
+                            {post.content}
+                          </p>
+                          <div className={`flex items-center space-x-4 text-gray-400 ${
+                            isMobile ? 'text-xs' : 'text-sm'
+                          }`}>
                             <span className="flex items-center">
-                              <Eye className="w-4 h-4 mr-1" />
+                              <Eye className="w-3 h-3 md:w-4 md:h-4 mr-1" />
                               {Math.floor(Math.random() * 1000) + 100}
                             </span>
                             <span>{post.likes} лайков</span>
                             <span>{post.timestamp}</span>
                           </div>
                         </div>
-                        <div className="flex space-x-2">
-                          <Button size="sm" variant="outline" className="border-white/20">
+                        <div className="flex space-x-2 w-full md:w-auto">
+                          <Button size="sm" variant="outline" className="border-white/20 flex-1 md:flex-none">
                             Редактировать
                           </Button>
-                          <Button size="sm" variant="destructive">
+                          <Button size="sm" variant="destructive" className="flex-1 md:flex-none">
                             Удалить
                           </Button>
                         </div>
@@ -240,16 +310,16 @@ const KolDashboardPage = () => {
               </div>
             </TabsContent>
 
-            {/* Сигналы */}
-            <TabsContent value="signals" className="space-y-6">
-              <div className="flex justify-between items-center">
+            {/* Signals Tab */}
+            <TabsContent value="signals" className="space-y-4 md:space-y-6">
+              <div className="flex flex-col md:flex-row md:justify-between md:items-center space-y-4 md:space-y-0">
                 <div>
-                  <h2 className="text-xl font-bold text-white">Мои сигналы</h2>
-                  <p className="text-gray-400">
+                  <h2 className={`font-bold text-white ${isMobile ? 'text-lg' : 'text-xl'}`}>Мои сигналы</h2>
+                  <p className={`text-gray-400 ${isMobile ? 'text-sm' : ''}`}>
                     {kolStats.successfulSignals} успешных из {kolStats.totalSignals} • Win Rate: {kolStats.winRate}%
                   </p>
                 </div>
-                <Button className="bg-neon-purple hover:bg-neon-purple/80">
+                <Button className="bg-neon-purple hover:bg-neon-purple/80 w-full md:w-auto">
                   <Plus className="w-4 h-4 mr-2" />
                   Новый сигнал
                 </Button>
@@ -258,24 +328,30 @@ const KolDashboardPage = () => {
               <div className="grid gap-4">
                 {recentSignals.map(signal => (
                   <Card key={signal.id} className="glass-effect border-white/10">
-                    <CardContent className="p-4">
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <h3 className="font-bold text-white text-lg">{signal.asset}</h3>
+                    <CardContent className={isMobile ? 'p-3' : 'p-4'}>
+                      <div className="flex flex-col md:flex-row md:justify-between md:items-start space-y-3 md:space-y-0">
+                        <div className="flex-1">
+                          <h3 className={`font-bold text-white ${isMobile ? 'text-base' : 'text-lg'}`}>
+                            {signal.asset}
+                          </h3>
                           <div className="flex items-center space-x-2 mt-1">
                             <Badge className={signal.type === 'Long' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}>
                               {signal.type === 'Long' ? 'LONG' : 'SHORT'}
                             </Badge>
-                            <span className="text-sm text-gray-400">{signal.date}</span>
+                            <span className={`text-gray-400 ${isMobile ? 'text-xs' : 'text-sm'}`}>
+                              {signal.date}
+                            </span>
                           </div>
                         </div>
                         <div className="text-right">
-                          <div className="text-sm text-gray-400">ROI</div>
-                          <div className="text-lg font-bold text-green-400">+{Math.floor(Math.random() * 30) + 5}%</div>
+                          <div className={`text-gray-400 ${isMobile ? 'text-xs' : 'text-sm'}`}>ROI</div>
+                          <div className={`font-bold text-green-400 ${isMobile ? 'text-base' : 'text-lg'}`}>
+                            +{Math.floor(Math.random() * 30) + 5}%
+                          </div>
                         </div>
                       </div>
                       
-                      <div className="grid grid-cols-3 gap-4 mt-4 text-sm">
+                      <div className={`grid grid-cols-3 gap-4 mt-4 ${isMobile ? 'text-xs' : 'text-sm'}`}>
                         <div>
                           <span className="text-gray-400">Entry:</span>
                           <div className="text-white font-medium">${signal.entryPrice}</div>
@@ -295,84 +371,104 @@ const KolDashboardPage = () => {
               </div>
             </TabsContent>
 
-            {/* Подписчики */}
-            <TabsContent value="subscribers" className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Rest of the tabs with similar mobile adaptations */}
+            <TabsContent value="subscribers" className="space-y-4 md:space-y-6">
+              <div className={`grid gap-4 md:gap-6 ${isMobile ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-3'}`}>
                 <Card className="glass-effect border-white/10">
-                  <CardContent className="p-6 text-center">
-                    <div className="text-2xl font-bold text-white">{kolStats.totalSubscribers}</div>
-                    <div className="text-sm text-gray-400">Всего подписчиков</div>
+                  <CardContent className={`text-center ${isMobile ? 'p-4' : 'p-6'}`}>
+                    <div className={`font-bold text-white ${isMobile ? 'text-xl' : 'text-2xl'}`}>
+                      {kolStats.totalSubscribers}
+                    </div>
+                    <div className={`text-gray-400 ${isMobile ? 'text-sm' : 'text-sm'}`}>Всего подписчиков</div>
                   </CardContent>
                 </Card>
                 <Card className="glass-effect border-white/10">
-                  <CardContent className="p-6 text-center">
-                    <div className="text-2xl font-bold text-green-400">{kolStats.activeSubscribers}</div>
-                    <div className="text-sm text-gray-400">Активных</div>
+                  <CardContent className={`text-center ${isMobile ? 'p-4' : 'p-6'}`}>
+                    <div className={`font-bold text-green-400 ${isMobile ? 'text-xl' : 'text-2xl'}`}>
+                      {kolStats.activeSubscribers}
+                    </div>
+                    <div className={`text-gray-400 ${isMobile ? 'text-sm' : 'text-sm'}`}>Активных</div>
                   </CardContent>
                 </Card>
                 <Card className="glass-effect border-white/10">
-                  <CardContent className="p-6 text-center">
-                    <div className="text-2xl font-bold text-blue-400">+{Math.floor(Math.random() * 50) + 20}</div>
-                    <div className="text-sm text-gray-400">За месяц</div>
+                  <CardContent className={`text-center ${isMobile ? 'p-4' : 'p-6'}`}>
+                    <div className={`font-bold text-blue-400 ${isMobile ? 'text-xl' : 'text-2xl'}`}>
+                      +{Math.floor(Math.random() * 50) + 20}
+                    </div>
+                    <div className={`text-gray-400 ${isMobile ? 'text-sm' : 'text-sm'}`}>За месяц</div>
                   </CardContent>
                 </Card>
               </div>
 
               <Card className="glass-effect border-white/10">
-                <CardHeader>
-                  <CardTitle className="text-white">Рост подписчиков</CardTitle>
+                <CardHeader className={isMobile ? 'p-4' : ''}>
+                  <CardTitle className={`text-white ${isMobile ? 'text-lg' : ''}`}>Рост подписчиков</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <div className="text-center py-8">
-                    <BarChart3 className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <p className="text-gray-400">График роста подписчиков будет здесь</p>
+                <CardContent className={isMobile ? 'p-4' : ''}>
+                  <div className={`text-center ${isMobile ? 'py-6' : 'py-8'}`}>
+                    <BarChart3 className={`text-gray-400 mx-auto mb-4 ${isMobile ? 'w-8 h-8' : 'w-12 h-12'}`} />
+                    <p className={`text-gray-400 ${isMobile ? 'text-sm' : ''}`}>
+                      График роста подписчиков будет здесь
+                    </p>
                   </div>
                 </CardContent>
               </Card>
             </TabsContent>
 
-            {/* Аналитика */}
-            <TabsContent value="analytics" className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Analytics Tab */}
+            <TabsContent value="analytics" className="space-y-4 md:space-y-6">
+              <div className={`grid gap-4 md:gap-6 ${isMobile ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'}`}>
                 <Card className="glass-effect border-white/10">
-                  <CardHeader>
-                    <CardTitle className="text-white">Статистика торговли</CardTitle>
+                  <CardHeader className={isMobile ? 'p-4 pb-2' : ''}>
+                    <CardTitle className={`text-white ${isMobile ? 'text-lg' : ''}`}>
+                      Статистика торговли
+                    </CardTitle>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className={`${isMobile ? 'p-4 pt-2' : ''}`}>
                     <div className="space-y-4">
                       <div className="flex justify-between">
-                        <span className="text-gray-400">Средний ROI:</span>
-                        <span className="text-white font-bold">+{kolStats.averageROI}%</span>
+                        <span className={`text-gray-400 ${isMobile ? 'text-sm' : ''}`}>Средний ROI:</span>
+                        <span className={`text-white font-bold ${isMobile ? 'text-sm' : ''}`}>
+                          +{kolStats.averageROI}%
+                        </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-400">Лучший сигнал:</span>
-                        <span className="text-green-400 font-bold">+85%</span>
+                        <span className={`text-gray-400 ${isMobile ? 'text-sm' : ''}`}>Лучший сигнал:</span>
+                        <span className={`text-green-400 font-bold ${isMobile ? 'text-sm' : ''}`}>+85%</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-400">Худший сигнал:</span>
-                        <span className="text-red-400 font-bold">-12%</span>
+                        <span className={`text-gray-400 ${isMobile ? 'text-sm' : ''}`}>Худший сигнал:</span>
+                        <span className={`text-red-400 font-bold ${isMobile ? 'text-sm' : ''}`}>-12%</span>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
 
                 <Card className="glass-effect border-white/10">
-                  <CardHeader>
-                    <CardTitle className="text-white">Популярность контента</CardTitle>
+                  <CardHeader className={isMobile ? 'p-4 pb-2' : ''}>
+                    <CardTitle className={`text-white ${isMobile ? 'text-lg' : ''}`}>
+                      Популярность контента
+                    </CardTitle>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className={`${isMobile ? 'p-4 pt-2' : ''}`}>
                     <div className="space-y-4">
                       <div className="flex justify-between">
-                        <span className="text-gray-400">Всего просмотров:</span>
-                        <span className="text-white font-bold">{kolStats.totalViews.toLocaleString()}</span>
+                        <span className={`text-gray-400 ${isMobile ? 'text-sm' : ''}`}>Всего просмотров:</span>
+                        <span className={`text-white font-bold ${isMobile ? 'text-sm' : ''}`}>
+                          {kolStats.totalViews.toLocaleString()}
+                        </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-400">Среднее лайков:</span>
-                        <span className="text-white font-bold">{Math.floor(Math.random() * 100) + 50}</span>
+                        <span className={`text-gray-400 ${isMobile ? 'text-sm' : ''}`}>Среднее лайков:</span>
+                        <span className={`text-white font-bold ${isMobile ? 'text-sm' : ''}`}>
+                          {Math.floor(Math.random() * 100) + 50}
+                        </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-400">Вовлечённость:</span>
-                        <span className="text-white font-bold">{Math.floor(Math.random() * 10) + 5}%</span>
+                        <span className={`text-gray-400 ${isMobile ? 'text-sm' : ''}`}>Вовлечённость:</span>
+                        <span className={`text-white font-bold ${isMobile ? 'text-sm' : ''}`}>
+                          {Math.floor(Math.random() * 10) + 5}%
+                        </span>
                       </div>
                     </div>
                   </CardContent>
@@ -380,46 +476,58 @@ const KolDashboardPage = () => {
               </div>
             </TabsContent>
 
-            {/* Доходы */}
-            <TabsContent value="earnings" className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Earnings Tab */}
+            <TabsContent value="earnings" className="space-y-4 md:space-y-6">
+              <div className={`grid gap-4 md:gap-6 ${isMobile ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-3'}`}>
                 <Card className="glass-effect border-white/10">
-                  <CardContent className="p-6 text-center">
-                    <DollarSign className="w-8 h-8 text-green-400 mx-auto mb-2" />
-                    <div className="text-2xl font-bold text-white">{formatCurrency(kolStats.totalRevenue)}</div>
-                    <div className="text-sm text-gray-400">Общий доход</div>
+                  <CardContent className={`text-center ${isMobile ? 'p-4' : 'p-6'}`}>
+                    <DollarSign className={`text-green-400 mx-auto mb-2 ${isMobile ? 'w-6 h-6' : 'w-8 h-8'}`} />
+                    <div className={`font-bold text-white ${isMobile ? 'text-xl' : 'text-2xl'}`}>
+                      {formatCurrency(kolStats.totalRevenue)}
+                    </div>
+                    <div className={`text-gray-400 ${isMobile ? 'text-sm' : 'text-sm'}`}>Общий доход</div>
                   </CardContent>
                 </Card>
                 
                 <Card className="glass-effect border-white/10">
-                  <CardContent className="p-6 text-center">
-                    <TrendingUp className="w-8 h-8 text-blue-400 mx-auto mb-2" />
-                    <div className="text-2xl font-bold text-white">{formatCurrency(kolStats.monthlyRevenue)}</div>
-                    <div className="text-sm text-gray-400">За этот месяц</div>
+                  <CardContent className={`text-center ${isMobile ? 'p-4' : 'p-6'}`}>
+                    <TrendingUp className={`text-blue-400 mx-auto mb-2 ${isMobile ? 'w-6 h-6' : 'w-8 h-8'}`} />
+                    <div className={`font-bold text-white ${isMobile ? 'text-xl' : 'text-2xl'}`}>
+                      {formatCurrency(kolStats.monthlyRevenue)}
+                    </div>
+                    <div className={`text-gray-400 ${isMobile ? 'text-sm' : 'text-sm'}`}>За этот месяц</div>
                   </CardContent>
                 </Card>
                 
                 <Card className="glass-effect border-white/10">
-                  <CardContent className="p-6 text-center">
-                    <Users className="w-8 h-8 text-purple-400 mx-auto mb-2" />
-                    <div className="text-2xl font-bold text-white">{formatCurrency(kolStats.monthlyRevenue / kolStats.activeSubscribers)}</div>
-                    <div className="text-sm text-gray-400">На подписчика</div>
+                  <CardContent className={`text-center ${isMobile ? 'p-4' : 'p-6'}`}>
+                    <Users className={`text-purple-400 mx-auto mb-2 ${isMobile ? 'w-6 h-6' : 'w-8 h-8'}`} />
+                    <div className={`font-bold text-white ${isMobile ? 'text-xl' : 'text-2xl'}`}>
+                      {formatCurrency(kolStats.monthlyRevenue / kolStats.activeSubscribers)}
+                    </div>
+                    <div className={`text-gray-400 ${isMobile ? 'text-sm' : 'text-sm'}`}>На подписчика</div>
                   </CardContent>
                 </Card>
               </div>
 
               <Card className="glass-effect border-white/10">
-                <CardHeader>
-                  <CardTitle className="text-white">История доходов</CardTitle>
+                <CardHeader className={isMobile ? 'p-4' : ''}>
+                  <CardTitle className={`text-white ${isMobile ? 'text-lg' : ''}`}>История доходов</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className={isMobile ? 'p-4' : ''}>
                   <div className="space-y-4">
                     {monthlyData.map((month, index) => (
-                      <div key={index} className="flex justify-between items-center p-3 bg-black/20 rounded-lg">
-                        <span className="text-white">{month.month} 2024</span>
+                      <div key={index} className={`flex justify-between items-center bg-black/20 rounded-lg ${
+                        isMobile ? 'p-3' : 'p-3'
+                      }`}>
+                        <span className={`text-white ${isMobile ? 'text-sm' : ''}`}>{month.month} 2024</span>
                         <div className="text-right">
-                          <div className="text-white font-bold">{formatCurrency(month.revenue)}</div>
-                          <div className="text-sm text-gray-400">+{month.subscribers} подписчиков</div>
+                          <div className={`text-white font-bold ${isMobile ? 'text-sm' : ''}`}>
+                            {formatCurrency(month.revenue)}
+                          </div>
+                          <div className={`text-gray-400 ${isMobile ? 'text-xs' : 'text-sm'}`}>
+                            +{month.subscribers} подписчиков
+                          </div>
                         </div>
                       </div>
                     ))}

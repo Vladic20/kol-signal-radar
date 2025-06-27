@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Bell, Search } from 'lucide-react';
+import { Bell, Search, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -10,8 +10,18 @@ const MobileHeader = () => {
   const kolPoints = Math.floor(Math.random() * 2000) + 500;
   const userRank = kolPoints > 1500 ? 'Gold' : kolPoints > 1000 ? 'Silver' : 'Bronze';
 
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: 'KOL Hub - Мой профиль',
+        text: `Смотри, я в топе по WinRate! Мой ранг: ${userRank}`,
+        url: window.location.href,
+      });
+    }
+  };
+
   return (
-    <div className="md:hidden fixed top-0 left-0 right-0 bg-black/95 border-b border-white/10 px-4 py-3 z-40">
+    <div className="md:hidden fixed top-0 left-0 right-0 bg-black/95 backdrop-blur-sm border-b border-white/10 px-4 py-3 z-40">
       <div className="flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center space-x-2">
@@ -53,6 +63,11 @@ const MobileHeader = () => {
                 3
               </span>
             </Button>
+            {user && (
+              <Button size="sm" variant="ghost" className="w-8 h-8 p-0" onClick={handleShare}>
+                <Share2 className="w-4 h-4" />
+              </Button>
+            )}
           </div>
         </div>
       </div>

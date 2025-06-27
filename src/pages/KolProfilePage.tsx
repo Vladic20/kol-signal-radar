@@ -11,6 +11,7 @@ import ProfileHeader from '@/components/kol-profile/ProfileHeader';
 import ProfileActions from '@/components/kol-profile/ProfileActions';
 import TradingStatsGrid from '@/components/kol-profile/TradingStatsGrid';
 import ProfileTabs from '@/components/kol-profile/ProfileTabs';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const KolProfilePage = () => {
   const { id } = useParams<{ id: string }>();
@@ -18,29 +19,26 @@ const KolProfilePage = () => {
   const { user } = useAuth();
   const [isFollowing, setIsFollowing] = useState(false);
   const [activeTab, setActiveTab] = useState('posts');
+  const isMobile = useIsMobile();
 
   const kol = kols.find(k => k.id === parseInt(id || '0'));
   if (!kol) {
     return (
       <Layout>
-        <div className="py-8 text-center">
-          <h1 className="text-2xl font-bold text-white mb-4">Трейдер не найден</h1>
+        <div className={`py-4 md:py-8 text-center px-2 md:px-0 ${isMobile ? 'max-w-full' : ''}`}>
+          <h1 className="text-xl md:text-2xl font-bold text-white mb-4">Трейдер не найден</h1>
           <Link to="/leaderboard">
-            <Button variant="outline">Вернуться к лидерборду</Button>
+            <Button variant="outline" className="w-full md:w-auto">Вернуться к лидерборду</Button>
           </Link>
         </div>
       </Layout>
     );
   }
 
-  // Get posts by this KOL
   const kolPosts = feedPosts.filter(post => post.authorId === kol.id);
   const kolSignals = signals.filter(signal => signal.kolId === kol.id);
-
-  // Calculate total followers across platforms
   const totalFollowers = kol.platforms.reduce((sum, platform) => sum + platform.followers, 0);
 
-  // Mock stats
   const stats = {
     posts: kolPosts.length,
     signals: kolSignals.length,
@@ -58,10 +56,12 @@ const KolProfilePage = () => {
 
   return (
     <Layout>
-      <div className="max-w-4xl mx-auto py-4 md:py-8 animate-fade-in">
+      <div className={`max-w-4xl mx-auto py-4 md:py-8 animate-fade-in px-2 md:px-0 ${
+        isMobile ? 'max-w-full' : ''
+      }`}>
         <ProfileHeader kol={kol} stats={stats} />
         
-        <div className="flex justify-end mb-6 px-4 md:px-0">
+        <div className={`flex ${isMobile ? 'flex-col space-y-4' : 'justify-end'} mb-6`}>
           <ProfileActions 
             user={user} 
             isFollowing={isFollowing} 

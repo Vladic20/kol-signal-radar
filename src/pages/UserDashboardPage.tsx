@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -22,11 +22,21 @@ import {
   Trophy,
   Share2
 } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const UserDashboardPage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('overview');
+  const isMobile = useIsMobile();
+
+  // Redirect mobile users to mobile profile
+  useEffect(() => {
+    if (isMobile) {
+      navigate('/mobile-profile');
+      return;
+    }
+  }, [isMobile, navigate]);
 
   // Моковые данные пользователя
   const userStats = {

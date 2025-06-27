@@ -12,12 +12,14 @@ import {
 } from '@/components/ui/drawer';
 import { useAuth } from '@/contexts/AuthContext';
 import { 
+  Home,
+  TrendingUp,
   Signal, 
-  Settings, 
-  Trophy, 
-  Share2, 
+  Trophy,
   Copy,
-  PieChart,
+  Newspaper,
+  Award,
+  Settings, 
   HelpCircle,
   X,
   LogOut
@@ -37,23 +39,25 @@ const MobileSidebar = ({ isOpen, setIsOpen }: MobileSidebarProps) => {
 
   const menuSections = [
     {
+      title: 'Основное',
+      items: [
+        { href: '/', icon: Home, label: 'Главная' },
+        { href: '/feed', icon: TrendingUp, label: 'Лента' },
+        { href: '/signals', icon: Signal, label: 'Сигналы' },
+        { href: '/leaderboard', icon: Trophy, label: 'Рейтинг' },
+      ]
+    },
+    {
       title: 'Торговля',
       items: [
-        { href: '/signals', icon: Signal, label: 'Сигналы' },
-        { href: '/token-positions', icon: PieChart, label: 'Long/Short' },
         { href: '/copy-trading', icon: Copy, label: 'Копитрейдинг' },
+        { href: '/crypto-news', icon: Newspaper, label: 'Новости' },
       ]
     },
     {
-      title: 'Социальное',
+      title: 'Профиль',
       items: [
-        { href: '/dashboard/referrals', icon: Share2, label: 'Рефералы' },
-        { href: '/dashboard/achievements', icon: Trophy, label: 'Достижения' },
-      ]
-    },
-    {
-      title: 'Настройки',
-      items: [
+        { href: '/achievements', icon: Award, label: 'Достижения' },
         { href: '/dashboard/settings', icon: Settings, label: 'Настройки' },
         { href: '/faq', icon: HelpCircle, label: 'Поддержка' },
       ]
@@ -84,27 +88,29 @@ const MobileSidebar = ({ isOpen, setIsOpen }: MobileSidebarProps) => {
           {/* User Profile Section */}
           {user && (
             <div className="p-4 border-b border-white/10">
-              <div className="flex items-center space-x-3">
-                <Avatar className="w-14 h-14">
-                  <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.name}`} />
-                  <AvatarFallback className="bg-neon-purple/20 text-neon-purple text-lg">
-                    {user?.name?.[0]}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="flex-1">
-                  <p className="text-white font-semibold text-lg">@{user?.name}</p>
-                  <div className="flex items-center space-x-2 text-sm mt-1">
-                    <span className={`px-2 py-1 rounded-full text-xs ${
-                      userRank === 'Gold' ? 'bg-yellow-500/20 text-yellow-400' :
-                      userRank === 'Silver' ? 'bg-gray-400/20 text-gray-300' :
-                      'bg-orange-500/20 text-orange-400'
-                    }`}>
-                      {userRank}
-                    </span>
-                    <span className="text-neon-purple font-medium">💠 {kolPoints}</span>
+              <Link to="/mobile-profile" onClick={handleItemClick}>
+                <div className="flex items-center space-x-3 p-2 rounded-lg hover:bg-white/5 transition-colors">
+                  <Avatar className="w-12 h-12">
+                    <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.name}`} />
+                    <AvatarFallback className="bg-neon-purple/20 text-neon-purple">
+                      {user?.name?.[0]}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1">
+                    <p className="text-white font-medium">@{user?.name}</p>
+                    <div className="flex items-center space-x-2 text-sm mt-1">
+                      <span className={`px-2 py-1 rounded-full text-xs ${
+                        userRank === 'Gold' ? 'bg-yellow-500/20 text-yellow-400' :
+                        userRank === 'Silver' ? 'bg-gray-400/20 text-gray-300' :
+                        'bg-orange-500/20 text-orange-400'
+                      }`}>
+                        {userRank}
+                      </span>
+                      <span className="text-neon-purple font-medium">💠 {kolPoints}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             </div>
           )}
 

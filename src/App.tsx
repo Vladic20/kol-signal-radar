@@ -14,9 +14,11 @@ import SignalsPage from './pages/SignalsPage';
 import TokenPositionsPage from './pages/TokenPositionsPage';
 import CryptoNewsPage from './pages/CryptoNewsPage';
 import FaqPage from './pages/FaqPage';
+import CreatePostPage from './pages/CreatePostPage';
+import AchievementsPage from './pages/AchievementsPage';
+import MobileProfilePage from './pages/MobileProfilePage';
 import { AuthProvider } from './contexts/AuthContext';
 import { LanguageProvider } from './contexts/LanguageContext';
-import MobileProfilePage from './pages/MobileProfilePage';
 
 function App() {
   return (
@@ -40,6 +42,8 @@ function App() {
               <Route path="/token-positions" element={<TokenPositionsPage />} />
               <Route path="/crypto-news" element={<CryptoNewsPage />} />
               <Route path="/faq" element={<FaqPage />} />
+              <Route path="/create-post" element={<CreatePostPage />} />
+              <Route path="/achievements" element={<AchievementsPage />} />
               <Route path="/mobile-profile" element={<MobileProfilePage />} />
             </Routes>
           </div>

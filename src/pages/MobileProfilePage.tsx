@@ -7,7 +7,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { useAuth } from '@/contexts/AuthContext';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { kols } from '@/data/mockData';
 import { feedPosts } from '@/data/feedData';
 import { PostCard } from '@/components/social/PostCard';
 import { 
@@ -19,7 +18,9 @@ import {
   Trophy,
   BarChart3,
   Edit3,
-  ChevronRight
+  ChevronRight,
+  Bookmark,
+  Award
 } from 'lucide-react';
 
 const MobileProfilePage = () => {
@@ -48,10 +49,35 @@ const MobileProfilePage = () => {
   }
 
   const quickActions = [
+    { 
+      icon: Users, 
+      label: 'Мои подписки', 
+      action: () => navigate('/following'),
+      count: userStats.following
+    },
+    { 
+      icon: Bookmark, 
+      label: 'Сохранённое', 
+      action: () => navigate('/saved'),
+      count: 12
+    },
+    { 
+      icon: Copy, 
+      label: 'Мои копии', 
+      action: () => navigate('/copy-trading'),
+      count: userStats.activeCopies
+    },
+    { 
+      icon: Award, 
+      label: 'Достижения', 
+      action: () => navigate('/achievements'),
+      count: 4
+    },
+  ];
+
+  const profileActions = [
     { icon: Settings, label: 'Настройки', action: () => navigate('/dashboard') },
     { icon: Share2, label: 'Поделиться', action: () => {} },
-    { icon: Trophy, label: 'Достижения', action: () => navigate('/dashboard/achievements') },
-    { icon: Copy, label: 'Копитрейдинг', action: () => navigate('/copy-trading') },
   ];
 
   return (
@@ -59,7 +85,7 @@ const MobileProfilePage = () => {
       {/* Profile Header */}
       <div className="px-4 mb-6">
         {/* User Info */}
-        <div className="flex items-start justify-between mb-4">
+        <div className="flex items-start justify-between mb-6">
           <div className="flex items-center space-x-4">
             <Avatar className="w-20 h-20 border-2 border-neon-purple/20">
               <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.name}`} />
@@ -85,6 +111,21 @@ const MobileProfilePage = () => {
           <Button variant="outline" size="sm" className="border-white/20">
             <Edit3 className="w-4 h-4" />
           </Button>
+        </div>
+
+        {/* Profile Actions */}
+        <div className="grid grid-cols-2 gap-3 mb-6">
+          {profileActions.map((action, index) => (
+            <Button
+              key={index}
+              variant="outline"
+              className="h-12 border-white/20 text-white justify-center space-x-2"
+              onClick={action.action}
+            >
+              <action.icon className="w-4 h-4" />
+              <span className="text-sm">{action.label}</span>
+            </Button>
+          ))}
         </div>
 
         {/* Stats Row */}
@@ -129,17 +170,22 @@ const MobileProfilePage = () => {
         </div>
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-2 gap-3 mb-6">
+        <div className="grid grid-cols-1 gap-2 mb-6">
           {quickActions.map((action, index) => (
             <Button
               key={index}
-              variant="outline"
-              className="h-12 border-white/20 text-white justify-start space-x-3"
+              variant="ghost"
+              className="h-14 border border-white/10 text-white justify-between hover:bg-white/5 px-4"
               onClick={action.action}
             >
-              <action.icon className="w-4 h-4" />
-              <span className="text-sm">{action.label}</span>
-              <ChevronRight className="w-4 h-4 ml-auto" />
+              <div className="flex items-center space-x-3">
+                <action.icon className="w-5 h-5" />
+                <span className="text-sm font-medium">{action.label}</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="text-sm text-gray-400">{action.count}</span>
+                <ChevronRight className="w-4 h-4 text-gray-400" />
+              </div>
             </Button>
           ))}
         </div>
@@ -219,6 +265,13 @@ const MobileProfilePage = () => {
                       <div className="text-xs text-gray-400">Получено</div>
                     </div>
                   </div>
+                  <Button 
+                    variant="outline" 
+                    className="w-full mt-4 border-white/20"
+                    onClick={() => navigate('/achievements')}
+                  >
+                    Смотреть все достижения
+                  </Button>
                 </CardContent>
               </Card>
             </div>

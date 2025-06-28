@@ -25,7 +25,8 @@ import {
   LogOut,
   Users,
   Share2,
-  PieChart
+  PieChart,
+  User
 } from 'lucide-react';
 
 interface MobileSidebarProps {
@@ -61,6 +62,7 @@ const MobileSidebar = ({ isOpen, setIsOpen }: MobileSidebarProps) => {
     {
       title: 'Профиль',
       items: [
+        { href: '/user-dashboard', icon: User, label: 'Личный кабинет' },
         { href: '/subscriptions', icon: Users, label: 'Подписки' },
         { href: '/achievements', icon: Award, label: 'Достижения' },
         { href: '/referrals', icon: Share2, label: 'Рефералы' },
@@ -99,7 +101,7 @@ const MobileSidebar = ({ isOpen, setIsOpen }: MobileSidebarProps) => {
           {/* User Profile Section */}
           {user && (
             <div className="p-4 border-b border-white/10">
-              <Link to="/mobile-profile" onClick={handleItemClick}>
+              <Link to="/user-dashboard" onClick={handleItemClick}>
                 <div className="flex items-center space-x-3 p-2 rounded-lg hover:bg-white/5 transition-colors">
                   <Avatar className="w-12 h-12">
                     <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.name}`} />

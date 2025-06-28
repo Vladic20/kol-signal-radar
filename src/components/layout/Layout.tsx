@@ -1,11 +1,12 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import DashboardSidebar from '../dashboard/DashboardSidebar';
 import BottomNavigation from './BottomNavigation';
 import MobileHeader from './MobileHeader';
 import FloatingCreateButton from '../common/FloatingCreateButton';
+import CreatePostModal from '../social/CreatePostModal';
 import { useAuth } from '@/contexts/AuthContext';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -17,6 +18,12 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children, showSidebar = true }) => {
   const { user } = useAuth();
   const isMobile = useIsMobile();
+  const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
+
+  // Global create post handler
+  const handleCreatePost = () => {
+    setIsCreatePostModalOpen(true);
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-background bg-mesh w-full">
@@ -49,11 +56,21 @@ const Layout: React.FC<LayoutProps> = ({ children, showSidebar = true }) => {
       {/* Desktop Footer */}
       {!isMobile && <Footer />}
       
-      {/* Mobile Bottom Navigation */}
-      {isMobile && <BottomNavigation />}
+      {/* Mobile Bottom Navigation with integrated create button */}
+      {isMobile && (
+        <BottomNavigation 
+          onCreatePost={handleCreatePost}
+        />
+      )}
       
-      {/* Floating Create Button */}
+      {/* Floating Create Button for Desktop */}
       {user && <FloatingCreateButton />}
+      
+      {/* Global Create Post Modal */}
+      <CreatePostModal 
+        isOpen={isCreatePostModalOpen} 
+        onClose={() => setIsCreatePostModalOpen(false)}
+      />
     </div>
   );
 };

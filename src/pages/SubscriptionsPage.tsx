@@ -153,19 +153,19 @@ const SubscriptionsPage = () => {
                 <CardContent className="p-4">
                   <div className="flex items-start space-x-3">
                     <Avatar className="w-10 h-10">
-                      <AvatarImage src={post.author.avatar} alt={post.author.name} />
-                      <AvatarFallback>{post.author.name[0]}</AvatarFallback>
+                      <AvatarImage src={post.authorAvatar} alt={post.authorName} />
+                      <AvatarFallback>{post.authorName[0]}</AvatarFallback>
                     </Avatar>
                     <div className="flex-1">
                       <div className="flex items-center space-x-2 mb-2">
-                        <span className="font-medium text-white">{post.author.name}</span>
+                        <span className="font-medium text-white">{post.authorName}</span>
                         <span className="text-sm text-gray-400">{post.timestamp}</span>
                       </div>
                       <p className="text-gray-300 text-sm line-clamp-2">{post.content}</p>
                       <div className="flex items-center space-x-4 mt-2 text-sm text-gray-400">
                         <span>❤️ {post.likes}</span>
                         <span>💬 {post.comments}</span>
-                        <span>🔄 {post.shares}</span>
+                        <span>🔄 {post.reposts}</span>
                       </div>
                     </div>
                   </div>

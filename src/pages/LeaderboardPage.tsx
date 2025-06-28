@@ -4,10 +4,14 @@ import Layout from '@/components/layout/Layout';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { KOLTableRow } from '@/components/ui/kol-table-row';
+import { Card, CardContent } from '@/components/ui/card';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { kols } from '@/data/mockData';
-import { Search } from 'lucide-react';
+import { Search, ExternalLink, Copy, Users, TrendingUp } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useNavigate } from 'react-router-dom';
 
 const LeaderboardPage: React.FC = () => {
   const { t } = useLanguage();
@@ -15,6 +19,7 @@ const LeaderboardPage: React.FC = () => {
   const [sortBy, setSortBy] = useState('rank');
   const [platformFilter, setPlatformFilter] = useState('all');
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
 
   const filteredAndSortedKols = useMemo(() => {
     let filtered = kols.filter(kol => 
@@ -37,6 +42,15 @@ const LeaderboardPage: React.FC = () => {
 
     return filtered;
   }, [searchTerm, sortBy, platformFilter]);
+
+  const handleKolClick = (kolId: number) => {
+    navigate(`/kol-profile/${kolId}`);
+  };
+
+  const handleCopyTrading = (kolId: number, e: React.MouseEvent) => {
+    e.stopPropagation();
+    navigate('/copy-trading');
+  };
 
   return (
     <Layout showSidebar={true}>
@@ -84,11 +98,117 @@ const LeaderboardPage: React.FC = () => {
           </Select>
         </div>
 
-        {/* Leaderboard Table */}
+        {/* KOL Cards */}
         <div className="space-y-3 md:space-y-4 px-2 md:px-0">
-          {filteredAndSortedKols.map((kol, index) => (
-            <KOLTableRow key={kol.id} kol={kol} rank={index + 1} />
-          ))}
+          {filteredAndSortedKols.map((kol, index) => {
+            const roi = Math.floor(Math.random() * 200 + 50);
+            const winRate = Math.floor(Math.random() * 30 + 65);
+            const engagement = Math.floor(Math.random() * 10 + 2);
+            
+            return (
+              <Card 
+                key={kol.id} 
+                className="glass-effect border-white/10 hover:border-white/20 transition-all duration-200 cursor-pointer"
+                onClick={() => handleKolClick(kol.id)}
+              >
+                <CardContent className="p-4">
+                  <div className="flex items-start space-x-4">
+                    {/* Rank Badge */}
+                    <div className="flex flex-col items-center">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
+                        index === 0 ? 'bg-yellow-500/20 text-yellow-400' :
+                        index === 1 ? 'bg-gray-400/20 text-gray-300' :
+                        index === 2 ? 'bg-orange-500/20 text-orange-400' :
+                        'bg-gray-600/20 text-gray-400'
+                      }`}>
+                        {index + 1}
+                      </div>
+                    </div>
+
+                    {/* Avatar and Info */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between mb-2">
+                        <div className="flex items-center space-x-3">
+                          <Avatar className="w-12 h-12">
+                            <AvatarImage src={kol.avatar} alt={kol.name} />
+                            <AvatarFallback className="bg-neon-purple/20 text-neon-purple">
+                              {kol.name[0]}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <h3 className="font-semibold text-white text-lg">{kol.name}</h3>
+                            <div className="flex items-center space-x-2 text-sm text-gray-400">
+                              <Users className="w-4 h-4" />
+                              <span>{kol.platforms[0].followers.toLocaleString()}</span>
+                              <span>•</span>
+                              <span>{engagement}% Engagement</span>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Desktop Stats */}
+                        {!isMobile && (
+                          <div className="text-right">
+                            <div className="text-green-400 font-bold text-lg">+{roi}%</div>
+                            <div className="text-sm text-gray-400">ROI</div>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Stats Row */}
+                      <div className="grid grid-cols-3 gap-4 mb-3">
+                        <div className="text-center">
+                          <div className="text-lg font-bold text-white">{kol.accuracy}%</div>
+                          <div className="text-xs text-gray-400">Accuracy</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-lg font-bold text-green-400">+{roi}%</div>
+                          <div className="text-xs text-gray-400">ROI</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-lg font-bold text-blue-400">{winRate}%</div>
+                          <div className="text-xs text-gray-400">Win Rate</div>
+                        </div>
+                      </div>
+
+                      {/* Platforms */}
+                      <div className="flex items-center space-x-2 mb-3">
+                        {kol.platforms.map((platform, idx) => (
+                          <Badge key={idx} variant="outline" className="border-white/20 text-gray-300 text-xs">
+                            {platform.name}
+                          </Badge>
+                        ))}
+                      </div>
+
+                      {/* Action Buttons */}
+                      <div className="flex space-x-2">
+                        <Button 
+                          size="sm" 
+                          variant="outline" 
+                          className="border-white/20 flex-1"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleKolClick(kol.id);
+                          }}
+                        >
+                          <ExternalLink className="w-4 h-4 mr-1" />
+                          Профиль
+                        </Button>
+                        <Button 
+                          size="sm" 
+                          className="bg-neon-purple hover:bg-neon-purple/80 flex-1"
+                          onClick={(e) => handleCopyTrading(kol.id, e)}
+                        >
+                          <Copy className="w-4 h-4 mr-1" />
+                          Копировать
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       </div>
     </Layout>

@@ -1,16 +1,25 @@
 
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Home, TrendingUp, Trophy, User } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Home, TrendingUp, Trophy, User, Plus } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 
 const BottomNavigation = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { user } = useAuth();
 
   const navItems = [
     { href: '/', icon: Home, label: 'Главная' },
     { href: '/feed', icon: TrendingUp, label: 'Лента' },
+    { 
+      href: '/create-post', 
+      icon: Plus, 
+      label: 'Пост', 
+      isCreateButton: true,
+      onClick: () => navigate('/create-post')
+    },
     { href: '/leaderboard', icon: Trophy, label: 'Рейтинг' },
     { href: user ? '/mobile-profile' : '/login', icon: User, label: 'Профиль' },
   ];
@@ -21,6 +30,18 @@ const BottomNavigation = () => {
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = location.pathname === item.href;
+          
+          if (item.isCreateButton) {
+            return (
+              <Button
+                key={item.href}
+                onClick={item.onClick}
+                className="w-12 h-12 rounded-full bg-neon-purple hover:bg-neon-purple/80 flex items-center justify-center shadow-lg"
+              >
+                <Icon className="w-6 h-6 text-white" />
+              </Button>
+            );
+          }
           
           return (
             <Link

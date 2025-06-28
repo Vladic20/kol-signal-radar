@@ -24,7 +24,8 @@ import {
   X,
   LogOut,
   Users,
-  Share2
+  Share2,
+  PieChart
 } from 'lucide-react';
 
 interface MobileSidebarProps {
@@ -53,21 +54,22 @@ const MobileSidebar = ({ isOpen, setIsOpen }: MobileSidebarProps) => {
       title: 'Торговля',
       items: [
         { href: '/copy-trading', icon: Copy, label: 'Копитрейдинг' },
+        { href: '/token-positions', icon: PieChart, label: 'Long/Short' },
         { href: '/crypto-news', icon: Newspaper, label: 'Новости' },
       ]
     },
     {
-      title: 'Социальное',
+      title: 'Профиль',
       items: [
         { href: '/subscriptions', icon: Users, label: 'Подписки' },
-        { href: '/referrals', icon: Share2, label: 'Рефералы' },
         { href: '/achievements', icon: Award, label: 'Достижения' },
+        { href: '/referrals', icon: Share2, label: 'Рефералы' },
+        { href: '/settings', icon: Settings, label: 'Настройки' },
       ]
     },
     {
-      title: 'Настройки',
+      title: 'Поддержка',
       items: [
-        { href: '/settings', icon: Settings, label: 'Настройки' },
         { href: '/faq', icon: HelpCircle, label: 'Поддержка' },
       ]
     }

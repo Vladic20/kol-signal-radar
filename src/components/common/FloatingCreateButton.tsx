@@ -10,8 +10,8 @@ const FloatingCreateButton = () => {
   const location = useLocation();
   const isMobile = useIsMobile();
 
-  // Hide button on create post page
-  if (location.pathname === '/create-post') {
+  // Hide button on create post page and on mobile (since we have it in bottom nav)
+  if (location.pathname === '/create-post' || isMobile) {
     return null;
   }
 
@@ -22,13 +22,9 @@ const FloatingCreateButton = () => {
   return (
     <Button
       onClick={handleClick}
-      className={`fixed ${
-        isMobile 
-          ? 'bottom-28 right-4 w-14 h-14 rounded-full shadow-lg z-40' 
-          : 'bottom-6 right-6 w-16 h-16 rounded-full shadow-2xl z-50'
-      } bg-gradient-to-r from-neon-purple to-neon-blue hover:opacity-90 transition-all duration-200 hover:scale-105`}
+      className="fixed bottom-6 right-6 w-16 h-16 rounded-full shadow-2xl z-50 bg-gradient-to-r from-neon-purple to-neon-blue hover:opacity-90 transition-all duration-200 hover:scale-105"
     >
-      <Plus className={`${isMobile ? 'w-6 h-6' : 'w-8 h-8'} text-white`} />
+      <Plus className="w-8 h-8 text-white" />
     </Button>
   );
 };

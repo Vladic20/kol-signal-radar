@@ -1,3 +1,4 @@
+
 export type Signal = {
   id: number;
   asset: string;
@@ -26,6 +27,7 @@ export type KOL = {
   description: string;
   bio?: string;
   language: 'EN' | 'RU' | 'Both';
+  category: 'crypto' | 'stocks' | 'forex';
   platforms: Platform[];
   signalFrequency: string;
   engagement: number;
@@ -371,6 +373,7 @@ export const kols: KOL[] = [
     description: 'Experienced trader specializing in Bitcoin and Ethereum.',
     bio: 'Trading crypto since 2015. Focus on technical analysis and market trends. Providing accurate signals for BTC, ETH and major altcoins.',
     language: 'EN',
+    category: 'crypto',
     platforms: [
       { name: 'Twitter', url: 'https://twitter.com/CryptoExpert123', followers: 120000 },
       { name: 'Telegram', url: 'https://t.me/CryptoExpert123', followers: 30000 }
@@ -397,6 +400,7 @@ export const kols: KOL[] = [
     description: 'Passionate about altcoins with high growth potential.',
     bio: 'Altcoin specialist with focus on emerging projects. Always looking for the next gem in the crypto space.',
     language: 'Both',
+    category: 'crypto',
     platforms: [
       { name: 'Twitter', url: 'https://twitter.com/AltcoinGuru', followers: 85000 },
       { name: 'YouTube', url: 'https://youtube.com/AltcoinGuru', followers: 35000 }
@@ -423,6 +427,7 @@ export const kols: KOL[] = [
     description: 'In-depth analysis of DeFi projects and trends.',
     bio: 'DeFi expert focused on protocol analysis and yield farming strategies. Former smart contract auditor.',
     language: 'RU',
+    category: 'crypto',
     platforms: [
       { name: 'Twitter', url: 'https://twitter.com/DeFiAnalyst', followers: 65000 },
       { name: 'Telegram', url: 'https://t.me/DeFiAnalyst', followers: 25000 }

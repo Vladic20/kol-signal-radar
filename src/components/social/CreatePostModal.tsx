@@ -1,13 +1,16 @@
 
 import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
+import { Card, CardContent } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { X, TrendingUp, Target, StopCircle, Lock } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { X, TrendingUp, Target, StopCircle, Lock, Hash } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface CreatePostModalProps {
   isOpen: boolean;
@@ -15,6 +18,8 @@ interface CreatePostModalProps {
 }
 
 const CreatePostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
+  const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const [content, setContent] = useState('');
   const [includeSignal, setIncludeSignal] = useState(false);
   const [signalData, setSignalData] = useState({
@@ -42,6 +47,19 @@ const CreatePostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
 
   const handleSubmit = () => {
     console.log('Creating post:', { content, includeSignal, signalData, tags, isPremium });
+    // Reset form
+    setContent('');
+    setIncludeSignal(false);
+    setSignalData({
+      symbol: '',
+      direction: 'Long',
+      entryPrice: '',
+      target: '',
+      stopLoss: '',
+      confidence: ''
+    });
+    setTags([]);
+    setIsPremium(false);
     onClose();
   };
 
@@ -49,157 +67,188 @@ const CreatePostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-black/95 border-white/10">
-        <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-white">Создать пост</DialogTitle>
+      <DialogContent className={`bg-black/95 backdrop-blur-md border border-white/10 ${
+        isMobile ? 'w-[95vw] max-w-md h-[85vh]' : 'max-w-2xl max-h-[90vh]'
+      } overflow-y-auto`}>
+        <DialogHeader className="flex flex-row items-center justify-between space-y-0 pb-4 border-b border-white/10">
+          <DialogTitle className="text-xl font-bold bg-gradient-to-r from-neon-purple to-neon-blue bg-clip-text text-transparent">
+            Создать пост
+          </DialogTitle>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={onClose}
+            className="w-8 h-8 p-0 rounded-full hover:bg-white/10"
+          >
+            <X className="w-4 h-4" />
+          </Button>
         </DialogHeader>
 
-        <div className="space-y-6">
+        <div className="space-y-6 py-4">
           {/* Content */}
           <div>
+            <label className="block text-sm font-medium text-gray-400 mb-2">
+              Ваши мысли
+            </label>
             <Textarea
               placeholder="Поделитесь вашими торговыми инсайтами, анализом рынка или прогнозами..."
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              className="bg-black/40 border-white/10 min-h-[120px] text-base resize-none"
-              rows={6}
+              className="bg-black/40 border-white/10 min-h-[100px] text-base resize-none focus:border-neon-purple/50"
+              rows={4}
+              maxLength={280}
             />
-            <div className="text-right text-sm text-gray-400 mt-2">
+            <div className="text-right text-sm text-gray-400 mt-1">
               {content.length}/280
             </div>
           </div>
 
           {/* Include Signal Toggle */}
-          <div className="flex items-center justify-between bg-black/20 p-4 rounded-lg">
-            <div className="flex items-center space-x-3">
-              <TrendingUp className="w-5 h-5 text-neon-purple" />
-              <div>
-                <span className="font-medium text-white">Торговый сигнал</span>
-                <p className="text-sm text-gray-400">Добавить торговый прогноз к посту</p>
+          <Card className="glass-effect border-white/10">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <TrendingUp className="w-5 h-5 text-neon-purple" />
+                  <div>
+                    <span className="font-medium text-white">Торговый сигнал</span>
+                    <p className="text-sm text-gray-400">Добавить торговый прогноз к посту</p>
+                  </div>
+                </div>
+                <Switch checked={includeSignal} onCheckedChange={setIncludeSignal} />
               </div>
-            </div>
-            <Switch checked={includeSignal} onCheckedChange={setIncludeSignal} />
-          </div>
+            </CardContent>
+          </Card>
 
           {/* Signal Data */}
           {includeSignal && (
-            <div className="bg-gradient-to-br from-neon-purple/5 to-neon-blue/5 border border-neon-purple/20 p-4 rounded-lg space-y-4">
-              <h4 className="font-medium text-white flex items-center">
-                <TrendingUp className="w-4 h-4 mr-2 text-neon-purple" />
-                Детали торгового сигнала
-              </h4>
-              
-              {/* Coin and Direction */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm text-gray-400 mb-2">Торговая пара</label>
-                  <Select value={signalData.symbol} onValueChange={(value) => setSignalData({ ...signalData, symbol: value })}>
-                    <SelectTrigger className="bg-black/40 border-white/10">
-                      <SelectValue placeholder="Выберите монету" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-black/95 border-white/10">
-                      {coins.map((coin) => (
-                        <SelectItem key={coin} value={coin}>{coin}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+            <Card className="glass-effect border-neon-purple/20 bg-gradient-to-br from-neon-purple/5 to-neon-blue/5">
+              <CardContent className="p-4 space-y-4">
+                <h4 className="font-medium text-white flex items-center">
+                  <TrendingUp className="w-4 h-4 mr-2 text-neon-purple" />
+                  Торговый сигнал
+                </h4>
                 
-                <div>
-                  <label className="block text-sm text-gray-400 mb-2">Направление сделки</label>
-                  <div className="grid grid-cols-2 gap-2">
-                    <Button
-                      type="button"
-                      variant={signalData.direction === 'Long' ? 'default' : 'outline'}
-                      size="sm"
-                      onClick={() => setSignalData({ ...signalData, direction: 'Long' })}
-                      className={signalData.direction === 'Long' ? 'bg-green-500 hover:bg-green-600' : 'border-white/20'}
-                    >
-                      🟢 Long
-                    </Button>
-                    <Button
-                      type="button"
-                      variant={signalData.direction === 'Short' ? 'default' : 'outline'}
-                      size="sm"
-                      onClick={() => setSignalData({ ...signalData, direction: 'Short' })}
-                      className={signalData.direction === 'Short' ? 'bg-red-500 hover:bg-red-600' : 'border-white/20'}
-                    >
-                      🔴 Short
-                    </Button>
+                {/* Symbol and Direction */}
+                <div className={`grid gap-4 ${isMobile ? 'grid-cols-1' : 'grid-cols-2'}`}>
+                  <div>
+                    <label className="block text-sm text-gray-400 mb-2">Торговая пара</label>
+                    <Select value={signalData.symbol} onValueChange={(value) => setSignalData({ ...signalData, symbol: value })}>
+                      <SelectTrigger className="bg-black/40 border-white/10 focus:border-neon-purple/50">
+                        <SelectValue placeholder="Выберите монету" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {coins.map((coin) => (
+                          <SelectItem key={coin} value={coin}>{coin}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm text-gray-400 mb-2">Направление</label>
+                    <div className="grid grid-cols-2 gap-2">
+                      <Button
+                        type="button"
+                        variant={signalData.direction === 'Long' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setSignalData({ ...signalData, direction: 'Long' })}
+                        className={`${
+                          signalData.direction === 'Long' 
+                            ? 'bg-green-500 hover:bg-green-600 text-white' 
+                            : 'border-white/20 hover:bg-white/5'
+                        } transition-all`}
+                      >
+                        🟢 Long
+                      </Button>
+                      <Button
+                        type="button"
+                        variant={signalData.direction === 'Short' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setSignalData({ ...signalData, direction: 'Short' })}
+                        className={`${
+                          signalData.direction === 'Short' 
+                            ? 'bg-red-500 hover:bg-red-600 text-white' 
+                            : 'border-white/20 hover:bg-white/5'
+                        } transition-all`}
+                      >
+                        🔴 Short
+                      </Button>
+                    </div>
                   </div>
                 </div>
-              </div>
-              
-              {/* Price Levels */}
-              <div className="grid grid-cols-1 gap-4">
-                <div>
-                  <label className="block text-sm text-gray-400 mb-2 flex items-center">
-                    <TrendingUp className="w-4 h-4 mr-1" />
-                    Цена входа (USDT)
-                  </label>
-                  <Input
-                    placeholder="48000"
-                    value={signalData.entryPrice}
-                    onChange={(e) => setSignalData({ ...signalData, entryPrice: e.target.value })}
-                    className="bg-black/40 border-white/10"
-                    type="number"
-                  />
-                </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Price Levels */}
+                <div className="space-y-4">
                   <div>
                     <label className="block text-sm text-gray-400 mb-2 flex items-center">
-                      <Target className="w-4 h-4 mr-1 text-green-400" />
-                      Take Profit (USDT)
+                      <TrendingUp className="w-4 h-4 mr-1" />
+                      Цена входа (USDT)
                     </label>
                     <Input
-                      placeholder="52000"
-                      value={signalData.target}
-                      onChange={(e) => setSignalData({ ...signalData, target: e.target.value })}
-                      className="bg-black/40 border-white/10"
+                      placeholder="48000"
+                      value={signalData.entryPrice}
+                      onChange={(e) => setSignalData({ ...signalData, entryPrice: e.target.value })}
+                      className="bg-black/40 border-white/10 focus:border-neon-purple/50"
                       type="number"
                     />
                   </div>
                   
+                  <div className={`grid gap-4 ${isMobile ? 'grid-cols-1' : 'grid-cols-2'}`}>
+                    <div>
+                      <label className="block text-sm text-gray-400 mb-2 flex items-center">
+                        <Target className="w-4 h-4 mr-1 text-green-400" />
+                        Take Profit (USDT)
+                      </label>
+                      <Input
+                        placeholder="52000"
+                        value={signalData.target}
+                        onChange={(e) => setSignalData({ ...signalData, target: e.target.value })}
+                        className="bg-black/40 border-white/10 focus:border-neon-purple/50"
+                        type="number"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm text-gray-400 mb-2 flex items-center">
+                        <StopCircle className="w-4 h-4 mr-1 text-red-400" />
+                        Stop Loss (USDT)
+                      </label>
+                      <Input
+                        placeholder="44000"
+                        value={signalData.stopLoss}
+                        onChange={(e) => setSignalData({ ...signalData, stopLoss: e.target.value })}
+                        className="bg-black/40 border-white/10 focus:border-neon-purple/50"
+                        type="number"
+                      />
+                    </div>
+                  </div>
+                  
                   <div>
-                    <label className="block text-sm text-gray-400 mb-2 flex items-center">
-                      <StopCircle className="w-4 h-4 mr-1 text-red-400" />
-                      Stop Loss (USDT)
-                    </label>
+                    <label className="block text-sm text-gray-400 mb-2">Уверенность (%)</label>
                     <Input
-                      placeholder="44000"
-                      value={signalData.stopLoss}
-                      onChange={(e) => setSignalData({ ...signalData, stopLoss: e.target.value })}
-                      className="bg-black/40 border-white/10"
+                      placeholder="85"
+                      value={signalData.confidence}
+                      onChange={(e) => setSignalData({ ...signalData, confidence: e.target.value })}
+                      className="bg-black/40 border-white/10 focus:border-neon-purple/50"
                       type="number"
+                      max="100"
+                      min="1"
                     />
                   </div>
                 </div>
-                
-                <div>
-                  <label className="block text-sm text-gray-400 mb-2">Уверенность в сигнале (%)</label>
-                  <Input
-                    placeholder="85"
-                    value={signalData.confidence}
-                    onChange={(e) => setSignalData({ ...signalData, confidence: e.target.value })}
-                    className="bg-black/40 border-white/10"
-                    type="number"
-                    max="100"
-                    min="1"
-                  />
-                </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           )}
 
           {/* Tags */}
           <div>
-            <label className="block text-sm font-medium text-gray-400 mb-2">
+            <label className="block text-sm font-medium text-gray-400 mb-2 flex items-center">
+              <Hash className="w-4 h-4 mr-1" />
               Теги (максимум 5)
             </label>
             <div className="flex flex-wrap gap-2 mb-3">
               {tags.map((tag) => (
-                <Badge key={tag} variant="outline" className="border-white/20 text-gray-300 text-sm py-1">
+                <Badge key={tag} variant="outline" className="border-neon-purple/30 text-neon-purple text-sm py-1 hover:bg-neon-purple/10">
                   #{tag}
                   <Button
                     variant="ghost"
@@ -218,12 +267,12 @@ const CreatePostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
                 value={newTag}
                 onChange={(e) => setNewTag(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleAddTag()}
-                className="bg-black/40 border-white/10"
+                className="bg-black/40 border-white/10 focus:border-neon-purple/50 flex-1"
               />
               <Button 
                 onClick={handleAddTag} 
                 variant="outline" 
-                className="border-white/20"
+                className="border-white/20 hover:bg-white/5 px-4"
                 disabled={tags.length >= 5 || !newTag.trim()}
               >
                 Добавить
@@ -232,34 +281,29 @@ const CreatePostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
           </div>
 
           {/* Premium Post Toggle */}
-          <div className="flex items-center justify-between bg-black/20 p-4 rounded-lg">
-            <div className="flex items-center space-x-3">
-              <Lock className="w-5 h-5 text-yellow-500" />
-              <div>
-                <span className="font-medium text-white">Премиум пост</span>
-                <p className="text-sm text-gray-400">Доступен только подписчикам</p>
+          <Card className="glass-effect border-white/10">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <Lock className="w-5 h-5 text-yellow-500" />
+                  <div>
+                    <span className="font-medium text-white">Премиум пост</span>
+                    <p className="text-sm text-gray-400">Доступен только подписчикам</p>
+                  </div>
+                </div>
+                <Switch checked={isPremium} onCheckedChange={setIsPremium} />
               </div>
-            </div>
-            <Switch checked={isPremium} onCheckedChange={setIsPremium} />
-          </div>
+            </CardContent>
+          </Card>
 
-          {/* Submit Buttons */}
-          <div className="flex space-x-3 pt-4">
-            <Button 
-              variant="outline" 
-              onClick={onClose}
-              className="flex-1 border-white/20"
-            >
-              Отмена
-            </Button>
-            <Button 
-              onClick={handleSubmit}
-              disabled={!content.trim()}
-              className="flex-1 bg-gradient-to-r from-neon-purple to-neon-blue hover:opacity-90"
-            >
-              Опубликовать
-            </Button>
-          </div>
+          {/* Submit Button */}
+          <Button 
+            onClick={handleSubmit}
+            disabled={!content.trim()}
+            className="w-full bg-neon-purple hover:bg-neon-purple/80 h-12 text-lg font-medium transition-all hover:scale-105"
+          >
+            Опубликовать пост
+          </Button>
         </div>
       </DialogContent>
     </Dialog>

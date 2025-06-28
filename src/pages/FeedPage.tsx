@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import Layout from '@/components/layout/Layout';
 import { PostCard } from '@/components/social/PostCard';
-import { CreatePostDialog } from '@/components/social/CreatePostDialog';
+import CreatePostModal from '@/components/social/CreatePostModal';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { feedPosts } from '@/data/feedData';
@@ -37,7 +37,7 @@ const FeedPage = () => {
           {!isMobile && (
             <Button 
               onClick={() => setIsCreatePostOpen(true)}
-              className="bg-neon-purple hover:bg-neon-purple/80"
+              className="bg-neon-purple hover:bg-neon-purple/80 transition-all hover:scale-105"
             >
               <Plus className="w-4 h-4 mr-2" />
               Создать пост
@@ -53,7 +53,7 @@ const FeedPage = () => {
             }`}>
               <TabsTrigger 
                 value="trending" 
-                className="data-[state=active]:bg-neon-purple/20 flex items-center space-x-1 md:space-x-2 text-xs md:text-sm"
+                className="data-[state=active]:bg-neon-purple/20 data-[state=active]:text-neon-purple flex items-center space-x-1 md:space-x-2 text-xs md:text-sm transition-all"
               >
                 <Sparkles className="w-3 h-3 md:w-4 md:h-4" />
                 <span className="hidden sm:inline">Популярное</span>
@@ -61,7 +61,7 @@ const FeedPage = () => {
               </TabsTrigger>
               <TabsTrigger 
                 value="following" 
-                className="data-[state=active]:bg-neon-purple/20 flex items-center space-x-1 md:space-x-2 text-xs md:text-sm"
+                className="data-[state=active]:bg-neon-purple/20 data-[state=active]:text-neon-purple flex items-center space-x-1 md:space-x-2 text-xs md:text-sm transition-all"
               >
                 <Users className="w-3 h-3 md:w-4 md:h-4" />
                 <span className="hidden sm:inline">Подписки</span>
@@ -69,7 +69,7 @@ const FeedPage = () => {
               </TabsTrigger>
               <TabsTrigger 
                 value="recent" 
-                className="data-[state=active]:bg-neon-purple/20 flex items-center space-x-1 md:space-x-2 text-xs md:text-sm"
+                className="data-[state=active]:bg-neon-purple/20 data-[state=active]:text-neon-purple flex items-center space-x-1 md:space-x-2 text-xs md:text-sm transition-all"
               >
                 <Clock className="w-3 h-3 md:w-4 md:h-4" />
                 <span className="hidden sm:inline">Недавние</span>
@@ -80,7 +80,7 @@ const FeedPage = () => {
             <TabsContent value="trending" className="space-y-3 md:space-y-6 mt-4 md:mt-6">
               <div className={isMobile ? 'px-0' : ''}>
                 {getFilteredPosts().map(post => (
-                  <div key={post.id} className={isMobile ? 'mb-3' : 'mb-6'}>
+                  <div key={post.id} className={`${isMobile ? 'mb-3' : 'mb-6'} transition-all hover:scale-[1.02]`}>
                     <PostCard post={post} />
                   </div>
                 ))}
@@ -91,15 +91,15 @@ const FeedPage = () => {
               <div className={isMobile ? 'px-0' : ''}>
                 {getFilteredPosts().length > 0 ? (
                   getFilteredPosts().map(post => (
-                    <div key={post.id} className={isMobile ? 'mb-3' : 'mb-6'}>
+                    <div key={post.id} className={`${isMobile ? 'mb-3' : 'mb-6'} transition-all hover:scale-[1.02]`}>
                       <PostCard post={post} />
                     </div>
                   ))
                 ) : (
                   <div className="text-center py-8 md:py-12">
-                    <Users className="w-8 h-8 md:w-12 md:h-12 text-gray-400 mx-auto mb-4" />
+                    <Users className="w-8 h-8 md:w-12 md:h-12 text-gray-400 mx-auto mb-4 animate-pulse" />
                     <p className="text-gray-400 mb-4 text-sm md:text-base">Подпишитесь на KOL'ов, чтобы видеть их посты</p>
-                    <Button variant="outline" className="border-white/20 text-sm">
+                    <Button variant="outline" className="border-white/20 text-sm hover:bg-white/5">
                       Найти KOL'ов
                     </Button>
                   </div>
@@ -110,7 +110,7 @@ const FeedPage = () => {
             <TabsContent value="recent" className="space-y-3 md:space-y-6 mt-4 md:mt-6">
               <div className={isMobile ? 'px-0' : ''}>
                 {getFilteredPosts().map(post => (
-                  <div key={post.id} className={isMobile ? 'mb-3' : 'mb-6'}>
+                  <div key={post.id} className={`${isMobile ? 'mb-3' : 'mb-6'} transition-all hover:scale-[1.02]`}>
                     <PostCard post={post} />
                   </div>
                 ))}
@@ -119,20 +119,10 @@ const FeedPage = () => {
           </Tabs>
         </div>
 
-        {/* Mobile Create Post Button */}
-        {isMobile && (
-          <Button 
-            onClick={() => setIsCreatePostOpen(true)}
-            className="fixed bottom-24 right-4 w-14 h-14 rounded-full bg-neon-purple hover:bg-neon-purple/80 shadow-lg z-40"
-          >
-            <Plus className="w-6 h-6" />
-          </Button>
-        )}
-
-        {/* Create Post Dialog */}
-        <CreatePostDialog 
+        {/* Create Post Modal */}
+        <CreatePostModal 
           isOpen={isCreatePostOpen} 
-          setIsOpen={setIsCreatePostOpen} 
+          onClose={() => setIsCreatePostOpen(false)} 
         />
       </div>
     </Layout>

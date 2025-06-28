@@ -14,16 +14,16 @@ const BottomNavigation = ({ onCreatePost }: BottomNavigationProps) => {
   const { user } = useAuth();
 
   const navItems = [
-    { href: '/', icon: Home, label: 'Главная' },
-    { href: '/feed', icon: TrendingUp, label: 'Лента' },
-    { href: '/leaderboard', icon: Trophy, label: 'Рейтинг' },
+    { href: '/feed', icon: Home, label: 'Главная' },
+    { href: '/leaderboard', icon: TrendingUp, label: 'Лента' },
+    { href: '/copy-trading', icon: Trophy, label: 'Рейтинг' },
     { href: user ? '/user-dashboard' : '/login', icon: User, label: 'Профиль' },
   ];
 
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-black/95 backdrop-blur-md border-t border-white/10 px-2 py-2 z-50 md:hidden">
-      <div className="flex items-center justify-center max-w-md mx-auto relative">
-        {/* Left Navigation Items */}
+      <div className="flex items-center justify-center w-full max-w-md mx-auto">
+        {/* Left Items */}
         <div className="flex flex-1 justify-around">
           {navItems.slice(0, 2).map((item) => {
             const Icon = item.icon;
@@ -33,7 +33,7 @@ const BottomNavigation = ({ onCreatePost }: BottomNavigationProps) => {
               <Link
                 key={item.href}
                 to={item.href}
-                className={`flex flex-col items-center justify-center space-y-1 p-3 transition-colors ${
+                className={`flex flex-col items-center justify-center space-y-1 p-3 transition-colors min-w-[60px] ${
                   isActive ? 'text-neon-purple' : 'text-gray-400'
                 }`}
               >
@@ -45,7 +45,7 @@ const BottomNavigation = ({ onCreatePost }: BottomNavigationProps) => {
         </div>
 
         {/* Center Create Button */}
-        <div className="px-4">
+        <div className="flex-shrink-0 px-4">
           <Button
             onClick={onCreatePost}
             className="w-14 h-14 rounded-full bg-gradient-to-r from-neon-purple to-neon-blue hover:opacity-90 flex items-center justify-center shadow-lg transition-all duration-200 hover:scale-105"
@@ -54,7 +54,7 @@ const BottomNavigation = ({ onCreatePost }: BottomNavigationProps) => {
           </Button>
         </div>
 
-        {/* Right Navigation Items */}
+        {/* Right Items */}
         <div className="flex flex-1 justify-around">
           {navItems.slice(2).map((item) => {
             const Icon = item.icon;
@@ -64,7 +64,7 @@ const BottomNavigation = ({ onCreatePost }: BottomNavigationProps) => {
               <Link
                 key={item.href}
                 to={item.href}
-                className={`flex flex-col items-center justify-center space-y-1 p-3 transition-colors ${
+                className={`flex flex-col items-center justify-center space-y-1 p-3 transition-colors min-w-[60px] ${
                   isActive ? 'text-neon-purple' : 'text-gray-400'
                 }`}
               >

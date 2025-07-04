@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import Layout from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -22,7 +23,8 @@ const SettingsPage = () => {
   };
 
   return (
-    <div className={`min-h-screen bg-background ${isMobile ? 'pt-16 pb-24' : 'pt-20'}`}>
+    <Layout showSidebar={true}>
+      <div className={`py-4 md:py-8 animate-fade-in ${isMobile ? 'px-4 max-w-full' : 'px-0 max-w-4xl mx-auto'}`}>
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-white/10 bg-black/95 backdrop-blur-sm sticky top-0 z-40">
         <Button 
@@ -238,8 +240,9 @@ const SettingsPage = () => {
             </Button>
           </CardContent>
         </Card>
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 

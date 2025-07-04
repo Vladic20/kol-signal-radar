@@ -73,10 +73,10 @@ const DashboardSidebar = () => {
 
   const userNavItems = [
     { href: '/user-dashboard', icon: User, label: 'Личный кабинет' },
-    { href: '/dashboard/subscriptions', icon: Users, label: 'Подписки' },
-    { href: '/dashboard/achievements', icon: Trophy, label: 'Достижения' },
-    { href: '/dashboard/settings', icon: Settings, label: 'Настройки' },
-    { href: '/dashboard/referrals', icon: Share2, label: 'Рефералы' },
+    { href: '/subscriptions', icon: Users, label: 'Подписки' },
+    { href: '/achievements', icon: Trophy, label: 'Достижения' },
+    { href: '/settings', icon: Settings, label: 'Настройки' },
+    { href: '/referrals', icon: Share2, label: 'Рефералы' },
   ];
 
   // Определяем, является ли пользователь KOL'ом
@@ -173,7 +173,7 @@ const DashboardSidebar = () => {
                 icon={item.icon}
                 label={item.label}
                 isActive={location.pathname === item.href}
-                badge={item.href === '/dashboard/achievements' ? '3' : undefined}
+                badge={item.href === '/achievements' ? '3' : undefined}
               />
             ))}
           </div>

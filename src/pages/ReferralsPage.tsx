@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Layout from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
@@ -52,7 +53,8 @@ const ReferralsPage = () => {
   };
 
   return (
-    <div className={`min-h-screen bg-background ${isMobile ? 'pt-16 pb-24' : 'pt-20'}`}>
+    <Layout showSidebar={true}>
+      <div className={`py-4 md:py-8 animate-fade-in ${isMobile ? 'px-4 max-w-full' : 'px-0 max-w-6xl mx-auto'}`}>
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-white/10 bg-black/95 backdrop-blur-sm">
         <Button 
@@ -203,8 +205,9 @@ const ReferralsPage = () => {
             )}
           </CardContent>
         </Card>
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 

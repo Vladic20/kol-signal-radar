@@ -45,7 +45,7 @@ function App() {
               <Route path="/token-positions" element={<TokenPositionsPage />} />
               <Route path="/crypto-news" element={<CryptoNewsPage />} />
               <Route path="/faq" element={<FaqPage />} />
-              <Route path="/create-post" element={<CreatePostPage />} />
+              
               <Route path="/achievements" element={<AchievementsPage />} />
               <Route path="/mobile-profile" element={<MobileProfilePage />} />
               <Route path="/subscriptions" element={<SubscriptionsPage />} />

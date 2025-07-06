@@ -21,7 +21,7 @@ const BottomNavigation = ({ onCreatePost }: BottomNavigationProps) => {
   ];
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-black/95 backdrop-blur-md border-t border-white/10 px-2 py-2 z-50 md:hidden">
+    <div className="fixed bottom-0 left-0 right-0 bg-black/95 backdrop-blur-md border-t border-white/10 px-2 py-2 z-50 md:hidden safe-area-inset-bottom">
       <div className="flex items-center justify-center w-full max-w-md mx-auto">
         {/* Left Items */}
         <div className="flex flex-1 justify-around">

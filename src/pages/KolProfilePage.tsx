@@ -47,7 +47,9 @@ const KolProfilePage = () => {
     winRate: kol.accuracy,
     avgProfit: Math.floor(Math.random() * 20) + 10,
     totalTrades: Math.floor(Math.random() * 500) + 100,
-    roi30d: Math.floor(Math.random() * 50) + 10
+    roi30d: Math.floor(Math.random() * 50) + 10,
+    signals30d: Math.floor(Math.random() * 20) + 5,
+    tradingFrequency: 'Ежедневно'
   };
 
   const handleFollow = () => {

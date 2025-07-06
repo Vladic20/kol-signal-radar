@@ -13,6 +13,11 @@ interface ProfileHeaderProps {
     following: number;
     followers: number;
     roi30d: number;
+    winRate: number;
+    totalTrades: number;
+    avgProfit: number;
+    signals30d: number;
+    tradingFrequency: string;
   };
 }
 
@@ -58,6 +63,34 @@ const ProfileHeader = ({ kol, stats }: ProfileHeaderProps) => {
               <p className="text-gray-300 mb-4">
                 Профессиональный трейдер • Аналитик криптовалют • ROI 30d: +{stats.roi30d}%
               </p>
+              
+              {/* Enhanced Stats Row */}
+              <div className={`grid grid-cols-2 md:grid-cols-4 gap-3 mb-4 ${isMobile ? 'text-xs' : 'text-sm'}`}>
+                <div className="bg-green-500/10 rounded-lg p-2 text-center">
+                  <div className={`font-bold text-green-400 ${isMobile ? 'text-sm' : 'text-lg'}`}>
+                    +{stats.roi30d}%
+                  </div>
+                  <div className="text-gray-400 text-xs">ROI 30d</div>
+                </div>
+                <div className="bg-blue-500/10 rounded-lg p-2 text-center">
+                  <div className={`font-bold text-blue-400 ${isMobile ? 'text-sm' : 'text-lg'}`}>
+                    {stats.winRate}%
+                  </div>
+                  <div className="text-gray-400 text-xs">Win Rate</div>
+                </div>
+                <div className="bg-purple-500/10 rounded-lg p-2 text-center">
+                  <div className={`font-bold text-purple-400 ${isMobile ? 'text-sm' : 'text-lg'}`}>
+                    {stats.totalTrades}
+                  </div>
+                  <div className="text-gray-400 text-xs">Всего сделок</div>
+                </div>
+                <div className="bg-orange-500/10 rounded-lg p-2 text-center">
+                  <div className={`font-bold text-orange-400 ${isMobile ? 'text-sm' : 'text-lg'}`}>
+                    {stats.signals30d}
+                  </div>
+                  <div className="text-gray-400 text-xs">Сигналов/30д</div>
+                </div>
+              </div>
               
               {/* Meta info */}
               <div className="flex flex-wrap items-center gap-4 text-sm text-gray-400 mb-4">

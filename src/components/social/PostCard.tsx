@@ -12,9 +12,10 @@ import { PointsNotification } from '@/components/ui/points-notification';
 
 interface PostCardProps {
   post: FeedPost;
+  onPostClick?: (post: FeedPost) => void;
 }
 
-export const PostCard: React.FC<PostCardProps> = ({ post }) => {
+export const PostCard: React.FC<PostCardProps> = ({ post, onPostClick }) => {
   const { language } = useLanguage();
   const { user, isPremium } = useAuth();
   const navigate = useNavigate();
@@ -76,7 +77,7 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
   };
 
   const handlePostClick = () => {
-    navigate(`/post/${post.id}`);
+    // Will be handled by parent component with modal
   };
 
   const canViewFullPost = !post.isPremium || isPremium;
@@ -91,8 +92,8 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
   return (
     <>
       <Card 
-        className="glass-effect border-white/10 hover:border-white/20 transition-all cursor-pointer"
-        onClick={handlePostClick}
+        className="glass-effect border-white/10 hover:border-white/20 transition-all cursor-pointer hover:scale-[1.02]"
+        onClick={() => onPostClick?.(post)}
       >
         <CardContent className="p-6">
           {/* Author Header */}

@@ -2,17 +2,30 @@
 import React, { useState } from 'react';
 import Layout from '@/components/layout/Layout';
 import { PostCard } from '@/components/social/PostCard';
+import { PostDetailModal } from '@/components/social/PostDetailModal';
 import CreatePostModal from '@/components/social/CreatePostModal';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { feedPosts } from '@/data/feedData';
+import { feedPosts, FeedPost } from '@/data/feedData';
 import { Plus, TrendingUp, Users, Clock, Sparkles } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const FeedPage = () => {
   const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
+  const [selectedPost, setSelectedPost] = useState<FeedPost | null>(null);
+  const [isPostDetailOpen, setIsPostDetailOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('trending');
   const isMobile = useIsMobile();
+
+  const handlePostClick = (post: FeedPost) => {
+    setSelectedPost(post);
+    setIsPostDetailOpen(true);
+  };
+
+  const handleClosePostDetail = () => {
+    setIsPostDetailOpen(false);
+    setSelectedPost(null);
+  };
 
   // Фильтруем посты в зависимости от вкладки
   const getFilteredPosts = () => {
@@ -80,8 +93,8 @@ const FeedPage = () => {
             <TabsContent value="trending" className="space-y-3 md:space-y-6 mt-4 md:mt-6">
               <div className={isMobile ? 'px-0' : ''}>
                 {getFilteredPosts().map(post => (
-                  <div key={post.id} className={`${isMobile ? 'mb-3' : 'mb-6'} transition-all hover:scale-[1.02]`}>
-                    <PostCard post={post} />
+                  <div key={post.id} className={`${isMobile ? 'mb-3' : 'mb-6'}`}>
+                    <PostCard post={post} onPostClick={handlePostClick} />
                   </div>
                 ))}
               </div>
@@ -91,8 +104,8 @@ const FeedPage = () => {
               <div className={isMobile ? 'px-0' : ''}>
                 {getFilteredPosts().length > 0 ? (
                   getFilteredPosts().map(post => (
-                    <div key={post.id} className={`${isMobile ? 'mb-3' : 'mb-6'} transition-all hover:scale-[1.02]`}>
-                      <PostCard post={post} />
+                    <div key={post.id} className={`${isMobile ? 'mb-3' : 'mb-6'}`}>
+                      <PostCard post={post} onPostClick={handlePostClick} />
                     </div>
                   ))
                 ) : (
@@ -110,9 +123,9 @@ const FeedPage = () => {
             <TabsContent value="recent" className="space-y-3 md:space-y-6 mt-4 md:mt-6">
               <div className={isMobile ? 'px-0' : ''}>
                 {getFilteredPosts().map(post => (
-                  <div key={post.id} className={`${isMobile ? 'mb-3' : 'mb-6'} transition-all hover:scale-[1.02]`}>
-                    <PostCard post={post} />
-                  </div>
+                    <div key={post.id} className={`${isMobile ? 'mb-3' : 'mb-6'}`}>
+                      <PostCard post={post} onPostClick={handlePostClick} />
+                    </div>
                 ))}
               </div>
             </TabsContent>
@@ -123,6 +136,13 @@ const FeedPage = () => {
         <CreatePostModal 
           isOpen={isCreatePostOpen} 
           onClose={() => setIsCreatePostOpen(false)} 
+        />
+
+        {/* Post Detail Modal */}
+        <PostDetailModal
+          post={selectedPost}
+          isOpen={isPostDetailOpen}
+          onClose={handleClosePostDetail}
         />
       </div>
     </Layout>

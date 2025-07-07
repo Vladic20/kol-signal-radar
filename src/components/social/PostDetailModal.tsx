@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogClose } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogClose, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
@@ -117,9 +117,11 @@ export const PostDetailModal: React.FC<PostDetailModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] bg-black/95 border-white/10 p-0 overflow-hidden">
+      <DialogContent className="max-w-2xl max-h-[90vh] w-[95vw] md:w-full bg-black/95 border-white/10 p-0 overflow-hidden">
+        <DialogTitle className="sr-only">Post Details</DialogTitle>
+        <DialogDescription className="sr-only">View and interact with this post</DialogDescription>
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-white/10">
+        <div className="flex items-center justify-between p-4 border-b border-white/10 sticky top-0 bg-black/95 z-10">
           <h2 className="text-lg font-semibold text-white">Пост</h2>
           <DialogClose asChild>
             <Button variant="ghost" size="icon" className="text-gray-400 hover:text-white">
@@ -129,7 +131,7 @@ export const PostDetailModal: React.FC<PostDetailModalProps> = ({
         </div>
 
         {/* Scrollable Content */}
-        <div className="overflow-y-auto flex-1">
+        <div className="overflow-y-auto flex-1 max-h-[calc(90vh-80px)]">
           <div className="p-4 space-y-4">
             {/* Author Header */}
             <div className="flex items-center justify-between">
@@ -208,39 +210,43 @@ export const PostDetailModal: React.FC<PostDetailModalProps> = ({
 
             {/* Signal */}
             {post.signal && canViewFullPost && (
-              <div className="p-4 bg-black/40 border border-white/10 rounded-lg">
-                <div className="flex items-center justify-between mb-3">
-                  <h4 className="font-semibold text-white">📊 Trading Signal</h4>
+              <div className="p-4 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-lg">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-lg">📊</span>
+                    <h4 className="font-semibold text-white">Trading Signal</h4>
+                  </div>
                   <div className="flex items-center space-x-2">
                     <Badge 
                       variant={post.signal.action === 'BUY' ? 'default' : post.signal.action === 'SELL' ? 'destructive' : 'secondary'}
-                      className={post.signal.action === 'BUY' ? 'bg-green-500/20 text-green-400' : ''}
+                      className={post.signal.action === 'BUY' ? 'bg-green-500/20 text-green-400 border-green-500/30' : 
+                                post.signal.action === 'SELL' ? 'bg-red-500/20 text-red-400 border-red-500/30' : ''}
                     >
                       {post.signal.action}
                     </Badge>
-                    <Button size="sm" className="btn-primary">
+                    <Button size="sm" className="btn-primary text-xs md:text-sm">
                       <Copy className="w-3 h-3 mr-1" />
                       Копировать
                     </Button>
                   </div>
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <p className="text-gray-400">Symbol</p>
+                    <p className="text-gray-400 text-xs mb-1">Symbol</p>
                     <p className="text-white font-medium">{post.signal.symbol}</p>
                   </div>
                   <div>
-                    <p className="text-gray-400">Target</p>
+                    <p className="text-gray-400 text-xs mb-1">Target</p>
                     <p className="text-white font-medium">${post.signal.target.toLocaleString()}</p>
                   </div>
                   {post.signal.stopLoss && (
                     <div>
-                      <p className="text-gray-400">Stop Loss</p>
+                      <p className="text-gray-400 text-xs mb-1">Stop Loss</p>
                       <p className="text-white font-medium">${post.signal.stopLoss.toLocaleString()}</p>
                     </div>
                   )}
                   <div>
-                    <p className="text-gray-400">Confidence</p>
+                    <p className="text-gray-400 text-xs mb-1">Confidence</p>
                     <p className="text-white font-medium">{post.signal.confidence}%</p>
                   </div>
                 </div>
@@ -329,27 +335,28 @@ export const PostDetailModal: React.FC<PostDetailModalProps> = ({
 
               {/* Comment Input */}
               {user && (
-                <div className="flex space-x-3 mb-4">
-                  <Avatar className="w-8 h-8 flex-shrink-0">
+                <div className="flex flex-col md:flex-row md:space-x-3 space-y-3 md:space-y-0 mb-4">
+                  <Avatar className="w-8 h-8 flex-shrink-0 self-start">
                     <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user.name}`} />
                     <AvatarFallback className="bg-neon-purple/20 text-neon-purple text-xs">
                       {user.name?.[0]}
                     </AvatarFallback>
                   </Avatar>
-                  <div className="flex-1 flex space-x-2">
+                  <div className="flex-1 flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
                     <Textarea
                       value={comment}
                       onChange={(e) => setComment(e.target.value)}
                       placeholder="Написать комментарий..."
-                      className="flex-1 min-h-[80px] bg-black/20 border-white/10 resize-none"
+                      className="flex-1 min-h-[60px] md:min-h-[80px] bg-black/20 border-white/10 resize-none text-sm"
                     />
                     <Button
                       onClick={handleComment}
                       disabled={!comment.trim()}
                       size="sm"
-                      className="bg-neon-purple hover:bg-neon-purple/80 self-end"
+                      className="bg-neon-purple hover:bg-neon-purple/80 self-end md:self-end w-full md:w-auto"
                     >
-                      <Send className="w-4 h-4" />
+                      <Send className="w-4 h-4 mr-2 md:mr-0" />
+                      <span className="md:hidden">Отправить</span>
                     </Button>
                   </div>
                 </div>

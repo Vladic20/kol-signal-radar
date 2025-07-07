@@ -50,7 +50,7 @@ const FeedPage = () => {
           {!isMobile && (
             <Button 
               onClick={() => setIsCreatePostOpen(true)}
-              className="bg-neon-purple hover:bg-neon-purple/80 transition-all hover:scale-105"
+              className="btn-primary"
             >
               <Plus className="w-4 h-4 mr-2" />
               Создать пост

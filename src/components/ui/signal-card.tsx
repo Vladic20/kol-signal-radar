@@ -98,7 +98,7 @@ export function SignalCard({ signal, kol }: SignalCardProps) {
             </div>
           </div>
           
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mb-4">
             <div>
               <div className="text-xs text-muted-foreground">{t('status')}</div>
               <Badge variant={
@@ -124,6 +124,16 @@ export function SignalCard({ signal, kol }: SignalCardProps) {
                 </div>
               </div>
             )}
+          </div>
+
+          {/* Copy Signal Button */}
+          <div className="flex justify-center">
+            <button 
+              className="w-full bg-gradient-to-r from-neon-purple to-neon-blue hover:opacity-90 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 hover:scale-105"
+              onClick={e => e.stopPropagation()}
+            >
+              Копировать сигнал
+            </button>
           </div>
         </CardContent>
         

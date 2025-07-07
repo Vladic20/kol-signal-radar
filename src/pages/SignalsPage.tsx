@@ -65,10 +65,10 @@ const SignalsPage: React.FC = () => {
           
           <Select value={filterType} onValueChange={setFilterType}>
             <SelectTrigger className="bg-black/40 border-white/10">
-              <SelectValue placeholder="Тип сигнала" />
+              <SelectValue placeholder="Стратегия" />
             </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Все сигналы</SelectItem>
+            <SelectContent className="bg-black/95 border-white/10">
+              <SelectItem value="all">Все стратегии</SelectItem>
               <SelectItem value="long">Long</SelectItem>
               <SelectItem value="short">Short</SelectItem>
             </SelectContent>
@@ -78,10 +78,10 @@ const SignalsPage: React.FC = () => {
             <SelectTrigger className="bg-black/40 border-white/10">
               <SelectValue placeholder="Сортировка" />
             </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="newest">Сначала новые</SelectItem>
-              <SelectItem value="oldest">Сначала старые</SelectItem>
-              <SelectItem value="profit">По профиту</SelectItem>
+            <SelectContent className="bg-black/95 border-white/10">
+              <SelectItem value="newest">По дате</SelectItem>
+              <SelectItem value="profit">По ROI</SelectItem>
+              <SelectItem value="trader">По трейдеру</SelectItem>
             </SelectContent>
           </Select>
           

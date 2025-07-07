@@ -77,7 +77,9 @@ export const PostCard: React.FC<PostCardProps> = ({ post, onPostClick }) => {
   };
 
   const handlePostClick = () => {
-    // Will be handled by parent component with modal
+    if (onPostClick) {
+      onPostClick(post);
+    }
   };
 
   const canViewFullPost = !post.isPremium || isPremium;
@@ -93,7 +95,7 @@ export const PostCard: React.FC<PostCardProps> = ({ post, onPostClick }) => {
     <>
       <Card 
         className="glass-effect border-white/10 hover:border-white/20 transition-all cursor-pointer hover:scale-[1.02]"
-        onClick={() => onPostClick?.(post)}
+        onClick={handlePostClick}
       >
         <CardContent className="p-6">
           {/* Author Header */}

@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, TrendingUp, Trophy, User, Plus } from 'lucide-react';
+import { Home, TrendingUp, User, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -14,9 +13,9 @@ const BottomNavigation = ({ onCreatePost }: BottomNavigationProps) => {
   const { user } = useAuth();
 
   const navItems = [
+    { href: '/', icon: Home, label: 'Главная' },
     { href: '/feed', icon: Home, label: 'Лента' },
     { href: '/leaderboard', icon: TrendingUp, label: 'Рейтинг' },
-    { href: '/copy-trading', icon: Trophy, label: 'Копи' },
     { href: user ? '/user-dashboard' : '/login', icon: User, label: 'Профиль' },
   ];
 

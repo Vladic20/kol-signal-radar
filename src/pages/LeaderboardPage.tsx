@@ -84,7 +84,7 @@ const LeaderboardPage = () => {
               <SelectTrigger className={`bg-black/20 border-white/10 ${isMobile ? 'w-32' : 'w-40'}`}>
                 <SelectValue placeholder="Сортировка" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-black/95 border-white/10">
                 <SelectItem value="roi">По ROI</SelectItem>
                 <SelectItem value="winrate">По Win Rate</SelectItem>
                 <SelectItem value="followers">По подписчикам</SelectItem>
@@ -94,13 +94,13 @@ const LeaderboardPage = () => {
 
             <Select value={platformFilter} onValueChange={setPlatformFilter}>
               <SelectTrigger className={`bg-black/20 border-white/10 ${isMobile ? 'w-32' : 'w-40'}`}>
-                <SelectValue placeholder="Платформа" />
+                <SelectValue placeholder="Источник" />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Все</SelectItem>
+              <SelectContent className="bg-black/95 border-white/10">
+                <SelectItem value="all">Все источники</SelectItem>
                 <SelectItem value="twitter">Twitter</SelectItem>
                 <SelectItem value="telegram">Telegram</SelectItem>
-                <SelectItem value="youtube">YouTube</SelectItem>
+                <SelectItem value="tradingview">TradingView</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -211,7 +211,7 @@ const LeaderboardPage = () => {
                   <Button 
                     variant="outline" 
                     size={isMobile ? 'sm' : 'default'}
-                    className="border-white/20 flex-1 hover:bg-white/5"
+                    className="btn-outline flex-1"
                     onClick={() => handleViewProfile(kol.id)}
                   >
                     <ExternalLink className={`${isMobile ? 'w-3 h-3' : 'w-4 h-4'} mr-1`} />
@@ -219,7 +219,7 @@ const LeaderboardPage = () => {
                   </Button>
                   <Button 
                     size={isMobile ? 'sm' : 'default'}
-                    className="bg-neon-purple hover:bg-neon-purple/80 flex-1"
+                    className="btn-primary flex-1"
                     onClick={() => handleStartCopying(kol.id)}
                   >
                     <Copy className={`${isMobile ? 'w-3 h-3' : 'w-4 h-4'} mr-1`} />

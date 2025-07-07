@@ -218,7 +218,7 @@ export const PostDetailModal: React.FC<PostDetailModalProps> = ({
                     >
                       {post.signal.action}
                     </Badge>
-                    <Button size="sm" variant="outline" className="border-neon-purple/30 text-neon-purple hover:bg-neon-purple/10">
+                    <Button size="sm" className="btn-primary">
                       <Copy className="w-3 h-3 mr-1" />
                       Копировать
                     </Button>

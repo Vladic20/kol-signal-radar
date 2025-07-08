@@ -63,8 +63,8 @@ const Layout: React.FC<LayoutProps> = ({ children, showSidebar = true }) => {
         />
       )}
       
-      {/* Floating Create Button for Desktop */}
-      {user && <FloatingCreateButton />}
+      {/* Floating Create Button for Desktop only */}
+      {user && !isMobile && <FloatingCreateButton />}
       
       {/* Global Create Post Modal */}
       <CreatePostModal 

@@ -16,7 +16,7 @@ const BottomNavigation = ({ onCreatePost }: BottomNavigationProps) => {
     { href: '/', icon: Home, label: 'Главная' },
     { href: '/feed', icon: Home, label: 'Лента' },
     { href: '/leaderboard', icon: TrendingUp, label: 'Рейтинг' },
-    { href: user ? '/user-dashboard' : '/login', icon: User, label: 'Профиль' },
+    { href: user ? '/mobile-profile' : '/login', icon: User, label: 'Профиль' },
   ];
 
   return (

@@ -156,18 +156,18 @@ export const ApiSettings: React.FC = () => {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex gap-3 pt-4">
-            <Button onClick={handleTest} variant="outline" className="flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row gap-3 pt-4">
+            <Button onClick={handleTest} variant="outline" className="flex items-center justify-center gap-2 w-full sm:w-auto btn-outline">
               <TestTube size={16} />
               {language === 'en' ? 'Test Connection' : 'Тест Подключения'}
             </Button>
-            <Button onClick={handleSave} className="flex items-center gap-2">
+            <Button onClick={handleSave} className="flex items-center justify-center gap-2 w-full sm:w-auto btn-primary">
               <Save size={16} />
               {language === 'en' ? 'Save Settings' : 'Сохранить Настройки'}
             </Button>
             <Button 
               variant="destructive" 
-              className="flex items-center gap-2"
+              className="flex items-center justify-center gap-2 w-full sm:w-auto"
               onClick={() => setApiConfig({ exchange: '', apiKey: '', apiSecret: '', testMode: true })}
             >
               <Trash2 size={16} />

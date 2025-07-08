@@ -58,8 +58,8 @@ const KolProfilePage = () => {
 
   return (
     <Layout>
-      <div className={`max-w-4xl mx-auto py-4 md:py-8 animate-fade-in px-2 md:px-0 ${
-        isMobile ? 'max-w-full' : ''
+      <div className={`max-w-4xl mx-auto py-4 md:py-8 animate-fade-in ${
+        isMobile ? 'px-4 max-w-full pb-4' : 'px-0'
       }`}>
         <ProfileHeader kol={kol} stats={stats} />
         

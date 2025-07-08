@@ -16,7 +16,7 @@ const CopyTradingPage = () => {
 
   return (
     <Layout showSidebar={true}>
-      <div className={`py-4 md:py-8 animate-fade-in ${isMobile ? 'px-2 max-w-full' : 'px-0 max-w-6xl mx-auto'}`}>
+      <div className={`py-4 md:py-8 animate-fade-in ${isMobile ? 'px-4 max-w-full pb-4' : 'px-0 max-w-6xl mx-auto'}`}>
         {/* Header */}
         <div className="text-center mb-6 md:mb-8">
           <h1 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-neon-purple to-neon-blue">

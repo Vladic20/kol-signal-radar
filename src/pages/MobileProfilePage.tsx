@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Layout from '@/components/layout/Layout';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -81,7 +82,8 @@ const MobileProfilePage = () => {
   ];
 
   return (
-    <div className="pb-20 pt-16 bg-background min-h-screen">
+    <Layout>
+      <div className="pb-20 pt-16 bg-background min-h-screen">
       {/* Profile Header */}
       <div className="px-4 mb-6">
         {/* User Info */}
@@ -278,7 +280,8 @@ const MobileProfilePage = () => {
           </TabsContent>
         </Tabs>
       </div>
-    </div>
+      </div>
+    </Layout>
   );
 };
 

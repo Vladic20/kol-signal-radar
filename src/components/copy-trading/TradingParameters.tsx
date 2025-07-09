@@ -341,7 +341,7 @@ export const TradingParameters: React.FC = () => {
       <div className="flex justify-center">
         <Button 
           onClick={handleSaveParameters}
-          className="bg-gradient-to-r from-neon-purple to-neon-blue hover:opacity-90 px-8 py-3"
+          className="bg-gradient-to-r from-neon-purple to-neon-blue hover:opacity-90 px-8 py-3 w-full sm:w-auto btn-primary"
         >
           {language === 'en' ? 'Save Trading Parameters' : 'Сохранить Параметры Торговли'}
         </Button>

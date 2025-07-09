@@ -6,10 +6,12 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { Search, TrendingUp, TrendingDown, Users, Star, Copy } from 'lucide-react';
 
 export const TraderSelection: React.FC = () => {
   const { language } = useLanguage();
+  const isMobile = useIsMobile();
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('profit');
   const [selectedTraders, setSelectedTraders] = useState<number[]>([]);
@@ -125,7 +127,7 @@ export const TraderSelection: React.FC = () => {
             }`}
           >
             <CardHeader>
-              <div className="flex items-center justify-between">
+              <div className={`flex ${isMobile ? 'flex-col space-y-4' : 'items-center justify-between'}`}>
                 <div className="flex items-center gap-3">
                   <div className="text-2xl">{trader.avatar}</div>
                   <div>
@@ -142,7 +144,7 @@ export const TraderSelection: React.FC = () => {
                 <Button
                   variant={selectedTraders.includes(trader.id) ? "default" : "outline"}
                   onClick={() => toggleTraderSelection(trader.id)}
-                  className="flex items-center gap-2"
+                  className={`flex items-center gap-2 ${isMobile ? 'w-full btn-outline' : ''}`}
                 >
                   <Copy size={16} />
                   {selectedTraders.includes(trader.id) 
